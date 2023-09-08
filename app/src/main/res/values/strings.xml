@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">潮酷</string>
+    <string name="slogan">挂机赚钱不是梦</string>
+    <string name="app_jump">跳转</string>
+    <string name="app_mining">挖矿</string>
+    <string name="app_my">我的</string>
+    <string name="app_app">潮酷应用</string>
+    <string name="search">搜索应用</string>
+    <string name="app_search">搜索</string>
+    <string name="app_home">首页</string>
+    <string name="login">登录</string>
+    <string name="app_introduce">元宇宙是一个快乐的世界</string>
+    <string name="app_account">账号</string>
+    <string name="app_pass">密码</string>
+    <string name="app_forgot_password">忘记密码?</string>
+    <string name="app_join">加入我们!</string>
+    <string name="register">注册</string>
+    <string name="toast_login">请输入账号或密码</string>
+    <string name="app_get_verify">获取验证码</string>
+    <string name="app_phone">手机号码</string>
+    <string name="app_verify">验证码</string>
+    <string name="app_ok_pass">确认密码</string>
+    <string name="app_ok_user_login">以有账号登录</string>
+    <string name="toast_phone_null">手机号码不能为空</string>
+    <string name="app_null">null</string>
+    <string name="app_usdt_log">USDT记录</string>
+    <string name="app_information">资料</string>
+    <string name="app_back_login">退出登录</string>
+    <string name="app_modify_name">修改昵称</string>
+    <string name="app_sava">保存</string>
+    <string name="app_transaction_order">交易订单</string>
+    <string name="app_buy_gem">购买 宝石</string>
+    <string name="app_sell_gem">卖出 宝石</string>
+</resources>

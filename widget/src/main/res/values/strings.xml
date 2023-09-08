@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">widget</string>
+    <string name="no">取消</string>
+    <string name="ok">确认</string>
+</resources>

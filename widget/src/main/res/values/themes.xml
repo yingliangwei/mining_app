@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="dialog_sen5_full" parent="android:TextAppearance.Theme.Dialog">
+        <!-- 去边框 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 去黑边 -->
+        <item name="android:windowFrame">@android:color/transparent</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <!-- 悬浮 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 全屏 -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>
