@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +59,7 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler {
         c2cAdapter = new C2cAdapter(list, activity, type);
         binding.recycle.setLayoutManager(new LinearLayoutManager(activity));
         binding.recycle.setAdapter(c2cAdapter);
+        binding.recycle.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
     }
 
     @Override

@@ -12,14 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.mining.mining.R;
 import com.mining.mining.activity.c2s.C2CActivity;
-import com.mining.mining.activity.user.SetUserActivity;
-import com.mining.mining.activity.user.UsdtBillActivity;
+import com.mining.mining.activity.set.SetUserActivity;
+import com.mining.mining.activity.set.UsdtBillActivity;
 import com.mining.mining.activity.login.LoginActivity;
+import com.mining.mining.activity.wallet.WalletActivity;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerMyBinding;
 import com.mining.mining.entity.TextDrawableEntity;
@@ -32,7 +33,6 @@ import com.mining.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 import com.xframe.widget.recycler.RecyclerItemClickListener;
-import com.xframe.widget.recycler.adapter.RecyclerViewAdapter;
 
 import org.json.JSONObject;
 
@@ -49,6 +49,15 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
         public void onItemClick(View view, int position) {
             if (position == 0) {
                 context.startActivity(new Intent(context, C2CActivity.class));
+            }
+        }
+    };
+
+    private final RecyclerItemClickListener.OnItemClickListener.Normal normal1 = new RecyclerItemClickListener.OnItemClickListener.Normal() {
+        @Override
+        public void onItemClick(View view, int position) {
+            if (position == 0) {
+                context.startActivity(new Intent(context, WalletActivity.class));
             }
         }
     };
@@ -87,16 +96,18 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
 
     private void initRecycler() {
         List<TextDrawableEntity> entities = new ArrayList<>();
-        entities.add(new TextDrawableEntity("c2c交易", context.getDrawable(R.mipmap.transaction)));
+        entities.add(new TextDrawableEntity("宝石市场", context.getDrawable(R.mipmap.ic_ape_new_gemstone)));
+        entities.add(new TextDrawableEntity("矿石市场", context.getDrawable(R.mipmap.stone)));
         ItemAdapter itemAdapter = new ItemAdapter(context, entities);
-        binding.recycler.setLayoutManager(new LinearLayoutManager(context));
+        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         binding.recycler.setAdapter(itemAdapter);
         binding.recycler.addOnItemTouchListener(new RecyclerItemClickListener(context, normal));
         List<TextDrawableEntity> entities1 = new ArrayList<>();
         entities1.add(new TextDrawableEntity("我的钱包", context.getDrawable(R.mipmap.ic_wallet_black)));
         ItemAdapter itemAdapter1 = new ItemAdapter(context, entities1);
-        binding.common.setLayoutManager(new LinearLayoutManager(context));
+        binding.common.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         binding.common.setAdapter(itemAdapter1);
+        binding.common.addOnItemTouchListener(new RecyclerItemClickListener(context, normal1));
     }
 
     @Override
@@ -110,7 +121,7 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
             }
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("type", 3);
-            jsonObject.put("code",1);
+            jsonObject.put("code", 1);
             jsonObject.put("id", id);
             jsonObject.put("_key", _key);
             socketManage.print(jsonObject.toString());

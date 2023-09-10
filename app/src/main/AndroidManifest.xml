@@ -34,11 +34,11 @@
         <!--注册-->
         <activity android:name=".activity.login.RegisterActivity" />
         <!--usdt账单-->
-        <activity android:name=".activity.user.UsdtBillActivity" />
+        <activity android:name=".activity.set.UsdtBillActivity" />
         <!--修改资料-->
-        <activity android:name=".activity.user.SetUserActivity" />
+        <activity android:name=".activity.set.SetUserActivity" />
         <!--修改昵称-->
-        <activity android:name=".activity.user.ModifyNameActivity" />
+        <activity android:name=".activity.set.ModifyNameActivity" />
         <!--c2c交易市场-->
         <activity android:name=".activity.c2s.C2CActivity" />
         <!--c2c交易订单-->
@@ -47,5 +47,11 @@
         <activity android:name=".activity.c2s.BuyActivity" />
         <!--卖出界面-->
         <activity android:name=".activity.c2s.SellActivity" />
+        <!--我的钱包-->
+        <activity android:name=".activity.wallet.WalletActivity" />
+        <!--usdt充值提现界面-->
+        <activity android:name=".activity.wallet.UsdtDetailActivity" />
+        <!--设置欧易uid-->
+        <activity android:name=".activity.set.SetUidActivity" />
     </application>
 </manifest>

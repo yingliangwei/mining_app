@@ -14,6 +14,7 @@ import com.mining.mining.activity.c2s.C2CActivity;
 import com.mining.mining.activity.c2s.SellActivity;
 import com.mining.mining.databinding.ItemC2cBinding;
 import com.mining.mining.entity.C2cEntity;
+import com.mining.mining.util.StringUtil;
 
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class C2cAdapter extends RecyclerView.Adapter<C2cAdapter.ViewHolder> impl
         holder.binding.gem.setText(entity.getArticle());
         holder.binding.usdt.setText(entity.getUsdt());
         holder.binding.buy.setTag(position);
+        holder.binding.name.setText(entity.getName());
+        holder.binding.nameX.setText(StringUtil.getStringStart(entity.getName()));
         holder.binding.buy.setOnClickListener(this);
         if (type != 1) {
             holder.binding.buy.setText("出售");

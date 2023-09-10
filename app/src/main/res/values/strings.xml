@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">潮酷</string>
+    <string name="app_name">矿石盛世</string>
     <string name="slogan">挂机赚钱不是梦</string>
     <string name="app_jump">跳转</string>
     <string name="app_mining">挖矿</string>
@@ -31,4 +31,9 @@
     <string name="app_transaction_order">交易订单</string>
     <string name="app_buy_gem">购买 宝石</string>
     <string name="app_sell_gem">卖出 宝石</string>
+    <string name="app_set">设置</string>
+    <string name="app_residue">挖矿剩余%s次</string>
+    <string name="app_miner">矿工：%s</string>
+    <string name="app_burial">冷却：%s</string>
+    <string name="app_miner_usdt">%s USDT/个旷工</string>
 </resources>

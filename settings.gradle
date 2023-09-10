@@ -22,3 +22,5 @@ rootProject.name = "mining"
 include ':app'
 include ':widget'
 include ':network'
+include ':tools'
+include ':tools:usdtrecharge'

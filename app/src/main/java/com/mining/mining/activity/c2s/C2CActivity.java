@@ -15,7 +15,6 @@ import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.ActivityC2sBinding;
 import com.mining.mining.pager.c2c.C2cGemPager;
-import com.mining.mining.pager.c2c.ItemC2CPager;
 import com.mining.mining.util.StatusBarUtil;
 
 import java.util.ArrayList;

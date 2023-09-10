@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="@string/app_information" />
+            app:title="@string/app_set" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -32,10 +32,14 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/back_login"
+        <TextView
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_back_login" />
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_button"
+            android:gravity="center"
+            android:text="@string/app_back_login"
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

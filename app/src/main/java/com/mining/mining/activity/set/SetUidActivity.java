@@ -1,4 +1,4 @@
-package com.mining.mining.activity.user;
+package com.mining.mining.activity.set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,16 +12,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.mining.mining.R;
 import com.mining.mining.activity.login.LoginActivity;
-import com.mining.mining.databinding.ActivityModifyNameBinding;
+import com.mining.mining.databinding.ActivitySetUidBinding;
 import com.mining.mining.util.Handler;
 import com.mining.mining.util.OnHandler;
+import com.mining.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
 import org.json.JSONObject;
 
-public class ModifyNameActivity extends AppCompatActivity implements OnData, OnHandler, View.OnClickListener {
-    private ActivityModifyNameBinding binding;
+public class SetUidActivity extends AppCompatActivity implements OnData, OnHandler, View.OnClickListener {
+    private ActivitySetUidBinding binding;
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
     private SharedPreferences sharedPreferences;
 
@@ -29,7 +30,8 @@ public class ModifyNameActivity extends AppCompatActivity implements OnData, OnH
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        binding = ActivityModifyNameBinding.inflate(getLayoutInflater());
+        StatusBarUtil.setImmersiveStatusBar(this, true);
+        binding = ActivitySetUidBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initToolbar();
         initView();
@@ -53,25 +55,12 @@ public class ModifyNameActivity extends AppCompatActivity implements OnData, OnH
                 return;
             }
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 3);
+            jsonObject.put("type", 7);
+            jsonObject.put("code", 3);
+            jsonObject.put("uid", binding.uid.getText().toString());
             jsonObject.put("id", id);
             jsonObject.put("_key", _key);
             socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    @Override
-    public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            String msg = jsonObject.getString("msg");
-            if (code == 202) {
-                LoginActivity.login(this);
-            }
-            handler.handleMessage(0, msg);
         } catch (Exception e) {
             e.fillInStackTrace();
         }
@@ -85,12 +74,23 @@ public class ModifyNameActivity extends AppCompatActivity implements OnData, OnH
     }
 
     @Override
+    public void handle(String ds) {
+        try {
+            JSONObject jsonObject = new JSONObject(ds);
+            int code = jsonObject.getInt("code");
+            String msg = jsonObject.getString("msg");
+            handler.sendMessage(0, msg);
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.sava) {
-            String name = binding.name.getText().toString();
-            if (name.length() == 0) {
-                Toast.makeText(this, "昵称不能为空", Toast.LENGTH_SHORT).show();
-                return;
+            String uid = binding.uid.getText().toString();
+            if (uid.equals("")) {
+                Toast.makeText(this, "uid不能为空", Toast.LENGTH_SHORT).show();
             }
             SocketManage.init(this);
         }

@@ -1,4 +1,4 @@
-package com.mining.mining.activity.user;
+package com.mining.mining.activity.set;
 
 import android.content.Context;
 import android.content.res.Resources;

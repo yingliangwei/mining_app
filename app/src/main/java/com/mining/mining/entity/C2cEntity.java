@@ -9,6 +9,7 @@ public class C2cEntity {
      * user_id : 1
      */
 
+    private String name;
     private String article;
     private String id;
     private String usdt;
@@ -44,5 +45,13 @@ public class C2cEntity {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -41,7 +41,8 @@ public class SocketManage extends Thread {
             socketChannel.socket().setSoTimeout(500);
             socketChannel.configureBlocking(false);
             socketChannel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ);
-            socketChannel.connect(new InetSocketAddress("192.168.1.7", 6333));
+            // socketChannel.connect(new InetSocketAddress("f36i940486.wicp.vip", 17468));
+            socketChannel.connect(new InetSocketAddress("192.168.1.19", 6333));
             long timeout = System.currentTimeMillis() + 5000; // 5 seconds
             while (isRun) {
                 int readyChannels = selector.select(timeout);
@@ -110,7 +111,6 @@ public class SocketManage extends Thread {
             sb.append(new String(readByte));
             readBuffer.clear();
         }
-        Log.d(TAG, "read|" + read + "|dataSize=" + sb.toString().length());
         String body = sb.toString();
         handleData(body);
         close();
