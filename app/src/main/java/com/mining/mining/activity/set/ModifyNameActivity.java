@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mining.mining.R;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivityModifyNameBinding;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
+import com.mining.util.Handler;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
@@ -79,7 +79,7 @@ public class ModifyNameActivity extends AppCompatActivity implements OnData, OnH
             if (code == 202) {
                 LoginActivity.login(this);
             }
-            handler.handleMessage(0, msg);
+            handler.sendMessage(0, msg);
         } catch (Exception e) {
             e.fillInStackTrace();
         }

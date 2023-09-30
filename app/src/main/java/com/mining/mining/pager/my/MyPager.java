@@ -16,24 +16,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.mining.mining.R;
+import com.mining.mining.activity.TransferActivity;
 import com.mining.mining.activity.c2s.C2CActivity;
-import com.mining.mining.activity.set.SetUserActivity;
-import com.mining.mining.activity.set.UsdtBillActivity;
+import com.mining.mining.activity.invite.InviteActivity;
+import com.mining.mining.activity.invite.InviteCodeActivity;
 import com.mining.mining.activity.login.LoginActivity;
+import com.mining.mining.activity.set.SetUserActivity;
+import com.mining.mining.activity.wallet.UsdtBillActivity;
 import com.mining.mining.activity.wallet.WalletActivity;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerMyBinding;
 import com.mining.mining.entity.TextDrawableEntity;
 import com.mining.mining.pager.holder.ViewHolder;
 import com.mining.mining.pager.my.adpater.ItemAdapter;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
-import com.mining.mining.util.StringUtil;
+import com.mining.mining.util.SharedUtil;
+import com.mining.util.Handler;
+import com.mining.util.MessageEvent;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
+import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 import com.xframe.widget.recycler.RecyclerItemClickListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -58,12 +65,43 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
         public void onItemClick(View view, int position) {
             if (position == 0) {
                 context.startActivity(new Intent(context, WalletActivity.class));
+            } else if (position == 1) {
+                context.startActivity(new Intent(context, TransferActivity.class));
+            }
+        }
+    };
+
+    private final OnData onData = new OnData() {
+        @Override
+        public void handle(String ds) {
+            try {
+                JSONObject jsonObject = new JSONObject(ds);
+                int code = jsonObject.getInt("code");
+                if (code == 200) {
+                    String usdt = jsonObject.getString("usdt");
+                    binding.usdt.setText(usdt);
+                }
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
+
+        @Override
+        public void connect(SocketManage socketManage) {
+            try {
+                SharedUtil sharedUtil = new SharedUtil(context);
+                JSONObject jsonObject = sharedUtil.getLogin(3, 2);
+                socketManage.print(jsonObject.toString());
+            } catch (Exception e) {
+                e.fillInStackTrace();
             }
         }
     };
 
     public MyPager(Activity context) {
+        super(context);
         this.context = context;
+        EventBus.getDefault().register(this);
     }
 
     @NonNull
@@ -86,24 +124,33 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
         SocketManage.init(this);
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+
     private void initToolbar() {
         binding.toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
     }
 
     private void initView() {
         binding.usdtL.setOnClickListener(this);
+        binding.detail.setOnClickListener(this);
+        binding.buy.setOnClickListener(this);
     }
 
     private void initRecycler() {
         List<TextDrawableEntity> entities = new ArrayList<>();
         entities.add(new TextDrawableEntity("宝石市场", context.getDrawable(R.mipmap.ic_ape_new_gemstone)));
-        entities.add(new TextDrawableEntity("矿石市场", context.getDrawable(R.mipmap.stone)));
         ItemAdapter itemAdapter = new ItemAdapter(context, entities);
         binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         binding.recycler.setAdapter(itemAdapter);
         binding.recycler.addOnItemTouchListener(new RecyclerItemClickListener(context, normal));
         List<TextDrawableEntity> entities1 = new ArrayList<>();
         entities1.add(new TextDrawableEntity("我的钱包", context.getDrawable(R.mipmap.ic_wallet_black)));
+        entities1.add(new TextDrawableEntity("转账", context.getDrawable(R.mipmap.transfer)));
+        entities1.add(new TextDrawableEntity("邀请好友", context.getDrawable(R.mipmap.invite)));
+
         ItemAdapter itemAdapter1 = new ItemAdapter(context, entities1);
         binding.common.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         binding.common.setAdapter(itemAdapter1);
@@ -132,19 +179,17 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
 
     @Override
     public void handle(String ds) {
-        System.out.println(ds);
         try {
             JSONObject jsonObject = new JSONObject(ds);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                JSONObject data = jsonObject.getJSONObject("data");
-                handler.handleMessage(1, data.toString());
+                handler.sendMessage(1, jsonObject.toString());
                 return;
             } else if (code == 202) {
                 LoginActivity.login(context);
             }
             String msg = jsonObject.getString("msg");
-            handler.handleMessage(0, msg);
+            handler.sendMessage(0, msg);
         } catch (Exception e) {
             e.fillInStackTrace();
         }
@@ -156,8 +201,11 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
             Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
         } else if (w == 1) {
             try {
-                JSONObject data = new JSONObject(str);
+                JSONObject jsonObject = new JSONObject(str);
+                JSONObject data = jsonObject.getJSONObject("data");
                 initViewData(data);
+                String invite_sum = jsonObject.getString("invite_sum");
+                binding.inviteSum.setText(invite_sum);
             } catch (Exception e) {
                 e.fillInStackTrace();
             }
@@ -167,24 +215,9 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
     private void initViewData(JSONObject jsonObject) throws Exception {
         String name = jsonObject.getString("name");
         String usdt = jsonObject.getString("usdt");
-        binding.usdt.post(new Runnable() {
-            @Override
-            public void run() {
-                binding.usdt.setText(usdt);
-            }
-        });
-        binding.name.post(new Runnable() {
-            @Override
-            public void run() {
-                binding.name.setText(name);
-            }
-        });
-        binding.nameX.post(new Runnable() {
-            @Override
-            public void run() {
-                binding.nameX.setText(StringUtil.getStringStart(name));
-            }
-        });
+        binding.usdt.setText(StringUtil.toRe(usdt));
+        binding.name.setText(name);
+        binding.nameX.setText(StringUtil.getStringStart(name));
     }
 
 
@@ -196,7 +229,13 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.usdt_l) {
-            context.startActivity(new Intent(context, UsdtBillActivity.class));
+            Intent intent = new Intent(context, UsdtBillActivity.class);
+            intent.putExtra("code", 3);
+            context.startActivity(intent);
+        } else if (v.getId() == R.id.detail) {
+            context.startActivity(new Intent(context, InviteActivity.class));
+        } else if (v.getId() == R.id.buy) {
+            context.startActivity(new Intent(context, InviteCodeActivity.class));
         }
     }
 
@@ -206,5 +245,12 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
             context.startActivity(new Intent(context, SetUserActivity.class));
         }
         return false;
+    }
+
+    @Subscribe
+    public void onEvent(MessageEvent messageEvent) {
+        if (messageEvent.getW() == 3) {
+            SocketManage.init(onData);
+        }
     }
 }

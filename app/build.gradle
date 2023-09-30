@@ -9,6 +9,7 @@ android {
     defaultConfig {
         applicationId "com.mining.mining"
         minSdk 30
+        //noinspection OldTargetApi
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -32,12 +33,23 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':util')
     implementation project(path: ':widget')
     implementation project(path: ':network')
+    implementation project(path: ':PluginLib') // 插件化库
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
-    implementation 'com.airbnb.android:lottie:3.7.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.zxing:core:3.5.2'
+    implementation 'org.greenrobot:eventbus:3.3.1' // 事件总线库
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
+    implementation 'io.github.scwang90:refresh-footer-classics:2.0.6' // 经典加载
+    implementation 'io.github.scwang90:refresh-header-classics:2.0.6' // 经典刷新头
+    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.daimajia.numberprogressbar:library:1.4'// 核心必须依赖
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

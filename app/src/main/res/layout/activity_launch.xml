@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/a"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,11 +31,6 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <com.xframe.widget.CircleImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/ic_launcher" />
-
             <TextView
                 android:id="@+id/Color_A"
                 android:layout_width="wrap_content"
@@ -57,20 +52,19 @@
             android:textSize="11sp" />
     </LinearLayout>
 
-
     <com.google.android.material.appbar.AppBarLayout
-        android:background="@android:color/white"
-        app:elevation="0dp"
-        android:fitsSystemWindows="true"
-        android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
 
         <TextView
-            android:layout_margin="10dp"
             android:id="@+id/jump"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="@drawable/bg_waring"
             android:text="@string/app_jump"
             android:textColor="@color/white" />

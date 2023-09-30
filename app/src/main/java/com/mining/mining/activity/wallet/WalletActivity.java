@@ -14,9 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mining.mining.R;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivityWalletBinding;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
+import com.mining.util.Handler;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
+import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
@@ -42,6 +43,7 @@ public class WalletActivity extends AppCompatActivity implements OnData, OnHandl
 
     private void initView() {
         binding.usdtL.setOnClickListener(this);
+        binding.gemL.setOnClickListener(this);
     }
 
     private void initToolbar() {
@@ -103,16 +105,16 @@ public class WalletActivity extends AppCompatActivity implements OnData, OnHandl
     private void initData(JSONObject data) throws JSONException {
         String usdt = data.getString("usdt");
         String gme = data.getString("gem");
-        String stone = data.getString("stone");
-        binding.gem.setText(gme);
-        binding.usdt.setText(usdt);
-        binding.stone.setText(stone);
+        binding.gem.setText(StringUtil.toRe(gme));
+        binding.usdt.setText(StringUtil.toRe(usdt));
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.usdt_l) {
             startActivity(new Intent(this, UsdtDetailActivity.class));
+        } else if (v.getId() == R.id.gem_l) {
+            startActivity(new Intent(this, GemDetailActivity.class));
         }
     }
 }

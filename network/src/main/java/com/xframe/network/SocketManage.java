@@ -1,19 +1,20 @@
 package com.xframe.network;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
 import java.util.Set;
 
-public class SocketManage extends Thread {
+public class SocketManage extends Thread implements Handler.Callback {
+    private final Handler handler = new Handler(Looper.getMainLooper(), this);
+
     private static final String TAG = "SocketManage";
     private final StringBuilder sb = new StringBuilder();
     private OnData data;
@@ -33,6 +34,11 @@ public class SocketManage extends Thread {
         initSocketChannel();
     }
 
+
+    public boolean isConnected() {
+        return socketChannel.isConnected();
+    }
+
     public void initSocketChannel() {
         //开始建立连接
         try {
@@ -43,15 +49,13 @@ public class SocketManage extends Thread {
             socketChannel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ);
             // socketChannel.connect(new InetSocketAddress("f36i940486.wicp.vip", 17468));
             socketChannel.connect(new InetSocketAddress("192.168.1.19", 6333));
-            long timeout = System.currentTimeMillis() + 5000; // 5 seconds
+            long timeout = System.currentTimeMillis() + 5_000; // 5 seconds
             while (isRun) {
                 int readyChannels = selector.select(timeout);
                 if (readyChannels == 0) {
                     // No channels are ready, so check if the timeout has elapsed
                     if (System.currentTimeMillis() >= timeout) {
-                        if (data != null) {
-                            data.error("timeout error");
-                        }
+                        sendMessage(2,"timeout error");
                         System.out.println("timeout error");
                         // The timeout has elapsed, so cancel the connection attempt
                         socketChannel.close();
@@ -120,9 +124,7 @@ public class SocketManage extends Thread {
      * @param toString 处理数据
      */
     private void handleData(String toString) {
-        if (data != null) {
-            data.handle(toString);
-        }
+        sendMessage(1, toString);
     }
 
     /**
@@ -142,9 +144,7 @@ public class SocketManage extends Thread {
                 return true;
             }
         } catch (Exception e) {
-            if (data != null) {
-                data.error(e.getMessage());
-            }
+            sendMessage(2, e.getMessage());
         }
         return false;
     }
@@ -152,5 +152,28 @@ public class SocketManage extends Thread {
     public void close() {
         socketChannel.socket();
         isRun = false;
+    }
+
+    private void sendMessage(int w, String str) {
+        Message message = new Message();
+        message.what = w;
+        message.obj = str;
+        handler.sendMessage(message);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg.what == 1) {
+            String data = (String) msg.obj;
+            if (this.data != null) {
+                this.data.handle(data);
+            }
+        } else if (msg.what == 2) {
+            String data = (String) msg.obj;
+            if (this.data != null) {
+                this.data.error(data);
+            }
+        }
+        return true;
     }
 }

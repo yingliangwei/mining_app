@@ -2,5 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="@string/app_search" android:icon="@mipmap/search" app:showAsAction="always" />
+    <item
+        android:title="更多"
+        android:id="@+id/more"
+        android:icon="@mipmap/more"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/selected"
+                android:title="选择本地游戏" />
+        </menu>
+    </item>
 </menu>

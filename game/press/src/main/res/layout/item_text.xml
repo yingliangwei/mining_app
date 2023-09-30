@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/_checkbox"
+    android:button="@null"
+    android:drawableStart="@mipmap/stone"
+    android:gravity="center"
+    android:padding="5dp"
+    android:text="5"
+    android:textSize="20sp" />

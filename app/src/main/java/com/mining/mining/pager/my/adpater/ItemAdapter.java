@@ -2,7 +2,6 @@ package com.mining.mining.pager.my.adpater;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;

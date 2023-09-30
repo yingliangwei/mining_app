@@ -16,11 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mining.mining.R;
-import com.mining.mining.activity.MainActivity;
 import com.mining.mining.databinding.ActivityRegisterBinding;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
+import com.mining.util.Handler;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
@@ -66,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String msg = jsonObject.getString("msg");
                 handler.sendMessage(0, msg);
                 if (code != 200) {
-                    handler.handleMessage(1, "");
+                    handler.sendMessage(1, "");
                 }
             } catch (Exception e) {
                 e.fillInStackTrace();
@@ -170,9 +169,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 edit.putString("_key", jsonObject.getString("_key"));
                 edit.putString("id", jsonObject.getString("id"));
                 edit.apply();
-                handler.handleMessage(2, "");
+                handler.sendMessage(2, "");
             } else if (code == 201) {
-                handler.handleMessage(3, "");
+                handler.sendMessage(3, "");
             }
             String msg = jsonObject.getString("msg");
             handler.sendMessage(0, msg);

@@ -2,193 +2,218 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/b31"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/a"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <LinearLayout
+                android:id="@+id/permanent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="初级挖矿"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_b"
-                    android:drawableEnd="@mipmap/arr"
-                    android:padding="5dp"
-                    android:text="初阶介绍"
-                    android:textColor="@color/bfbfbf"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/bg_ape_advanced1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="190dp"
-                    android:orientation="vertical"
-                    android:padding="15dp">
+                    android:layout_height="wrap_content"
+                    android:background="@color/b31"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/rubik_bold"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@mipmap/ic_ape_new_gemstone"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="累计宝石：0"
+                        android:layout_weight="1"
+                        android:text="普通矿池"
                         android:textColor="@color/white" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="65dp"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@mipmap/stone"
+                        android:background="@drawable/bg_b"
+                        android:drawableEnd="@mipmap/arr"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="累计矿石：0"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="今天剩余挖矿数：5次"
-                        android:textColor="@color/white" />
+                        android:text="规则详解"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_ape_firend_first"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
 
-                        <Button
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@mipmap/btn_ape_primary_left"
-                            android:text="挖矿"
-                            android:textColor="@color/white" />
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
 
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:src="@mipmap/usdt" />
+
+                            <TextView
+                                android:fontFamily="@font/rubik_bold"
+                                android:id="@+id/mining_usdt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:text="@string/app_s_usdt_5"
+                                android:textColor="@color/bfbfbf"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:src="@mipmap/ic_ape_new_gemstone" />
+
+                            <TextView
+                                android:fontFamily="@font/rubik_bold"
+                                android:id="@+id/mining_gem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:text="@string/app_accumulate"
+                                android:textColor="@color/bfbfbf"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|bottom"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:fontFamily="@font/rubik_bold"
+                                android:id="@+id/mining_lv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/app_mining_lv"
+                                android:textColor="@color/bfbfbf" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@mipmap/ic_ape_new_gemstone" />
+
+                                <TextView
+                                    android:fontFamily="@font/rubik_bold"
+                                    android:id="@+id/day_gem"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="end"
+                                    android:text="@string/app_day_gem"
+                                    android:textColor="@color/bfbfbf" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:fontFamily="@font/din_bold"
+                                android:id="@+id/mining_remaining"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_weight="1"
+                                android:background="@mipmap/bg_ape_product_rocks"
+                                android:text="@string/app_diggable"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:fontFamily="@font/din_bold"
+                                android:id="@+id/buyMining"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_weight="1"
+                                android:background="@mipmap/bg_ape_product_rocks"
+                                android:text="升级"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="中阶挖矿"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_b"
-                    android:drawableEnd="@mipmap/arr"
-                    android:padding="5dp"
-                    android:text="中阶介绍"
-                    android:textColor="@color/bfbfbf"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/bg_ape_advanced1"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="190dp"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@mipmap/ic_ape_new_gemstone"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="累计宝石：0"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@mipmap/stone"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="累计矿石：0"
-                        android:textColor="@color/white" />
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="剩余挖矿数：0次"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
+                    android:id="@+id/blank"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/btn_ape_primary_left"
-                            android:text="挖矿"
-                            android:textColor="@color/white" />
-
-                    </LinearLayout>
+                    <include layout="@layout/layout_blank" />
                 </LinearLayout>
-            </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

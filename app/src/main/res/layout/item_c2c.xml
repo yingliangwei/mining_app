@@ -4,9 +4,10 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="10dp">
 
     <LinearLayout
+        android:gravity="center|start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -15,21 +16,24 @@
         android:paddingBottom="5dp">
 
         <TextView
+            android:textSize="10sp"
             android:id="@+id/name_x"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/circle_background"
             android:gravity="center"
             android:text="w"
             android:textColor="@color/white" />
 
         <TextView
-            android:textColor="@color/black"
+            android:fontFamily="@font/din_bold"
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="@string/app_name" />
+            android:text="@string/app_name"
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
@@ -42,44 +46,40 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="数量:" />
+            android:text="数量"
+            android:textSize="10sp" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center|start"
             android:orientation="horizontal">
 
             <TextView
+                android:fontFamily="@font/rubik_bold"
                 android:id="@+id/gem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:text="0"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="个"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
                 android:layout_marginStart="5dp"
-                android:src="@mipmap/ic_ape_new_gemstone" />
+                android:text="宝石"
+                android:textSize="10sp" />
+
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:gravity="center|start"
         android:orientation="horizontal">
@@ -87,37 +87,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="单价:" />
+            android:text="单价"
+            android:textSize="10sp" />
 
         <TextView
+            android:fontFamily="@font/rubik_bold"
             android:id="@+id/usdt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:text="0"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="10sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/个"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <ImageView
-
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:padding="3dp"
-            android:src="@mipmap/usdt" />
+            android:layout_marginStart="5dp"
+            android:text="USDT"
+            android:textSize="10sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -137,6 +132,7 @@
             android:textSize="10sp" />
 
         <TextView
+            android:fontFamily="@font/din_bold"
             android:id="@+id/buy"
             android:layout_width="60dp"
             android:layout_height="wrap_content"

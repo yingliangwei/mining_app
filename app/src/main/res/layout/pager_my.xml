@@ -34,6 +34,7 @@
             android:paddingEnd="10dp">
 
             <LinearLayout
+                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -56,10 +57,13 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:fontFamily="@font/din_bold"
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/app_null"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/app_name"
                         android:textColor="@color/black"
                         android:textIsSelectable="true"
                         android:textSize="21sp"
@@ -79,11 +83,12 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:fontFamily="@font/rubik_bold"
                             android:id="@+id/id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:text="@string/app_null"
+                            android:text="0"
                             android:textColor="@color/black"
                             android:textIsSelectable="true"
                             android:textStyle="bold" />
@@ -95,24 +100,23 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="0dp">
+                app:cardElevation="5dp">
 
                 <RelativeLayout
                     android:id="@+id/usdt_l"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="110dp">
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@mipmap/bg_ape_my_sands" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp">
 
@@ -122,6 +126,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:fontFamily="@font/din_bold"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -138,8 +143,9 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:gravity="center|start"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:padding="10dp">
 
@@ -149,11 +155,12 @@
                                 android:src="@mipmap/usdt" />
 
                             <TextView
+                                android:fontFamily="@font/rubik_bold"
                                 android:id="@+id/usdt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="@string/app_null"
+                                android:text="0.00"
                                 android:textColor="@color/white"
                                 android:textSize="21sp"
                                 android:textStyle="bold" />
@@ -178,6 +185,7 @@
                     android:padding="10dp">
 
                     <TextView
+                        android:fontFamily="@font/din_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
@@ -220,6 +228,7 @@
                             android:padding="10dp">
 
                             <TextView
+
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="邀请用户"
@@ -228,11 +237,12 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="邀请有效用户奖励普通矿洞中级矿机挖矿次数"
+                                android:text="邀请好友可以获得宝石"
                                 android:textSize="11sp" />
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@mipmap/arr"
@@ -255,8 +265,9 @@
                             android:padding="10dp">
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:orientation="vertical">
 
                                 <LinearLayout
@@ -265,6 +276,8 @@
                                     android:orientation="horizontal">
 
                                     <TextView
+                                        android:fontFamily="@font/rubik_bold"
+                                        android:id="@id/gem"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="0"
@@ -280,15 +293,16 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="共奖励矿机次数"
+                                    android:text="共获取宝石"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
+                                android:layout_weight="1"
                                 android:orientation="vertical">
 
                                 <LinearLayout
@@ -297,6 +311,8 @@
                                     android:orientation="horizontal">
 
                                     <TextView
+                                        android:fontFamily="@font/rubik_bold"
+                                        android:id="@+id/invite_sum"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="0"
@@ -317,13 +333,17 @@
                             </LinearLayout>
                         </LinearLayout>
 
+
                         <Button
-                            android:layout_width="100dp"
+                            android:fontFamily="@font/din_bold"
+                            android:id="@+id/buy"
+                            android:layout_width="80dp"
                             android:layout_height="40dp"
-                            android:layout_margin="5dp"
-                            android:background="@mipmap/bg_ape_arena_join"
-                            android:text="邀请好友"
+                            android:background="@drawable/bg_button"
+                            android:gravity="center"
+                            android:text="@string/app_invite"
                             android:textColor="@color/white" />
+
                     </LinearLayout>
 
 
@@ -345,6 +365,7 @@
                     android:padding="10dp">
 
                     <TextView
+                        android:fontFamily="@font/din_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"

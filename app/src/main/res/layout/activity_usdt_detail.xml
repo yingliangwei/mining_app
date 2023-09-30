@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -16,6 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:menu="@menu/menu_usdt_detail"
             app:navigationIcon="@mipmap/close"
             app:title="我的USDT" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -35,38 +37,45 @@
             android:orientation="vertical">
 
             <ImageView
+                android:padding="10dp"
+                android:id="@+id/image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@mipmap/usdt_u" />
 
             <TextView
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="当前余额" />
 
             <TextView
+                android:fontFamily="@font/rubik_bold"
+                android:id="@+id/usdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="0.00"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="40sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
 
         <TextView
+            android:id="@+id/recharge"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/bg_button"
             android:gravity="center"
             android:text="充值"
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/Withdrawal"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_button"
             android:gravity="center"

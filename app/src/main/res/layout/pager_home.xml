@@ -18,25 +18,100 @@
             android:layout_height="wrap_content"
             app:menu="@menu/menu_home"
             app:title="@string/app_app"
-            app:titleTextColor="@color/black" />
+            app:titleTextColor="@color/black">
+
+            <TextView
+                android:fontFamily="@font/rubik_bold"
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_background"
+                android:drawablePadding="10dp"
+                android:gravity="center|start"
+                android:hint="搜索游戏"
+                android:padding="10dp"
+                android:textSize="11sp"
+                app:drawableStartCompat="@mipmap/search" />
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp">
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabGravity="start" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_ape_new_gemstone" />
+
+            <TextView
+                android:fontFamily="@font/rubik_bold"
+                android:id="@+id/gem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="今日收益:"
+                android:textSize="10sp" />
+
+            <TextView
+                android:fontFamily="@font/rubik_bold"
+                android:id="@+id/day_gem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="0.00"
+                android:textColor="@android:color/holo_green_dark" />
+
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="5dp"
+                android:src="@mipmap/refresh" />
+        </LinearLayout>
     </LinearLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <q.rorbin.verticaltablayout.VerticalTabLayout
+            style="@style/tag"
+            android:id="@+id/vertical"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:padding="8dp"
+            app:indicator_color="@color/purple_500"
+            app:indicator_corners="50dp"
+            app:indicator_gravity="fill"
+            app:tab_height="32dp"
+            app:tab_margin="8dp"
+            app:tab_mode="scrollable" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </LinearLayout>
 </LinearLayout>

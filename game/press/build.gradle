@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.mining.press'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.mining.press"
+        minSdk 30
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(path: ':pluginwidget')
+    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6' // 核心必须依赖
+    implementation project(path: ':network')
+    implementation project(path: ':util')
+    implementation project(path: ':PluginActivity')
+    implementation 'androidx.recyclerview:recyclerview:1.3.1'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.google.code.gson:gson:2.10.1'
+}

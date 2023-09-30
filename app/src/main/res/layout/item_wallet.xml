@@ -21,12 +21,14 @@
             android:padding="20dp">
 
             <TextView
+                android:fontFamily="@font/din_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_app"
                 android:textColor="@color/black" />
 
             <TextView
+                android:fontFamily="@font/rubik_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

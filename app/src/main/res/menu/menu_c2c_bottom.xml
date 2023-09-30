@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/transaction"
+        android:icon="@mipmap/transaction"
+        android:orderInCategory="0"
+        android:title="交易" />
+    <item
+        android:icon="@mipmap/add"
+        android:orderInCategory="1"
+        android:title="挂单" />
+</menu>

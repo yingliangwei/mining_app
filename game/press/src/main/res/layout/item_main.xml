@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_b"
+        android:gravity="center"
+        android:text="期数" />
+
+    <TextView
+        android:id="@+id/stone"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/bg_b"
+        android:gravity="center"
+        android:text="矿石数" />
+
+    <TextView
+        android:id="@+id/stone_x"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_b"
+        android:gravity="center"
+        android:text="我的收获" />
+
+    <TextView
+        android:id="@+id/bill_k"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_b"
+        android:gravity="center"
+        android:text="选择卡" />
+
+    <TextView
+        android:id="@+id/k"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_b"
+        android:gravity="center"
+        android:text="K卡" />
+</LinearLayout>

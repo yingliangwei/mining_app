@@ -1,10 +1,8 @@
 package com.mining.mining.activity.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.LauncherActivityInfo;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.method.HideReturnsTransformationMethod;
@@ -23,9 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mining.mining.R;
 import com.mining.mining.activity.MainActivity;
 import com.mining.mining.databinding.ActivityLoginBinding;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
+import com.mining.util.Handler;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
@@ -118,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements OnData, View.OnC
                 edit.putString("_key", jsonObject.getString("_key"));
                 edit.putString("id", jsonObject.getString("id"));
                 edit.apply();
-                handler.handleMessage(1, "");
+                handler.sendMessage(1, "");
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);

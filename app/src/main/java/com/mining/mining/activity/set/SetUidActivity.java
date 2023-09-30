@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mining.mining.R;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivitySetUidBinding;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
+import com.mining.util.Handler;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 

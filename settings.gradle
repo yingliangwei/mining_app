@@ -22,5 +22,14 @@ rootProject.name = "mining"
 include ':app'
 include ':widget'
 include ':network'
+include ':PluginLib'
+include ':PluginActivity'
+
 include ':tools'
 include ':tools:usdtrecharge'
+
+include ':game'
+include ':game:press'
+include ':util'
+include ':pluginwidget'
+include ':tools:sms'

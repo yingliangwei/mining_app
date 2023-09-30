@@ -18,6 +18,7 @@ import com.xframe.widget.databinding.DialogPayPassBinding;
 public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private final DialogPayPassBinding binding;
     private OnPay pay;
+    private Context context;
 
     public PayPass(@NonNull Context context) {
         super(context);
@@ -35,6 +36,9 @@ public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeLis
 
     public void setDialogLocation() {
         Window win = this.getWindow();
+        if (win == null) {
+            return;
+        }
         WindowManager.LayoutParams lp = win.getAttributes();
         lp.gravity = Gravity.CENTER;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -42,6 +46,11 @@ public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeLis
         win.setWindowAnimations(R.style.dialog_sen5_full);
         win.setBackgroundDrawableResource(android.R.color.transparent);
         win.setAttributes(lp);
+    }
+
+    public void setMoney(String money) {
+        binding.money.setVisibility(View.VISIBLE);
+        binding.money.setText(money);
     }
 
     public void setPay(OnPay pay) {
@@ -53,9 +62,11 @@ public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeLis
         if (isChecked) {
             //如果选中，显示密码
             binding.etPayPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            binding.etPayPwd.setSelection(0, binding.etPayPwd.getText().length());
         } else {
             //否则隐藏密码
             binding.etPayPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            binding.etPayPwd.setSelection(0, binding.etPayPwd.getText().length());
         }
     }
 

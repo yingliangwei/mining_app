@@ -49,4 +49,5 @@
         <attr name="numberProgressBarStyle" format="reference" />
     </declare-styleable>
 
+
 </resources>

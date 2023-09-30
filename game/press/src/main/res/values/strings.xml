@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">压K卡</string>
+    <string name="app_ok">确认卡牌(%s矿石)</string>
+    <string name="app_number">第%s期 开奖倒计时:</string>
+</resources>

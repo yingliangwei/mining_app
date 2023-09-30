@@ -5,16 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mining.mining.R;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivitySetUserBinding;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
+import com.mining.util.Handler;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 import com.xframe.widget.entity.RecyclerEntity;
@@ -26,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetUserActivity extends AppCompatActivity implements OnRecyclerItemClickListener, OnHandler, OnData {
+public class SetUserActivity extends AppCompatActivity implements OnRecyclerItemClickListener, OnHandler, OnData, View.OnClickListener {
     private ActivitySetUserBinding binding;
     private final List<List<RecyclerEntity>> entity = new ArrayList<>();
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
@@ -42,13 +44,20 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
         setContentView(binding.getRoot());
         initToolbar();
         initRecycler();
+        initView();
         SocketManage.init(this);
     }
+
+    private void initView() {
+        binding.back.setOnClickListener(this);
+    }
+
 
     private void initRecycler() {
         entities.add(new RecyclerEntity("昵称", 0, "未设置", "", "name"));
         entities.add(new RecyclerEntity("绑定手机", 0, "未绑定", "", "phone"));
         entities.add(new RecyclerEntity("绑定欧易UID", 0, "未绑定", "", "uid"));
+        entities.add(new RecyclerEntity("修改支付密码",  0, "", "", "pay"));
         List<RecyclerEntity> entities1 = new ArrayList<>();
         entities1.add(new RecyclerEntity("建议和反馈", 0, "", "", "j"));
         entities1.add(new RecyclerEntity("关于", 0, "", "", "g"));
@@ -68,14 +77,17 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
         if (entity.getKey() == null) {
             return;
         }
-        if (entity.getKey().equals("name")) {
-            Intent intent = new Intent(this, ModifyNameActivity.class);
-            intent.putExtra("name", entity.text);
-            startActivity(intent);
-        } else if (entity.getKey().equals("uid")) {
-            Intent intent = new Intent(this, ModifyNameActivity.class);
-            intent.putExtra("name", entity.text);
-            startActivity(intent);
+        switch (entity.getKey()) {
+            case "name":
+            case "uid": {
+                Intent intent = new Intent(this, ModifyNameActivity.class);
+                intent.putExtra("name", entity.text);
+                startActivity(intent);
+                break;
+            }
+            case "pay":
+                startActivity(new Intent(this, SetPayPassActivity.class));
+                break;
         }
     }
 
@@ -140,5 +152,15 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
             entities.add(new RecyclerEntity("绑定欧易UID", 0, "未绑定", "", "uid"));
         }
         binding.recycle.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.back) {
+            sharedPreferences.edit().clear().apply();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

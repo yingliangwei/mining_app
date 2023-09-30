@@ -3,51 +3,53 @@ package com.mining.mining.pager.mining;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
-import android.net.ParseException;
-import android.os.CountDownTimer;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.mining.mining.R;
+import com.mining.mining.activity.c2s.C2CActivity;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerMiningBinding;
 import com.mining.mining.pager.holder.ViewHolder;
-import com.mining.mining.pager.mining.item.ItemPager;
-import com.mining.mining.util.Handler;
-import com.mining.mining.util.OnHandler;
-import com.mining.mining.util.StatusBarUtil;
-import com.mining.mining.util.TabLayoutUtil;
+import com.mining.mining.pager.mining.pager.MiningItemPager;
+import com.mining.util.Handler;
+import com.mining.util.MessageEvent;
+import com.mining.util.OnHandler;
+import com.mining.util.StatusBarUtil;
+import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
-import com.xframe.widget.MinerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class MiningPager extends RecyclerAdapter implements OnHandler, OnData, View.OnClickListener {
+public class MiningPager extends RecyclerAdapter implements OnHandler, TabLayout.OnTabSelectedListener, OnData, View.OnClickListener {
     private final Activity context;
     private PagerMiningBinding binding;
-
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
     private SharedPreferences sharedPreferences;
-    private CountDownTimer countDownTimer;
 
     public MiningPager(Activity context) {
+        super(context);
         this.context = context;
+        EventBus.getDefault().register(this);
     }
 
     @NonNull
@@ -60,12 +62,54 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, OnData, V
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        initTab();
+        initPager();
         initView();
         SocketManage.init(this);
     }
 
     private void initView() {
-        binding.mining.setOnClickListener(this);
+        binding.game.setOnClickListener(this);
+        binding.transaction.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void StatusBar(Activity activity) {
+        StatusBarUtil.setImmersiveStatusBar(activity, false);
+    }
+
+    private void initPager() {
+        List<RecyclerAdapter> recyclerAdapters = new ArrayList<>();
+        recyclerAdapters.add(new MiningItemPager(context, "0"));
+        recyclerAdapters.add(new MiningItemPager(context, "1"));
+        recyclerAdapters.add(new MiningItemPager(context, "2"));
+        PagerAdapter pagerAdapter = new PagerAdapter(recyclerAdapters);
+        binding.pager.setAdapter(pagerAdapter);
+        binding.pager.setOffscreenPageLimit(recyclerAdapters.size());
+        binding.pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                TabLayout.Tab tab = binding.tab.getTabAt(position);
+                if (tab == null) {
+                    return;
+                }
+                tab.select();
+            }
+        });
+    }
+
+    private void initTab() {
+        binding.tab.addTab(binding.tab.newTab().setText("普通矿山").setId(0));
+        binding.tab.addTab(binding.tab.newTab().setText("宝石矿山").setId(1));
+        binding.tab.addTab(binding.tab.newTab().setText("算力挖矿").setId(2));
+        binding.tab.addOnTabSelectedListener(this);
     }
 
     @Override
@@ -90,13 +134,14 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, OnData, V
 
     @Override
     public void handle(String ds) {
-        System.out.println(ds);
         try {
             JSONObject jsonObject = new JSONObject(ds);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                JSONObject data = jsonObject.getJSONObject("data");
-                handler.sendMessage(1, data.toString());
+                String gem = jsonObject.getString("gem");
+                String day_gem = jsonObject.getString("day_gem");
+                binding.dayGem.setText(StringUtil.toRe(day_gem));
+                handler.sendMessage(1, gem);
             }
         } catch (Exception e) {
             e.fillInStackTrace();
@@ -105,123 +150,49 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, OnData, V
 
     @Override
     public void handleMessage(int w, String str) {
-        if (w == 1) {
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                initData(jsonObject);
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
+        if (w == 0) {
+            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+        } else if (w == 1) {
+            binding.gem.setText(StringUtil.toRe(str));
         }
     }
 
-    private void initData(JSONObject jsonObject) throws Exception {
-        String gem = jsonObject.getString("gem");
-        String stone = jsonObject.getString("stone");
-        String miner_count = jsonObject.getString("miner_count");
-        String miner_usdt = jsonObject.getString("miner_usdt");
-        initMiner_count(miner_count);
-        binding.minerUsdt.setText(context.getString(R.string.app_miner_usdt, miner_usdt));
-        binding.gem.setText(gem);
-        binding.gemstone.setText(stone);
-        binding.miner.setText(context.getString(R.string.app_miner, miner_count));
-        String is_time = jsonObject.getString("is_time");
-        if (is_time.equals("0")) {
-            binding.burial.setText(context.getString(R.string.app_burial, "等待挖矿"));
-        } else {
-            String time = jsonObject.getString("time");
-            initTime(time);
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        binding.pager.setCurrentItem(tab.getId());
+        if (tab.getId() == 0) {
+            binding.tab.setBackground(context.getDrawable(R.mipmap.bg_boring_ape_indicator_left));
+        } else if (tab.getId() == 1) {
+            binding.tab.setBackground(context.getDrawable(R.mipmap.bg_boring_ape_indicator_center));
+        } else if (tab.getId() == 2) {
+            binding.tab.setBackground(context.getDrawable(R.mipmap.bg_boring_ape_indicator_right));
         }
     }
 
-    private void initMiner_count(String miner_count) {
-        ViewGroup parent = binding.minerL;
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            View child = parent.getChildAt(i);
-            if (child instanceof MinerView) {
-                MinerView minerView = (MinerView) child;
-                minerView.stop();
-            }
-        }
-        parent.removeAllViews();
-        int count = Integer.parseInt(miner_count);
-        for (int i = 0; i < count; i++) {
-            MinerView minerView = new MinerView(context);
-            minerView.setLayoutParams(new RecyclerView.LayoutParams(60, 60));
-            binding.minerL.addView(minerView);
-        }
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
     }
 
-    private void initTime(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date date = sdf.parse(time);
-            long now = System.currentTimeMillis();
-            long di = date.getTime() + 1800000;
-            long diff = di - now;
-            if (countDownTimer != null) {
-                countDownTimer.cancel();
-                countDownTimer = null;
-            }
-            countDownTimer = new CountDownTimer(diff, 1_000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    long time = millisUntilFinished / 1000;
-                    // 执行您的逻辑
-                    binding.burial.setText(context.getString(R.string.app_burial, String.valueOf(time)));
-                }
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
 
-                @Override
-                public void onFinish() {
-                    binding.burial.setText(context.getString(R.string.app_burial, "等待挖矿"));
-                }
-            }.start();
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
     }
-
-    private final OnData onData = new OnData() {
-        @Override
-        public void handle(String ds) {
-            System.out.println(ds);
-            try {
-                JSONObject jsonObject = new JSONObject(ds);
-                int code = jsonObject.getInt("code");
-                SocketManage.init(MiningPager.this);
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
-        }
-
-        @Override
-        public void connect(SocketManage socketManage) {
-            try {
-                String id = sharedPreferences.getString("id", null);
-                String _key = sharedPreferences.getString("_key", null);
-                if (id == null || _key == null) {
-                    LoginActivity.login(context);
-                    return;
-                }
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("type", 8);
-                jsonObject.put("code", 2);
-                jsonObject.put("id", id);
-                jsonObject.put("_key", _key);
-                socketManage.print(jsonObject.toString());
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
-        }
-    };
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.mining) {
-            String min = binding.burial.getText().toString();
-            if (min.contains("等待挖矿")) {
-                SocketManage.init(onData);
-            }
+        if (v.getId() == R.id.game) {
+            EventBus.getDefault().post(new MessageEvent(2, ""));
+        } else if (v.getId() == R.id.transaction) {
+            context.startActivity(new Intent(context, C2CActivity.class));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onEvent(MessageEvent event) {
+        if (event.getW() == 1) {
+            SocketManage.init(this);
         }
     }
 }
