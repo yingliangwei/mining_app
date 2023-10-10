@@ -33,5 +33,5 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':network')
+    implementation 'org.greenrobot:eventbus:3.3.1' // 事件总线库
 }

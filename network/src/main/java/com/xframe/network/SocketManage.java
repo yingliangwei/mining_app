@@ -22,10 +22,26 @@ public class SocketManage extends Thread implements Handler.Callback {
     private final int ByteMax = 65535;
     private Selector selector;
     private boolean isRun = true;
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public static void init(OnData onData) {
         SocketManage socketManage = new SocketManage();
         socketManage.setData(onData);
+        socketManage.start();
+    }
+
+    public static void init(OnData onData, int position) {
+        SocketManage socketManage = new SocketManage();
+        socketManage.setData(onData);
+        socketManage.setPosition(position);
         socketManage.start();
     }
 
@@ -55,7 +71,7 @@ public class SocketManage extends Thread implements Handler.Callback {
                 if (readyChannels == 0) {
                     // No channels are ready, so check if the timeout has elapsed
                     if (System.currentTimeMillis() >= timeout) {
-                        sendMessage(2,"timeout error");
+                        sendMessage(2, "timeout error");
                         System.out.println("timeout error");
                         // The timeout has elapsed, so cancel the connection attempt
                         socketChannel.close();

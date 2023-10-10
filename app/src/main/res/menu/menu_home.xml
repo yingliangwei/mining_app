@@ -3,14 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="更多"
+        android:id="@+id/news"
+        android:icon="@mipmap/news"
+        android:title="消息"
+        app:actionProviderClass="com.mining.mining.widget.BadgeActionProvider"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/more"
         android:icon="@mipmap/more"
+        android:title="更多"
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/selected"
-                android:title="选择本地游戏" />
+                android:icon="@mipmap/usdt"
+                android:title="USDT转账" />
         </menu>
     </item>
 </menu>

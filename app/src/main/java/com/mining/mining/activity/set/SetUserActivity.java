@@ -28,12 +28,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetUserActivity extends AppCompatActivity implements OnRecyclerItemClickListener, OnHandler, OnData, View.OnClickListener {
+public class SetUserActivity extends AppCompatActivity implements OnRecyclerItemClickListener, OnHandler, OnData {
     private ActivitySetUserBinding binding;
     private final List<List<RecyclerEntity>> entity = new ArrayList<>();
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
     private SharedPreferences sharedPreferences;
     private final List<RecyclerEntity> entities = new ArrayList<>();
+    private final List<RecyclerEntity> entities3 = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,25 +45,29 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
         setContentView(binding.getRoot());
         initToolbar();
         initRecycler();
-        initView();
         SocketManage.init(this);
     }
 
-    private void initView() {
-        binding.back.setOnClickListener(this);
-    }
-
-
     private void initRecycler() {
-        entities.add(new RecyclerEntity("昵称", 0, "未设置", "", "name"));
-        entities.add(new RecyclerEntity("绑定手机", 0, "未绑定", "", "phone"));
-        entities.add(new RecyclerEntity("绑定欧易UID", 0, "未绑定", "", "uid"));
-        entities.add(new RecyclerEntity("修改支付密码",  0, "", "", "pay"));
+        entities.add(new RecyclerEntity(R.mipmap.nick, "昵称", 0, "未设置", "", "name"));
+        entities.add(new RecyclerEntity(R.mipmap.phone, "绑定手机", 0, "未绑定", "", "phone", true));
+        // entities.add(new RecyclerEntity("绑定欧易UID", 0, "未绑定", "", "uid"));
+
+        entities3.add(new RecyclerEntity(R.mipmap.pass, "修改支付密码", 0, "", "", "pay"));
+        entities3.add(new RecyclerEntity(R.mipmap.card, "实名制", 0, "未实名", "", "card"));
+
         List<RecyclerEntity> entities1 = new ArrayList<>();
-        entities1.add(new RecyclerEntity("建议和反馈", 0, "", "", "j"));
-        entities1.add(new RecyclerEntity("关于", 0, "", "", "g"));
+        entities1.add(new RecyclerEntity(R.mipmap.log_off, "注销账号", 0, "", "", "log_off"));
+        // entities1.add(new RecyclerEntity(R.mipmap.complaint, "建议和反馈", 0, "", "", "j"));
+        entities1.add(new RecyclerEntity(R.mipmap.complaint, "关于", 0, "", "", "g"));
+
+        List<RecyclerEntity> entities2 = new ArrayList<>();
+        entities2.add(new RecyclerEntity(R.mipmap.back, "退出登录", 0, "", "", "back"));
+
         entity.add(entities);
+        entity.add(entities3);
         entity.add(entities1);
+        entity.add(entities2);
         binding.recycle.setOnRecyclerItemClickListener(this);
         binding.recycle.add(entity);
         binding.recycle.notifyDataSetChanged();
@@ -87,6 +92,21 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
             }
             case "pay":
                 startActivity(new Intent(this, SetPayPassActivity.class));
+                break;
+            case "back":
+                sharedPreferences.edit().clear().apply();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case "g":
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
+            case "card":
+                if (entity.isArray) {
+                    return;
+                }
+                startActivity(new Intent(this, CardActivity.class));
                 break;
         }
     }
@@ -143,24 +163,17 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
         String name = jsonObject.getString("name");
         String phone = jsonObject.getString("phone");
         String uid = jsonObject.getString("uid");
+        int card = jsonObject.getInt("card");
         entities.clear();
-        entities.add(new RecyclerEntity("昵称", 0, name, "", "name"));
-        entities.add(new RecyclerEntity("绑定手机", 0, phone, "", "phone"));
-        if (!uid.equals("")) {
-            entities.add(new RecyclerEntity("绑定欧易UID", 0, uid, "", "uid"));
+        entities.add(new RecyclerEntity(R.mipmap.nick, "昵称", 0, name, "", "name"));
+        entities.add(new RecyclerEntity(R.mipmap.phone, "绑定手机", 0, phone, "", "phone", true));
+        entities3.clear();
+        entities3.add(new RecyclerEntity(R.mipmap.pass, "修改支付密码", 0, "", "", "pay"));
+        if (card == 1) {
+            entities3.add(new RecyclerEntity(R.mipmap.card, "实名制", 0, "以实名", "", "card", true));
         } else {
-            entities.add(new RecyclerEntity("绑定欧易UID", 0, "未绑定", "", "uid"));
+            entities3.add(new RecyclerEntity(R.mipmap.card, "实名制", 0, "未实名", "", "card"));
         }
         binding.recycle.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.back) {
-            sharedPreferences.edit().clear().apply();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 }

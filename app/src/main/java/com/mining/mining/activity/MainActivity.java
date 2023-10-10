@@ -44,7 +44,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnData, OnHandler, OnDownload {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnData, OnHandler, PluginDownload.ProgressListener {
     private ActivityMainBinding binding;
     private final List<RecyclerAdapter> recyclerAdapters = new ArrayList<>();
     private final Handler handler = new Handler(Looper.myLooper(), this);
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PluginDownload pluginDownload;
     private String download;
     private String version_code = "1";
+    private int progress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initNavigation();
         SocketManage.init(this);
     }
+
 
 
     @Override
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             File downloadDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsoluteFile();
             File downloadFile = new File(downloadDirectory, System.currentTimeMillis() + ".apk");
             pluginDownload = new PluginDownload(download, downloadFile, this);
-            alertDialog.setOnOk("本地更新", (dialog, which) -> pluginDownload.start());
+            alertDialog.setOnOk("本地更新", (dialog, which) -> pluginDownload.run());
             alertDialog.setOnNo("浏览器更新", (dialog, which) -> {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(download));
                 startActivity(intent);
@@ -191,14 +193,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     @Override
-    public void onProgressChange(int current, long max) {
-        System.out.println(current);
+    public void update(long downloadedBytes, long contentLength, boolean b) {
+        progress = (int) (downloadedBytes * 1.0f / contentLength * 100);
         runOnUiThread(() -> {
             if (progressBar != null) {
                 progressBar.setVisibility(View.VISIBLE);
-                progressBar.setProgress(current);
+                progressBar.setProgress(progress);
             }
         });
     }
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void error(Exception e) {
 
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEvent(MessageEvent event) {

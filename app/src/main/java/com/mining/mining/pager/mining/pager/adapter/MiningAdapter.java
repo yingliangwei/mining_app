@@ -1,49 +1,40 @@
 package com.mining.mining.pager.mining.pager.adapter;
 
 import android.content.Context;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
+import com.mining.mining.R;
 import com.mining.mining.databinding.ItemMiningBinding;
 import com.mining.mining.entity.MiningDataEntity;
 import com.mining.mining.entity.MiningEntity;
-import com.mining.mining.pager.mining.pager.MiningItemPager;
-import com.mining.util.Handler;
-import com.mining.util.MessageEvent;
-import com.mining.util.OnHandler;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
-import com.xframe.widget.PayPass;
 
-import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder> implements View.OnClickListener, OnData, OnHandler, PayPass.OnPay {
+public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder> implements OnData, View.OnClickListener {
     private final Context context;
     private final List<MiningEntity> list;
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
-    private final String tab_id;
-    private String pass;
-    private int position;
-    private final MiningItemPager miningItemPager;
     private View mEmptyTextView;
 
-    public MiningAdapter(Context context, List<MiningEntity> list, String tab_id, MiningItemPager miningItemPager) {
+    public MiningAdapter(Context context, List<MiningEntity> list) {
         this.context = context;
         this.list = list;
-        this.tab_id = tab_id;
-        this.miningItemPager = miningItemPager;
     }
 
     @NonNull
@@ -55,33 +46,110 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MiningEntity mining = list.get(position);
-        holder.binding.miningGem.setText(String.format(holder.binding.miningGem.getText().toString(), StringUtil.toRe(mining.getMining_gem())));
-        holder.binding.minerUsdt.setText(String.format(holder.binding.minerUsdt.getText().toString(), StringUtil.toRe(mining.getMining_gem()), mining.getDay(), StringUtil.toRe(mining.getMoon_gem())));
-        holder.binding.miningGem.setId(position);
-        holder.binding.miningGem.setOnClickListener(this);
-        if (mining.getMining() != null) {
-            holder.binding.time.setVisibility(View.VISIBLE);
-            MiningDataEntity entity = new Gson().fromJson(mining.getMining(), MiningDataEntity.class);
-
-            if (entity.getIsSuperposition().equals("1")) {
-                holder.binding.miningGem.setVisibility(View.GONE);
-                holder.binding.text.setVisibility(View.VISIBLE);
-            }
-
-            holder.binding.miningLv.setText(String.format(holder.binding.miningLv.getText().toString(), entity.getMining_size()));
-            holder.binding.miningGem1.setText(String.format(holder.binding.miningGem1.getText().toString(), StringUtil.toRe(entity.getMining_gem())));
-            holder.binding.dayGem.setText(String.format(holder.binding.dayGem.getText().toString(), StringUtil.toRe(entity.getDay_gem())));
-            holder.binding.time.setText(String.format(holder.binding.time.getText().toString(), entity.getTime()));
+        holder.binding.title.setText(mining.getName());
+        holder.binding.miningUpgradation.setTag(position);
+        holder.binding.miningUpgradation.setOnClickListener(this);
+        if (mining.getIs_permanent().equals("1")) {
+            holder.binding.miningSize.setVisibility(View.VISIBLE);
+            holder.binding.miningSize.setTag(position);
+            holder.binding.miningSize.setOnClickListener(this);
         } else {
-            holder.binding.miningLv.setText(String.format(holder.binding.miningLv.getText().toString(), 0));
-            holder.binding.dayGem.setText(String.format(holder.binding.dayGem.getText().toString(), StringUtil.toRe(mining.getDay_gem())));
-            holder.binding.time.setVisibility(View.GONE);
-            holder.binding.miningGem1.setText(String.format(holder.binding.miningGem1.getText().toString(), 0));
+            holder.binding.miningSize.setVisibility(View.GONE);
+        }
+        if (mining.getIs_usdt().equals("0")) {
+            holder.binding.bg.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_ape_firend_first));
+            holder.binding.miningUpgradation.setText(String.format("(%s)宝石购买(%s/天)", StringUtil.toRe(mining.getMining_gem()), mining.getDay()));
+        } else {
+            if (mining.getIs_permanent().equals("0")) {
+                holder.binding.bg.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_ape_primary_not_authentication1));
+            } else {
+                holder.binding.bg.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_ape_firend_first));
+            }
+            holder.binding.miningUpgradation.setText(String.format("(%s)USDT购买(%s/天)", StringUtil.toRe(mining.getMining_gem()), mining.getDay()));
+        }
+        if (mining.getIsMining() == 1) {
+            initView(holder.binding, mining);
+        } else {
+            if (mining.getIs_permanent().equals("1")) {
+                holder.binding.text.setVisibility(View.VISIBLE);
+                holder.binding.text.setText("未拥有该矿池");
+            }
+        }
+        if (mining.getIsCard() == 0) {
+            holder.binding.text.setVisibility(View.VISIBLE);
+            holder.binding.text.setText("未实名");
         }
     }
 
-    public void setEmptyTextView(View emptyTextView) {
-        mEmptyTextView = emptyTextView;
+    private void initView(ItemMiningBinding binding, MiningEntity mining) {
+        JSONObject jsonObject = JSONObject.parseObject(mining.get_mining());
+        if (jsonObject == null) {
+            return;
+        }
+        MiningDataEntity entity = new Gson().fromJson(jsonObject.toString(), MiningDataEntity.class);
+        if (mining.getIs_permanent().equals("1")) {
+            binding.miningSize.setText(String.format("挖矿(%s)", entity.getMining_remaining()));
+            binding.gemTop.setVisibility(View.GONE);
+        } else {
+            binding.gemTop.setVisibility(View.VISIBLE);
+        }
+        binding.dayGem.setText(String.format("%s/天", StringUtil.toRe(entity.getDay_gem())));
+        binding.miningLv.setText(String.format("矿洞等级Lv.%s", entity.getMining_size()));
+        binding.miningGem1.setText(String.format("累计 %s", StringUtil.toRe(entity.getMining_gem())));
+        if (entity.getIs_usdt().equals("0")) {
+            binding.miningUpgradation.setText(String.format("(%s)宝石升级叠加", StringUtil.toRe(mining.getMining_gem())));
+        } else {
+            binding.miningUpgradation.setText(String.format("(%s)USDT升级叠加", StringUtil.toRe(mining.getMining_gem())));
+        }
+        long day = getRemainingDays(entity.getTime());
+        binding.minerDay.setText(String.format("距离过期:%s/天", day));
+        binding.miningTop.setVisibility(View.VISIBLE);
+        binding.lvTop.setVisibility(View.VISIBLE);
+
+        if (Integer.parseInt(mining.getMining_size()) <= Integer.parseInt(entity.getSuperposition())) {
+            binding.miningUpgradation.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.mining_size) {
+            int position = (int) v.getTag();
+            SocketManage.init(this, position);
+        } else if (v.getId() == R.id.mining_upgradation) {
+            int position = (int) v.getTag();
+            SocketManage.init(new UpgradationData(), position);
+        }
+    }
+
+    @Override
+    public void connect(SocketManage socketManage) {
+        MiningEntity entity = list.get(socketManage.getPosition());
+        SharedUtil sharedUtil = new SharedUtil(context);
+        JSONObject jsonObject = sharedUtil.getLogin(8, 4);
+        jsonObject.put("pit_id", entity.getId());
+        jsonObject.put("position", socketManage.getPosition());
+        socketManage.print(jsonObject.toString());
+    }
+
+    @Override
+    public void handle(String ds) {
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        System.out.println(jsonObject);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            int position = jsonObject.getInteger("position");
+            JSONObject data = jsonObject.getJSONObject("data");
+            MiningEntity entity = new Gson().fromJson(data.toString(), MiningEntity.class);
+            JSONObject mining = data.getJSONObject("mining");
+            if (mining != null) {
+                entity.set_mining(mining.toString());
+            }
+            list.set(position, entity);
+            notifyItemChanged(position);
+        }
+        String msg = jsonObject.getString("msg");
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -94,83 +162,19 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
         return list.size();
     }
 
-    @Override
-    public void connect(SocketManage socketManage) {
-        try {
-            MiningEntity entity = list.get(position);
-            String id = miningItemPager.getSharedPreferences().getString("id", null);
-            String _key = miningItemPager.getSharedPreferences().getString("_key", null);
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 8);
-            jsonObject.put("code", 3);
-            jsonObject.put("tab_id", tab_id);
-            jsonObject.put("pass", pass);
-            jsonObject.put("pit_id", entity.getId());
-            jsonObject.put("id", id);
-            jsonObject.put("_key", _key);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
+    public void setEmptyTextView(LinearLayout blank) {
+        this.mEmptyTextView = blank;
+    }
+
+    private long getRemainingDays(String expirationDat) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime expirationDate = LocalDateTime.parse(expirationDat, formatter);
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isAfter(expirationDate)) {
+            return 0;
+        } else {
+            return Duration.between(now, expirationDate).toDays();
         }
-    }
-
-    @Override
-    public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                JSONObject pit_data = jsonObject.getJSONObject("pit_data");
-                handler.sendMessage(1, pit_data.toString());
-                EventBus.getDefault().post(new MessageEvent(1, ""));
-            }
-            String msg = jsonObject.getString("msg");
-            handler.sendMessage(0, msg);
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-        } else if (w == 1) {
-            renew(str);
-        }
-    }
-
-    private void renew(String text) {
-        try {
-            JSONObject pit_data = new JSONObject(text);
-            MiningEntity mining = new Gson().fromJson(pit_data.toString(), MiningEntity.class);
-            String _mining = pit_data.getString("mining");
-            if (!_mining.equals("{}")) {
-                if (_mining.length() != 0) {
-                    mining.setMining(_mining);
-                }
-            }
-            list.set(position, mining);
-            notifyItemChanged(position);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        this.position = v.getId();
-        MiningEntity mining = list.get(position);
-        PayPass payPass = new PayPass(context);
-        payPass.setMoney(StringUtil.toRe(mining.getMining_gem()) + "宝石");
-        payPass.setPay(this);
-        payPass.show();
-    }
-
-    @Override
-    public void onText(String pass) {
-        this.pass = pass;
-        SocketManage.init(this);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -181,4 +185,36 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
             this.binding = itemView;
         }
     }
+
+    private class UpgradationData implements OnData {
+        @Override
+        public void connect(SocketManage socketManage) {
+            MiningEntity entity = list.get(socketManage.getPosition());
+            SharedUtil sharedUtil = new SharedUtil(context);
+            JSONObject jsonObject = sharedUtil.getLogin(8, 5);
+            jsonObject.put("pit_id", entity.getId());
+            jsonObject.put("position", socketManage.getPosition());
+            socketManage.print(jsonObject.toString());
+        }
+
+        @Override
+        public void handle(String ds) {
+            JSONObject jsonObject = JSONObject.parseObject(ds);
+            int code = jsonObject.getInteger("code");
+            if (code == 200) {
+                int position = jsonObject.getInteger("position");
+                JSONObject data = jsonObject.getJSONObject("data");
+                MiningEntity entity = new Gson().fromJson(data.toString(), MiningEntity.class);
+                JSONObject mining = data.getJSONObject("mining");
+                if (mining != null) {
+                    entity.set_mining(mining.toString());
+                }
+                list.set(position, entity);
+                notifyItemChanged(position);
+            }
+            String msg = jsonObject.getString("msg");
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

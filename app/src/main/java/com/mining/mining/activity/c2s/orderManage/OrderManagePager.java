@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.activity.c2s.orderManage.adapter.OrderManageAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
@@ -29,8 +31,6 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,8 +95,8 @@ public class OrderManagePager extends RecyclerAdapter implements OnData, OnHandl
     public void handle(String ds) {
         handler.sendMessage(3, "");
         try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
+            JSONObject jsonObject = JSONObject.parseObject(ds);
+            int code = jsonObject.getInteger("code");
             if (code == 200) {
                 JSONArray data = jsonObject.getJSONArray("data");
                 handler.sendMessage(1, data.toString());
@@ -130,7 +130,7 @@ public class OrderManagePager extends RecyclerAdapter implements OnData, OnHandl
     }
 
     private void initRecyclerData(JSONArray data) throws Exception {
-        for (int i = 0; i < data.length(); i++) {
+        for (int i = 0; i < data.size(); i++) {
             String text = data.getString(i);
             C2cEntity entity = new Gson().fromJson(text, C2cEntity.class);
             c2cEntities.add(entity);

@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerHomeBinding;
@@ -29,19 +32,14 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeVerticalItemPager extends RecyclerAdapter implements OnHandler, OnData, OnRefreshListener, OnRefreshLoadMoreListener {
+public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, OnRefreshListener, OnRefreshLoadMoreListener {
     private final Context context;
     private PagerVerticalItemHomeBinding binding;
     private final String tab_id;
     private final List<PluginEntity> list = new ArrayList<>();
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
     private ItemVerticalAdapter adapter;
     private int start = 0, end = 20;
 
@@ -49,6 +47,13 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnHandler,
         super(context);
         this.context = context;
         this.tab_id = tab_id;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        binding = PagerVerticalItemHomeBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new ViewHolder(binding.getRoot());
     }
 
     @Override
@@ -69,38 +74,16 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnHandler,
         adapter = new ItemVerticalAdapter(context, list);
         adapter.setEmptyTextView(binding.blank);
         binding.recycle.setAdapter(adapter);
-        binding.recycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        binding.recycle.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
     }
 
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            SharedUtil sharedUtil = new SharedUtil(context);
-            JSONObject jsonObject = sharedUtil.getLogin(12, 2, start, end);
-            jsonObject.put("tab_id", Integer.parseInt(tab_id));
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 1) {
-            binding.Smart.finishLoadMore(1000, true, false);
-            binding.Smart.finishRefresh(1000, true, false);
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                int code = jsonObject.getInt("code");
-                if (code == 200) {
-                    JSONArray data = jsonObject.getJSONArray("data");
-                    initData(data);
-                }
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
-        }
+        SharedUtil sharedUtil = new SharedUtil(context);
+        JSONObject jsonObject = sharedUtil.getLogin(12, 2, start, end);
+        jsonObject.put("tab_id", Integer.parseInt(tab_id));
+        socketManage.print(jsonObject.toString());
     }
 
     @Override
@@ -109,8 +92,8 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnHandler,
         binding.Smart.finishRefresh(1000, false, false);
     }
 
-    private void initData(JSONArray data) throws JSONException {
-        for (int i = 0; i < data.length(); i++) {
+    private void initData(JSONArray data) {
+        for (int i = 0; i < data.size(); i++) {
             PluginEntity pluginEntity = new Gson().fromJson(data.getString(i), PluginEntity.class);
             pluginEntity.setJson(data.getString(i));
             list.add(pluginEntity);
@@ -120,14 +103,14 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnHandler,
 
     @Override
     public void handle(String ds) {
-        handler.sendMessage(1, ds);
-    }
-
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = PagerVerticalItemHomeBinding.inflate(LayoutInflater.from(context), parent, false);
-        return new ViewHolder(binding.getRoot());
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONArray data = jsonObject.getJSONArray("data");
+            initData(data);
+        }
+        binding.Smart.finishLoadMore(1000, true, false);
+        binding.Smart.finishRefresh(1000, true, false);
     }
 
     @Override

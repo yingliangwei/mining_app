@@ -12,6 +12,8 @@ import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.ActivityOrderManageBinding;
 import com.mining.util.StatusBarUtil;
+import com.xframe.network.OnData;
+import com.xframe.network.SocketManage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ public class OrderManageActivity extends AppCompatActivity implements TabLayout.
         binding.tab.addTab(binding.tab.newTab().setText("回收").setId(1));
         binding.tab.addOnTabSelectedListener(this);
     }
+
 
     private void initToolbar() {
         binding.toolbar.setNavigationOnClickListener(v -> finish());

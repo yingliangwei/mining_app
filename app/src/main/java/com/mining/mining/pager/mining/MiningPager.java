@@ -2,10 +2,7 @@ package com.mining.mining.pager.mining;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONException;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.android.material.tabs.TabLayout;
 import com.mining.mining.R;
 import com.mining.mining.activity.c2s.C2CActivity;
-import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerMiningBinding;
 import com.mining.mining.pager.holder.ViewHolder;
 import com.mining.mining.pager.mining.pager.MiningItemPager;
-import com.mining.util.Handler;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.MessageEvent;
 import com.mining.util.OnHandler;
 import com.mining.util.StatusBarUtil;
@@ -35,16 +34,15 @@ import com.xframe.network.SocketManage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MiningPager extends RecyclerAdapter implements OnHandler, TabLayout.OnTabSelectedListener, OnData, View.OnClickListener {
+public class MiningPager extends RecyclerAdapter implements TabLayout.OnTabSelectedListener, OnData, View.OnClickListener {
     private final Activity context;
+    private PagerAdapter pagerAdapter;
     private PagerMiningBinding binding;
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
-    private SharedPreferences sharedPreferences;
+    private final List<RecyclerAdapter> recyclerAdapters = new ArrayList<>();
 
     public MiningPager(Activity context) {
         super(context);
@@ -52,10 +50,30 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, TabLayout
         EventBus.getDefault().register(this);
     }
 
+    private final OnData getGem = new OnData() {
+        @Override
+        public void handle(String ds) {
+            JSONObject jsonObject = JSONObject.parseObject(ds);
+            int code = jsonObject.getInteger("code");
+            if (code == 200) {
+                String gem = jsonObject.getString("gem");
+                String day_gem = jsonObject.getString("day_gem");
+                binding.dayGem.setText(StringUtil.toRe(day_gem));
+                binding.gem.setText(StringUtil.toRe(gem));
+            }
+        }
+
+        @Override
+        public void connect(SocketManage socketManage) {
+            SharedUtil sharedUtil = new SharedUtil(context);
+            JSONObject jsonObject = sharedUtil.getLogin(8, 1);
+            socketManage.print(jsonObject.toString());
+        }
+    };
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         binding = PagerMiningBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ViewHolder(binding.getRoot());
     }
@@ -65,6 +83,7 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, TabLayout
         initTab();
         initPager();
         initView();
+        SocketManage.init(getGem);
         SocketManage.init(this);
     }
 
@@ -86,13 +105,8 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, TabLayout
     }
 
     private void initPager() {
-        List<RecyclerAdapter> recyclerAdapters = new ArrayList<>();
-        recyclerAdapters.add(new MiningItemPager(context, "0"));
-        recyclerAdapters.add(new MiningItemPager(context, "1"));
-        recyclerAdapters.add(new MiningItemPager(context, "2"));
-        PagerAdapter pagerAdapter = new PagerAdapter(recyclerAdapters);
+        pagerAdapter = new PagerAdapter(recyclerAdapters);
         binding.pager.setAdapter(pagerAdapter);
-        binding.pager.setOffscreenPageLimit(recyclerAdapters.size());
         binding.pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -106,73 +120,43 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, TabLayout
     }
 
     private void initTab() {
-        binding.tab.addTab(binding.tab.newTab().setText("普通矿山").setId(0));
-        binding.tab.addTab(binding.tab.newTab().setText("宝石矿山").setId(1));
-        binding.tab.addTab(binding.tab.newTab().setText("算力挖矿").setId(2));
         binding.tab.addOnTabSelectedListener(this);
     }
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            String id = sharedPreferences.getString("id", null);
-            String _key = sharedPreferences.getString("_key", null);
-            if (id == null || _key == null) {
-                LoginActivity.login(context);
-                return;
-            }
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 8);
-            jsonObject.put("code", 1);
-            jsonObject.put("id", id);
-            jsonObject.put("_key", _key);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(context);
+        JSONObject jsonObject = sharedUtil.getLogin(8, 2);
+        socketManage.print(jsonObject.toString());
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                String gem = jsonObject.getString("gem");
-                String day_gem = jsonObject.getString("day_gem");
-                binding.dayGem.setText(StringUtil.toRe(day_gem));
-                handler.sendMessage(1, gem);
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONArray data = jsonObject.getJSONArray("data");
+            for (int i = 0; i < data.size(); i++) {
+                JSONObject jsonObject1 = data.getJSONObject(i);
+                String id = jsonObject1.getString("id");
+                String name = jsonObject1.getString("name");
+                //因为id不可能为0所以-1
+                int _id = Integer.parseInt(id);
+                binding.tab.addTab(binding.tab.newTab().setText(name).setId(_id - 1));
+                recyclerAdapters.add(new MiningItemPager(context, id));
             }
-        } catch (Exception e) {
-            e.fillInStackTrace();
+            pagerAdapter.notifyDataSetChanged();
         }
     }
 
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-        } else if (w == 1) {
-            binding.gem.setText(StringUtil.toRe(str));
-        }
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         binding.pager.setCurrentItem(tab.getId());
-        if (tab.getId() == 0) {
-            binding.tab.setBackground(context.getDrawable(R.mipmap.bg_boring_ape_indicator_left));
-        } else if (tab.getId() == 1) {
-            binding.tab.setBackground(context.getDrawable(R.mipmap.bg_boring_ape_indicator_center));
-        } else if (tab.getId() == 2) {
-            binding.tab.setBackground(context.getDrawable(R.mipmap.bg_boring_ape_indicator_right));
-        }
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-
     }
 
     @Override
@@ -192,7 +176,7 @@ public class MiningPager extends RecyclerAdapter implements OnHandler, TabLayout
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEvent(MessageEvent event) {
         if (event.getW() == 1) {
-            SocketManage.init(this);
+            SocketManage.init(getGem);
         }
     }
 }

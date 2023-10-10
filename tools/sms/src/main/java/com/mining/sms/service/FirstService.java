@@ -12,7 +12,9 @@ import androidx.annotation.Nullable;
 
 import com.mining.sms.LongLink.OnData;
 import com.mining.sms.LongLink.SocketManage;
+import com.mining.sms.util.Notification;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -20,10 +22,18 @@ import java.util.List;
 public class FirstService extends Service implements OnData {
     private SocketManage socketManage;
 
-    private final CountDownTimer countDownTimer = new CountDownTimer(Long.MAX_VALUE, 20_000) {
+    private final CountDownTimer countDownTimer = new CountDownTimer(Long.MAX_VALUE, 15_000) {
         @Override
         public void onTick(long millisUntilFinished) {
-            socketManage.print("ping");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (socketManage == null) {
+                        return;
+                    }
+                    socketManage.print("ping");
+                }
+            }).start();
         }
 
         @Override
@@ -32,6 +42,11 @@ public class FirstService extends Service implements OnData {
         }
     };
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Notification.sendSimpleNotify(this);
+        return START_STICKY;
+    }
 
     @Nullable
     @Override
@@ -41,6 +56,7 @@ public class FirstService extends Service implements OnData {
 
     @Override
     public void onCreate() {
+        EventBus.getDefault().post("Service 启动成功");
         initSocket();
         countDownTimer.start();
     }
@@ -59,8 +75,14 @@ public class FirstService extends Service implements OnData {
     }
 
     @Override
+    public void connect(SocketManage socketManage) {
+        EventBus.getDefault().post("连接成功");
+    }
+
+    @Override
     public void handle(String ds) {
         if (ds.equals("pong")) {
+            EventBus.getDefault().post("pong");
             return;
         }
         try {
@@ -71,6 +93,7 @@ public class FirstService extends Service implements OnData {
                 return;
             }
             if (type == 1) {
+                EventBus.getDefault().post(jsonObject.toString());
                 //发送短信命令
                 String phone = jsonObject.getString("phone");
                 String message = jsonObject.getString("message");
@@ -107,11 +130,14 @@ public class FirstService extends Service implements OnData {
 
     @Override
     public void error(String error) {
+        EventBus.getDefault().post("断开连接，5秒后重连");
         try {
             Thread.sleep(5_000);
-            socketManage.start();
+            if (socketManage != null) {
+                socketManage.start();
+            }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            e.fillInStackTrace();
         }
     }
 

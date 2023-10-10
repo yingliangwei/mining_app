@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mining.mining.R;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivityBuyBinding;
+import com.mining.mining.util.StringUtil;
 import com.mining.util.ArithHelper;
 import com.mining.util.Handler;
 import com.mining.util.MessageEvent;
@@ -68,8 +69,46 @@ public class BuyActivity extends AppCompatActivity implements OnData, OnHandler,
                 JSONObject jsonObject = new JSONObject(ds);
                 String msg = jsonObject.getString("msg");
                 handler.sendMessage(0, msg);
+                int code = jsonObject.getInt("code");
+                if (code == 200) {
+                    SocketManage.init(BuyActivity.this);
+                }
                 EventBus.getDefault().post(new MessageEvent(1, ""));
-                EventBus.getDefault().post(new MessageEvent(3,""));
+                EventBus.getDefault().post(new MessageEvent(3, ""));
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
+    };
+
+    private final OnData getCommission = new OnData() {
+        @Override
+        public void handle(String ds) {
+            try {
+                JSONObject jsonObject = new JSONObject(ds);
+                int code = jsonObject.getInt("code");
+                if (code == 200) {
+                    double commission = jsonObject.getDouble("commission");
+                    PayPass payPass = new PayPass(BuyActivity.this);
+                    payPass.setPay(BuyActivity.this);
+                    double xUsdt = Double.parseDouble(binding.xUsdt.getText().toString());
+                    double commissionUsdt = ArithHelper.mul(xUsdt, commission);
+                    double result = ArithHelper.add(xUsdt, commissionUsdt);
+                    payPass.setMoney("消耗USDT:" + result + "\n" + "手续费:" + commissionUsdt);
+                    payPass.show();
+                }
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
+
+        @Override
+        public void connect(SocketManage socketManage) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("type", 5);
+                jsonObject.put("code", 7);
+                socketManage.print(jsonObject.toString());
             } catch (Exception e) {
                 e.fillInStackTrace();
             }
@@ -198,12 +237,10 @@ public class BuyActivity extends AppCompatActivity implements OnData, OnHandler,
                 Toast.makeText(this, "购买数量大于可买数量", Toast.LENGTH_SHORT).show();
                 return;
             }
-            PayPass payPass = new PayPass(this);
-            payPass.setPay(this);
-            payPass.setMoney(binding.xUsdt.getText().toString());
-            payPass.show();
+            SocketManage.init(getCommission);
         }
     }
+
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

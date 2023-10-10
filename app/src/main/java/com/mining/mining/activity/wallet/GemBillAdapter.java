@@ -1,6 +1,7 @@
 package com.mining.mining.activity.wallet;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +37,16 @@ public class GemBillAdapter extends RecyclerView.Adapter<GemBillAdapter.ViewHold
         GemBillEntity entity = list.get(position);
        holder.binding.name.setText(entity.getName());
         holder.binding.usdt.setText(StringUtil.toRe(entity.getGem()));
+        if (entity.getGem().startsWith("-")) {
+            holder.binding.usdt.setTextColor(context.getColor(android.R.color.holo_green_dark));
+        }else {
+            holder.binding.usdt.setTextColor(Color.RED);
+        }
         holder.binding.nameX.setText(entity.getName_x());
         holder.binding.commission.setText(context.getString(R.string.app_commission, StringUtil.toRe(entity.getCommission())));
         holder.binding.balance.setText(context.getString(R.string.app_balance, StringUtil.toRe(entity.getBalance())));
         holder.binding.time.setText(entity.getTime());
+
     }
 
     public void setEmptyTextView(View emptyTextView) {

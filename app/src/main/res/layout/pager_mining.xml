@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/b31"
     android:fillViewport="true">
 
     <LinearLayout
@@ -11,20 +11,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="25dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/animation_lniumtb2" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="5dp">
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/b31"
+                android:background="@color/b32"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -46,37 +55,46 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="30dp"
-                        android:src="@mipmap/ic_ape_new_gemstone" />
-
-                    <TextView
-                        android:fontFamily="@font/rubik_bold"
-                        android:id="@+id/gem"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="0.00"
-                        android:textColor="@color/white"
-                        android:textSize="21sp"
-                        android:textStyle="bold" />
+                        android:gravity="center|start"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
+                            android:src="@mipmap/ic_ape_new_gemstone" />
+
+                        <TextView
+                            android:id="@+id/gem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/rubik_bold"
+                            android:text="0.00"
+                            android:textColor="@color/white"
+                            android:textSize="21sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <TextView
-                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="今日挖矿总收益"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textColor="@color/white" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center|start"
                     android:orientation="horizontal"
                     android:padding="10dp">
 
@@ -87,10 +105,10 @@
 
                     <TextView
                         android:id="@+id/day_gem"
-                        android:fontFamily="@font/rubik_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:fontFamily="@font/rubik_bold"
                         android:text="0.00"
                         android:textColor="@color/white"
                         android:textSize="21sp"
@@ -99,54 +117,59 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <Button
-                        android:fontFamily="@font/din_bold"
                         android:id="@+id/game"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_button"
+                        android:background="@drawable/bg_button_back"
+                        android:fontFamily="@font/din_bold"
                         android:gravity="center"
-                        android:text="游戏"
+                        android:text="宝石游戏"
                         android:textColor="@color/white" />
 
                     <Button
                         android:id="@+id/transaction"
-                        android:fontFamily="@font/din_bold"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_button"
+                        android:background="@drawable/bg_button_back"
+                        android:fontFamily="@font/din_bold"
                         android:gravity="center"
-                        android:text="交易"
+                        android:text="宝石交易"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab"
-            android:theme="@style/tag"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@mipmap/bg_boring_ape_indicator_left"
-            app:tabIndicatorHeight="0dp"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/f3f3f3" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="@color/bfbfbf" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

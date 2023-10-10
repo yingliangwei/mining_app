@@ -35,7 +35,7 @@ public class SocketManage extends Thread {
         try {
             selector = Selector.open();
             socketChannel = SocketChannel.open();
-            socketChannel.socket().setSoTimeout(500);
+            socketChannel.socket().setSoTimeout(5000);
             socketChannel.configureBlocking(false);
             socketChannel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ);
             // socketChannel.connect(new InetSocketAddress("f36i940486.wicp.vip", 17468));
@@ -46,7 +46,7 @@ public class SocketManage extends Thread {
                 if (readyChannels == 0) {
                     // No channels are ready, so check if the timeout has elapsed
                     if (System.currentTimeMillis() >= timeout) {
-                        System.out.println("timeout error");
+                        System.out.println("timeout error " + timeout + "|" + System.currentTimeMillis());
                         // The timeout has elapsed, so cancel the connection attempt
                         socketChannel.close();
                         if (data != null) {
@@ -76,16 +76,19 @@ public class SocketManage extends Thread {
                         }
                         // Do something with the connected socket channel
                     } else if (key.isReadable()) {
-                        timeout = System.currentTimeMillis() + 30_000; // 5 seconds
                         handleReadable(key);
+                        timeout = System.currentTimeMillis() + 60_000; // 5 seconds
                     }
                 }
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             try {
-                socketChannel.close();
-                if (data != null) {
-                    data.error(e.getMessage());
+                if (socketChannel != null) {
+                    socketChannel.close();
+                    if (data != null) {
+                        data.error(e.getMessage());
+                    }
                 }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -117,9 +120,17 @@ public class SocketManage extends Thread {
             readBuffer.get(readByte);
             sb.append(new String(readByte));
             readBuffer.clear();
+            if (sb.toString().equals("\n")) {
+                break;
+            }
         }
         String body = sb.toString();
-        handleData(body);
+        String[] end = body.split("\n");
+        for (String value : end) {
+            System.out.println(value);
+            handleData(value);
+            sb.delete(0, sb.toString().length());
+        }
     }
 
     /**

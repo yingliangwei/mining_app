@@ -230,7 +230,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="获得:"
+                                    android:text="预计获得:"
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
 
@@ -335,7 +335,7 @@
                     <Button
                         android:fontFamily="@font/din_bold"
                         android:textColor="@color/white"
-                        android:background="@drawable/bg_button"
+                        android:background="@drawable/bg_button_back"
                         android:id="@+id/buy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

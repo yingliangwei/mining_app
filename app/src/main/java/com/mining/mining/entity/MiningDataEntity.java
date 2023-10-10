@@ -12,6 +12,7 @@ public class MiningDataEntity {
      * time : 2023-09-17 22:33:59
      * type : 1
      * user_id : 6
+     * mining_remaining: 0
      */
 
     private String day_gem;
@@ -22,9 +23,28 @@ public class MiningDataEntity {
     private String pit_id;
     private String superposition;
     private String time;
-    private String type;
+    private String is_permanent;
     private String user_id;
     private String isSuperposition;
+    private int mining_remaining;
+    private String is_usdt;
+
+    public String getIs_usdt() {
+        return is_usdt;
+    }
+
+    public void setIs_usdt(String is_usdt) {
+        this.is_usdt = is_usdt;
+    }
+
+    public int getMining_remaining() {
+        return mining_remaining;
+    }
+
+    public void setMining_remaining(int mining_remaining) {
+        this.mining_remaining = mining_remaining;
+    }
+
 
     public String getIsSuperposition() {
         return isSuperposition;
@@ -98,12 +118,12 @@ public class MiningDataEntity {
         this.time = time;
     }
 
-    public String getType() {
-        return type;
+    public String getIs_permanent() {
+        return is_permanent;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setIs_permanent(String type) {
+        this.is_permanent = type;
     }
 
     public String getUser_id() {

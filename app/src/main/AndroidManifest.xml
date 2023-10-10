@@ -9,7 +9,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -87,5 +89,12 @@
         <activity android:name=".activity.TransferActivity" />
         <activity android:name=".activity.c2s.OrderManageActivity" />
         <activity android:name=".activity.invite.InviteCodeActivity" />
+        <activity android:name=".activity.NewsActivity" />
+        <activity android:name=".activity.NewsDetailActivity" />
+        <activity android:name=".activity.PledgeActivity" />
+        <activity android:name=".activity.set.AboutActivity" />
+        <activity android:name=".activity.MiningIntroduceActivity" />
+        <activity android:name=".activity.login.ForgotActivity" />
+        <activity android:name=".activity.set.CardActivity" />
     </application>
 </manifest>

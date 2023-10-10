@@ -10,18 +10,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ItemOrderManageBinding;
 import com.mining.mining.entity.C2cEntity;
 import com.mining.mining.util.SharedUtil;
 import com.mining.util.Handler;
+import com.mining.util.MessageEvent;
 import com.mining.util.OnHandler;
 import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONObject;
-
+import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.ViewHolder> implements View.OnClickListener, OnData, OnHandler {
@@ -31,6 +32,7 @@ public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.
     private final Handler handler = new Handler(Looper.myLooper(), this);
     private final int code;
     private View mEmptyTextView;
+    private int position;
 
     public OrderManageAdapter(Context context, List<C2cEntity> list, int code) {
         this.list = list;
@@ -73,6 +75,7 @@ public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.
     public void onClick(View v) {
         if (v.getId() == R.id.exit) {
             int position = (int) v.getTag();
+            this.position = position;
             C2cEntity entity = list.get(position);
             c2c_id = entity.getId();
             SocketManage.init(this);
@@ -81,22 +84,28 @@ public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            SharedUtil sharedUtil = new SharedUtil(context);
-            JSONObject jsonObject = sharedUtil.getLogin(4, 13);
-            jsonObject.put("c2c_id", c2c_id);
-            jsonObject.put("is", code);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(context);
+        JSONObject jsonObject = sharedUtil.getLogin(4, 13);
+        jsonObject.put("c2c_id", c2c_id);
+        jsonObject.put("is", code);
+        socketManage.print(jsonObject.toString());
     }
 
     @Override
     public void handle(String ds) {
+        System.out.println(ds);
         try {
-            JSONObject jsonObject = new JSONObject(ds);
+            JSONObject jsonObject = JSONObject.parseObject(ds);
             String msg = jsonObject.getString("msg");
+            int code = jsonObject.getInteger("code");
+            if (code == 200) {
+                list.remove(position);
+                notifyItemRemoved(position);
+                EventBus.getDefault().post(new MessageEvent(4, ""));
+                EventBus.getDefault().post(new MessageEvent(5, ""));
+                EventBus.getDefault().post(new MessageEvent(1, ""));
+                EventBus.getDefault().post(new MessageEvent(3, ""));
+            }
             handler.sendMessage(0, msg);
         } catch (Exception e) {
             e.fillInStackTrace();

@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="填写邀请码获得1颗宝石" />
+            android:text="填写邀请码随机获取宝石" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/bg_button_back"
             android:gravity="center"
             android:padding="15dp"
             android:text="绑定"

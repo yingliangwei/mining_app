@@ -5,8 +5,9 @@
     android:orientation="horizontal">
 
     <TextView
+        android:layout_weight="1"
         android:id="@+id/id"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_b"
         android:gravity="center"
@@ -14,7 +15,7 @@
 
     <TextView
         android:id="@+id/stone"
-        android:layout_width="60dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/bg_b"
@@ -23,7 +24,8 @@
 
     <TextView
         android:id="@+id/stone_x"
-        android:layout_width="100dp"
+        android:layout_width="40dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_b"
         android:gravity="center"

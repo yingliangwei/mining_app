@@ -47,6 +47,9 @@ public class C2cAdapter extends RecyclerView.Adapter<C2cAdapter.ViewHolder> impl
         if (type != 1) {
             holder.binding.buy.setText("出售");
         }
+        if (entity.getIs_authentication() == 1) {
+            holder.binding.v.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setEmptyTextView(View emptyTextView) {

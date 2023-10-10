@@ -76,7 +76,6 @@ public class updateDialog extends Dialog implements View.OnClickListener {
     public void setOnClose(String text, DialogInterface.OnClickListener clickListener) {
         onClickListenerMap.put(binding.close.getId(), clickListener);
         binding.close.setVisibility(View.VISIBLE);
-        binding.c.setVisibility(View.INVISIBLE);
         binding.close.setText(text);
         binding.close.setOnClickListener(this);
     }

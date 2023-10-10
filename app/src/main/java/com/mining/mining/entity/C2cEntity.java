@@ -14,6 +14,15 @@ public class C2cEntity {
     private String id;
     private String usdt;
     private String user_id;
+    private int is_authentication;
+
+    public int getIs_authentication() {
+        return is_authentication;
+    }
+
+    public void setIs_authentication(int is_authentication) {
+        this.is_authentication = is_authentication;
+    }
 
     public String getArticle() {
         return article;

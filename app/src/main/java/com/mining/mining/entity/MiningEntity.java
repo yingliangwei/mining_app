@@ -1,25 +1,57 @@
 package com.mining.mining.entity;
 
 public class MiningEntity {
+
     /**
      * day : 30
-     * day_gem : 21.00000000
-     * id : 2
-     * mining : {}
-     * mining_gem : 500.00000000
-     * mining_size : 1
-     * moon_gem : 630.00000000
-     * tab_id : 0
+     * day_gem : 0.24000000
+     * id : 1
+     * is_permanent : 1
+     * is_usdt : 1
+     * mining_gem : 50.00000000
+     * mining_size : 5
+     * moon_gem : 0.00000000
+     * name : 新手宝石矿池
+     * tab_id : 1
      */
 
     private String day;
     private String day_gem;
     private String id;
+    private String is_permanent;
+    private String is_usdt;
     private String mining_gem;
     private String mining_size;
     private String moon_gem;
+    private String name;
     private String tab_id;
     private String _mining;
+    private int isMining;
+    private int isCard;
+
+    public int getIsCard() {
+        return isCard;
+    }
+
+    public void setIsCard(int isCard) {
+        this.isCard = isCard;
+    }
+
+    public int getIsMining() {
+        return isMining;
+    }
+
+    public void setIsMining(int isMining) {
+        this.isMining = isMining;
+    }
+
+    public String get_mining() {
+        return _mining;
+    }
+
+    public void set_mining(String _mining) {
+        this._mining = _mining;
+    }
 
     public String getDay() {
         return day;
@@ -45,12 +77,20 @@ public class MiningEntity {
         this.id = id;
     }
 
-    public String getMining() {
-        return _mining;
+    public String getIs_permanent() {
+        return is_permanent;
     }
 
-    public void setMining(String mining) {
-        this._mining = mining;
+    public void setIs_permanent(String is_permanent) {
+        this.is_permanent = is_permanent;
+    }
+
+    public String getIs_usdt() {
+        return is_usdt;
+    }
+
+    public void setIs_usdt(String is_usdt) {
+        this.is_usdt = is_usdt;
     }
 
     public String getMining_gem() {
@@ -75,6 +115,14 @@ public class MiningEntity {
 
     public void setMoon_gem(String moon_gem) {
         this.moon_gem = moon_gem;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTab_id() {

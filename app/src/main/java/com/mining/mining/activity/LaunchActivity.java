@@ -175,7 +175,11 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     private void initData(JSONObject data) throws JSONException {
         String image = data.getString("image");
         String name = data.getString("name");
-        Glide.with(this).load(image).into(binding.preloadDiagram);
+        try {
+            Glide.with(this).load(image).into(binding.preloadDiagram);
+        }catch (Exception e){
+            e.fillInStackTrace();
+        }
         binding.ColorB.setText(name);
         try {
             String color_a = data.getString("color_a");

@@ -21,12 +21,12 @@
             app:titleTextColor="@color/black">
 
             <TextView
-                android:fontFamily="@font/rubik_bold"
                 android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_background"
                 android:drawablePadding="10dp"
+                android:fontFamily="@font/rubik_bold"
                 android:gravity="center|start"
                 android:hint="搜索游戏"
                 android:padding="10dp"
@@ -42,9 +42,15 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="180dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -54,10 +60,10 @@
                 android:src="@mipmap/ic_ape_new_gemstone" />
 
             <TextView
-                android:fontFamily="@font/rubik_bold"
                 android:id="@+id/gem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_bold"
                 android:text="0.00"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
@@ -70,11 +76,11 @@
                 android:textSize="10sp" />
 
             <TextView
-                android:fontFamily="@font/rubik_bold"
                 android:id="@+id/day_gem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:fontFamily="@font/rubik_bold"
                 android:text="0.00"
                 android:textColor="@android:color/holo_green_dark" />
 
@@ -95,8 +101,8 @@
         android:orientation="horizontal">
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
-            style="@style/tag"
             android:id="@+id/vertical"
+            style="@style/tag"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -112,6 +118,7 @@
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>

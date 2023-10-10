@@ -18,6 +18,7 @@ import com.mining.mining.databinding.PagerItemC2cBinding;
 import com.mining.mining.entity.C2cEntity;
 import com.mining.mining.pager.holder.ViewHolder;
 import com.mining.util.Handler;
+import com.mining.util.MessageEvent;
 import com.mining.util.OnHandler;
 import com.mining.util.StringUtil;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -28,6 +29,9 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -47,6 +51,7 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler, O
         super(activity);
         this.activity = activity;
         this.type = type;
+        EventBus.getDefault().register(this);
     }
 
     @NonNull
@@ -61,6 +66,22 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler, O
         initRecycler();
         initSmart();
         SocketManage.init(this);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnMessage(MessageEvent event) {
+        if (event.getW() == 4) {
+            list.clear();
+            c2cAdapter.notifyDataSetChanged();
+            SocketManage.init(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initSmart() {

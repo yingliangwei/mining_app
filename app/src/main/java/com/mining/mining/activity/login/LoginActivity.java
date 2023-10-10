@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements OnData, View.OnC
     }
 
     private void initView() {
+        binding.forgot.setOnClickListener(this);
         binding.login.setOnClickListener(this);
         binding.register.setOnClickListener(this);
         binding.togglePwd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -76,6 +77,9 @@ public class LoginActivity extends AppCompatActivity implements OnData, View.OnC
         } else if (v.getId() == R.id.register) {
             Intent intent = new Intent(this, RegisterActivity.class);
             resultLauncher.launch(intent);
+        } else if (v.getId() == R.id.forgot) {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
         }
     }
 

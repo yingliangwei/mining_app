@@ -94,6 +94,7 @@
                         android:orientation="horizontal">
 
                         <EditText
+                            android:textColor="@color/black"
                             android:id="@+id/user_id"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -128,6 +129,7 @@
                         android:orientation="horizontal">
 
                         <EditText
+                            android:textColor="@color/black"
                             android:id="@+id/pass"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -148,12 +150,13 @@
 
 
                     <LinearLayout
+                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/find"
+                            android:id="@+id/forgot"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -178,7 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_button"
+                    android:background="@drawable/bg_button_back"
                     android:gravity="center"
                     android:text="@string/login"
                     android:textColor="@color/white" />

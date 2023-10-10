@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,17 +14,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.mining.mining.R;
+import com.mining.mining.activity.c2s.C2CActivity;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivityUsdtDetailBinding;
 import com.mining.util.Handler;
 import com.mining.util.OnHandler;
 import com.mining.util.StatusBarUtil;
+import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
 import org.json.JSONObject;
 
-public class GemDetailActivity extends AppCompatActivity implements OnData, OnHandler, Toolbar.OnMenuItemClickListener {
+public class GemDetailActivity extends AppCompatActivity implements OnData, OnHandler, Toolbar.OnMenuItemClickListener, View.OnClickListener {
     private ActivityUsdtDetailBinding binding;
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
     private SharedPreferences sharedPreferences;
@@ -42,8 +45,9 @@ public class GemDetailActivity extends AppCompatActivity implements OnData, OnHa
 
     private void initView() {
         binding.image.setImageDrawable(getDrawable(R.mipmap.ic_ape_new_gemstone));
-        binding.recharge.setText("买入");
-        binding.Withdrawal.setText("卖出");
+        binding.recharge.setVisibility(View.GONE);
+        binding.Withdrawal.setText("交易");
+        binding.Withdrawal.setOnClickListener(this);
     }
 
     private void initToolbar() {
@@ -77,7 +81,7 @@ public class GemDetailActivity extends AppCompatActivity implements OnData, OnHa
         if (w == 0) {
             Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
         } else if (w == 1) {
-            binding.usdt.setText(str);
+            binding.usdt.setText(StringUtil.toRe(str));
         }
     }
 
@@ -104,5 +108,12 @@ public class GemDetailActivity extends AppCompatActivity implements OnData, OnHa
         intent.putExtra("code", 4);
         startActivity(intent);
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.Withdrawal) {
+            startActivity(new Intent(this, C2CActivity.class));
+        }
     }
 }

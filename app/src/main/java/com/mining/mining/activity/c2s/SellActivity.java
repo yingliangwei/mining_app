@@ -69,10 +69,50 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
             try {
                 JSONObject jsonObject = new JSONObject(ds);
                 int code = jsonObject.getInt("code");
+                if (code == 200) {
+                    SocketManage.init(SellActivity.this);
+                }
                 String msg = jsonObject.getString("msg");
                 handler.sendMessage(0, msg);
                 EventBus.getDefault().post(new MessageEvent(1, ""));
-                EventBus.getDefault().post(new MessageEvent(3,""));
+                EventBus.getDefault().post(new MessageEvent(3, ""));
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
+    };
+
+    private final OnData getCommission = new OnData() {
+        @Override
+        public void handle(String ds) {
+            try {
+                JSONObject jsonObject = new JSONObject(ds);
+                int code = jsonObject.getInt("code");
+                if (code == 200) {
+                    double commission = jsonObject.getDouble("commission");
+                    PayPass payPass = new PayPass(SellActivity.this);
+                    payPass.setPay(SellActivity.this);
+                    double xUsdt = Double.parseDouble(binding.gem.getText().toString());
+                    double commissionUsdt = ArithHelper.mul(xUsdt, commission);
+                    double result = ArithHelper.add(xUsdt, commissionUsdt);
+                    double gem = Double.parseDouble(binding.xUsdt.getText().toString());
+                    double commissionGem = ArithHelper.mul(gem, commission);
+                    double resultGem = ArithHelper.sub(gem, commissionGem);
+                    payPass.setMoney("消耗宝石:" + result + "\n" + "手续费:" + commissionUsdt + "\n" + "获得USDT:" + resultGem + "\n" + "手续费:" + commissionGem);
+                    payPass.show();
+                }
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
+
+        @Override
+        public void connect(SocketManage socketManage) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("type", 5);
+                jsonObject.put("code", 7);
+                socketManage.print(jsonObject.toString());
             } catch (Exception e) {
                 e.fillInStackTrace();
             }
@@ -207,9 +247,11 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
         }
         int num = Integer.parseInt(text);
         int gem = Integer.parseInt(binding.article.getText().toString());
+
         double quantity = ArithHelper.mul(num, Double.parseDouble(binding.usdt.getText().toString()));
         double dd = Double.parseDouble(binding.userUsdt.getText().toString());
-        if (quantity > dd) {
+
+        if (num > dd) {
             binding.userUsdt.setTextColor(getColor(android.R.color.holo_red_dark));
         } else {
             binding.userUsdt.setTextColor(getColor(android.R.color.black));
@@ -220,7 +262,6 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
         } else {
             binding.article.setTextColor(getColor(android.R.color.black));
         }
-
         binding.xUsdt.setText(String.valueOf(quantity));
         // 在这里可以根据文本内容执行相应的操作
     }
@@ -238,9 +279,8 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
         } else if (v.getId() == R.id.buy) {
             int num = Integer.parseInt(binding.gem.getText().toString());
             int gem = Integer.parseInt(binding.article.getText().toString());
-            double quantity = ArithHelper.mul(num, Double.parseDouble(binding.usdt.getText().toString()));
             double dd = Double.parseDouble(binding.userUsdt.getText().toString());
-            if (quantity > dd) {
+            if (num > dd) {
                 Toast.makeText(this, "可用宝石不足", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -248,9 +288,7 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
                 Toast.makeText(this, "购买数量大于可买数量", Toast.LENGTH_SHORT).show();
                 return;
             }
-            PayPass payPass = new PayPass(this);
-            payPass.setPay(this);
-            payPass.show();
+            SocketManage.init(getCommission);
         }
     }
 

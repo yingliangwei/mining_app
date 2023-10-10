@@ -1,5 +1,6 @@
 package com.mining.mining.pager.my;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.activity.TransferActivity;
 import com.mining.mining.activity.c2s.C2CActivity;
@@ -41,7 +43,6 @@ import com.xframe.widget.recycler.RecyclerItemClickListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,6 @@ import java.util.List;
 public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.OnClickListener, MenuItem.OnMenuItemClickListener {
     private final Activity context;
     private PagerMyBinding binding;
-    private SharedPreferences sharedPreferences;
     private final Handler handler = new Handler(Looper.myLooper(), this);
     private final RecyclerItemClickListener.OnItemClickListener.Normal normal = new RecyclerItemClickListener.OnItemClickListener.Normal() {
         @Override
@@ -74,27 +74,19 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
     private final OnData onData = new OnData() {
         @Override
         public void handle(String ds) {
-            try {
-                JSONObject jsonObject = new JSONObject(ds);
-                int code = jsonObject.getInt("code");
-                if (code == 200) {
-                    String usdt = jsonObject.getString("usdt");
-                    binding.usdt.setText(usdt);
-                }
-            } catch (Exception e) {
-                e.fillInStackTrace();
+            JSONObject jsonObject = JSONObject.parseObject(ds);
+            int code = jsonObject.getInteger("code");
+            if (code == 200) {
+                String usdt = jsonObject.getString("usdt");
+                binding.usdt.setText(StringUtil.toRe(usdt));
             }
         }
 
         @Override
         public void connect(SocketManage socketManage) {
-            try {
-                SharedUtil sharedUtil = new SharedUtil(context);
-                JSONObject jsonObject = sharedUtil.getLogin(3, 2);
-                socketManage.print(jsonObject.toString());
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
+            SharedUtil sharedUtil = new SharedUtil(context);
+            JSONObject jsonObject = sharedUtil.getLogin(3, 2);
+            socketManage.print(jsonObject.toString());
         }
     };
 
@@ -107,7 +99,7 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         binding = PagerMyBinding.inflate(LayoutInflater.from(context), parent, false);
         String id = sharedPreferences.getString("id", null);
         if (id != null) {
@@ -139,6 +131,7 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
         binding.buy.setOnClickListener(this);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void initRecycler() {
         List<TextDrawableEntity> entities = new ArrayList<>();
         entities.add(new TextDrawableEntity("宝石市场", context.getDrawable(R.mipmap.ic_ape_new_gemstone)));
@@ -148,8 +141,7 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
         binding.recycler.addOnItemTouchListener(new RecyclerItemClickListener(context, normal));
         List<TextDrawableEntity> entities1 = new ArrayList<>();
         entities1.add(new TextDrawableEntity("我的钱包", context.getDrawable(R.mipmap.ic_wallet_black)));
-        entities1.add(new TextDrawableEntity("转账", context.getDrawable(R.mipmap.transfer)));
-        entities1.add(new TextDrawableEntity("邀请好友", context.getDrawable(R.mipmap.invite)));
+        entities1.add(new TextDrawableEntity("USDT转账", context.getDrawable(R.mipmap.transfer)));
 
         ItemAdapter itemAdapter1 = new ItemAdapter(context, entities1);
         binding.common.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
@@ -159,60 +151,32 @@ public class MyPager extends RecyclerAdapter implements OnData, OnHandler, View.
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            String id = sharedPreferences.getString("id", null);
-            String _key = sharedPreferences.getString("_key", null);
-            if (id == null || _key == null) {
-                LoginActivity.login(context);
-                return;
-            }
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 3);
-            jsonObject.put("code", 1);
-            jsonObject.put("id", id);
-            jsonObject.put("_key", _key);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(context);
+        JSONObject jsonObject = sharedUtil.getLogin(3, 1);
+        socketManage.print(jsonObject.toString());
     }
 
     @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                handler.sendMessage(1, jsonObject.toString());
-                return;
-            } else if (code == 202) {
-                LoginActivity.login(context);
-            }
-            String msg = jsonObject.getString("msg");
-            handler.sendMessage(0, msg);
-        } catch (Exception e) {
-            e.fillInStackTrace();
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONObject data = jsonObject.getJSONObject("data");
+            initViewData(data);
+            String gem = jsonObject.getString("sum");
+            binding.gem.setText(StringUtil.toRe(gem));
+            String invite_sum = jsonObject.getString("invite_sum");
+            binding.inviteSum.setText(invite_sum);
+            return;
+        } else if (code == 202) {
+            LoginActivity.login(context);
         }
+        String msg = jsonObject.getString("msg");
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-        } else if (w == 1) {
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                JSONObject data = jsonObject.getJSONObject("data");
-                initViewData(data);
-                String invite_sum = jsonObject.getString("invite_sum");
-                binding.inviteSum.setText(invite_sum);
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
-        }
-    }
 
-    private void initViewData(JSONObject jsonObject) throws Exception {
+    private void initViewData(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String usdt = jsonObject.getString("usdt");
         binding.usdt.setText(StringUtil.toRe(usdt));

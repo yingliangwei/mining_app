@@ -88,7 +88,7 @@
 
         <Button
             android:textColor="@color/white"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/bg_button_back"
             android:id="@+id/post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

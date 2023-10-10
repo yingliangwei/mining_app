@@ -13,20 +13,21 @@
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
+            app:menu="@menu/menu_home_c2s"
             android:id="@+id/toolbar"
-            app:navigationIcon="@mipmap/close"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:navigationIcon="@mipmap/close"
             app:title="宝石市场" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:theme="@style/tag"
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:background="@color/white"
+        android:theme="@style/tag"
         app:tabBackground="@null"
         app:tabGravity="start"
         app:tabIndicatorHeight="0dp"

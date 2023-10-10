@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="layout_blank" />
-
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,7 +69,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="购买旷工可获得宝石\n1个旷工可获得3代分红\n5个旷工可获得惊人的5代分红"
+                                android:text="升级永久矿池才可获得宝石分红\n1级永久矿池可获得3代分红\n5级永久矿池可获得5代分红\n分红规则介绍:\n分红百分率则是:1代25%,2代7%,3代5%,4代3%,5代1%"
                                 android:textSize="11sp" />
                         </LinearLayout>
 

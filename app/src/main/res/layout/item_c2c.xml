@@ -7,33 +7,48 @@
     android:padding="10dp">
 
     <LinearLayout
-        android:gravity="center|start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:gravity="center|start"
         android:orientation="horizontal"
         android:paddingTop="5dp"
         android:paddingBottom="5dp">
 
         <TextView
-            android:textSize="10sp"
             android:id="@+id/name_x"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@drawable/circle_background"
             android:gravity="center"
             android:text="w"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="10sp" />
 
-        <TextView
-            android:fontFamily="@font/din_bold"
-            android:id="@+id/name"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="@string/app_name"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/din_bold"
+                android:text="@string/app_name"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:src="@mipmap/v"
+                android:visibility="visible" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -58,11 +73,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:fontFamily="@font/rubik_bold"
                 android:id="@+id/gem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:fontFamily="@font/rubik_bold"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="10sp" />
@@ -91,11 +106,11 @@
             android:textSize="10sp" />
 
         <TextView
-            android:fontFamily="@font/rubik_bold"
             android:id="@+id/usdt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:fontFamily="@font/rubik_bold"
             android:text="0"
             android:textColor="@color/black"
             android:textSize="10sp" />
@@ -131,12 +146,12 @@
             android:text="USDT"
             android:textSize="10sp" />
 
-        <TextView
-            android:fontFamily="@font/din_bold"
+        <Button
             android:id="@+id/buy"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/bg_button_back"
+            android:fontFamily="@font/din_bold"
             android:gravity="center"
             android:text="购买"
             android:textColor="@color/white" />

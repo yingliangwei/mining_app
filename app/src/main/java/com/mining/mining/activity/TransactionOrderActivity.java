@@ -13,11 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.activity.adapter.TransactionOrderAdapter;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivityTransactionOrderBinding;
 import com.mining.mining.entity.TransactionOrderEntity;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.Handler;
 import com.mining.util.OnHandler;
 import com.mining.util.StatusBarUtil;
@@ -30,26 +33,20 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionOrderActivity extends AppCompatActivity implements OnData, OnHandler, OnRefreshListener, OnRefreshLoadMoreListener {
+public class TransactionOrderActivity extends AppCompatActivity implements OnData, OnRefreshListener, OnRefreshLoadMoreListener {
     private ActivityTransactionOrderBinding binding;
     private int start = 0, end = 20;
     private TransactionOrderAdapter adapter;
     private final List<TransactionOrderEntity> list = new ArrayList<>();
     private String type;
-    private SharedPreferences sharedPreferences;
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         type = getIntent().getStringExtra("type");
         StatusBarUtil.setImmersiveStatusBar(this, true);
         binding = ActivityTransactionOrderBinding.inflate(getLayoutInflater());
@@ -83,60 +80,27 @@ public class TransactionOrderActivity extends AppCompatActivity implements OnDat
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            String id = sharedPreferences.getString("id", null);
-            String _key = sharedPreferences.getString("_key", null);
-            if (id == null || _key == null) {
-                LoginActivity.login(this);
-                return;
-            }
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 4);
-            jsonObject.put("code", 7);
-            jsonObject.put("end", end);
-            jsonObject.put("is", type);
-            jsonObject.put("id", id);
-            jsonObject.put("_key", _key);
-            jsonObject.put("start", start);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(this);
+        JSONObject jsonObject = sharedUtil.getLogin(4, 7, start, end);
+        jsonObject.put("is", type);
+        socketManage.print(jsonObject.toString());
     }
 
 
     @Override
     public void handle(String ds) {
-        handler.sendMessage(1, ds);
-    }
-
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-        } else if (w == 1) {
-            binding.Smart.finishRefresh(1000, true, false);
-            binding.Smart.finishLoadMore(1000, true, false);
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                int code = jsonObject.getInt("code");
-                if (code == 200) {
-                    JSONArray data = jsonObject.getJSONArray("data");
-                    initData(data);
-                }
-            } catch (Exception e) {
-                e.fillInStackTrace();
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONArray data = jsonObject.getJSONArray("data");
+            for (int i = 0; i < data.size(); i++) {
+                JSONObject jsonObject1 = data.getJSONObject(i);
+                list.add(new Gson().fromJson(jsonObject1.toString(), TransactionOrderEntity.class));
+                adapter.notifyItemChanged(i);
             }
         }
-    }
-
-    private void initData(JSONArray data) throws JSONException {
-        for (int i = 0; i < data.length(); i++) {
-            JSONObject jsonObject = data.getJSONObject(i);
-            System.out.println(jsonObject);
-            list.add(new Gson().fromJson(jsonObject.toString(), TransactionOrderEntity.class));
-            adapter.notifyItemChanged(i);
-        }
+        binding.Smart.finishRefresh(1000, true, false);
+        binding.Smart.finishLoadMore(1000, true, false);
     }
 
     private void initToolbar() {

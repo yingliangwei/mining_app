@@ -1,24 +1,34 @@
 package com.mining.mining.activity.c2s.pager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.mining.mining.R;
+import com.mining.mining.activity.PledgeActivity;
 import com.mining.mining.activity.c2s.C2cGemPager;
 import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerHomeC2sBinding;
 import com.mining.mining.pager.holder.ViewHolder;
+import com.mining.util.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeC2sPager extends RecyclerAdapter implements TabLayout.OnTabSelectedListener {
+public class HomeC2sPager extends RecyclerAdapter implements TabLayout.OnTabSelectedListener, Toolbar.OnMenuItemClickListener {
     private PagerHomeC2sBinding binding;
     private final Activity activity;
     private final List<RecyclerAdapter> recyclerAdapters = new ArrayList<>();
@@ -43,6 +53,7 @@ public class HomeC2sPager extends RecyclerAdapter implements TabLayout.OnTabSele
     }
 
     private void initToolbar() {
+        binding.toolbar.setOnMenuItemClickListener(this);
         binding.toolbar.setNavigationOnClickListener(v -> activity.finish());
     }
 
@@ -86,5 +97,14 @@ public class HomeC2sPager extends RecyclerAdapter implements TabLayout.OnTabSele
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.v) {
+            Intent intent = new Intent(getContext(), PledgeActivity.class);
+            getContext().startActivity(intent);
+        }
+        return false;
     }
 }

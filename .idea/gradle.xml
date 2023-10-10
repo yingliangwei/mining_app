@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/PluginLib" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/game" />
+            <option value="$PROJECT_DIR$/game/battleroyale" />
             <option value="$PROJECT_DIR$/game/press" />
             <option value="$PROJECT_DIR$/network" />
             <option value="$PROJECT_DIR$/pluginwidget" />

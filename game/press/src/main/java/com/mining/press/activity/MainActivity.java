@@ -2,6 +2,7 @@ package com.mining.press.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ import com.mining.press.databinding.ActivityMainBinding;
 import com.mining.press.databinding.ItemTextBinding;
 import com.mining.press.entity.PressEntity;
 import com.mining.util.Handler;
+import com.mining.util.MessageEvent;
 import com.mining.util.OnHandler;
 import com.mining.util.StringUtil;
 import com.plugin.activity.PluginActivity;
@@ -34,6 +36,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +51,6 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
     private final List<PressEntity> list = new ArrayList<>();
     private SharedPreferences sharedPreferences;
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
-
     private final OnData onData = new OnData() {
         @Override
         public void connect(SocketManage socketManage) {
@@ -77,6 +79,8 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
                 JSONObject jsonObject = new JSONObject(ds);
                 String msg = jsonObject.getString("msg");
                 handler.sendMessage(0, msg);
+                SocketManage.init(MainActivity.this);
+                EventBus.getDefault().post(new MessageEvent(1, ""));
             } catch (Exception e) {
                 e.fillInStackTrace();
             }
@@ -90,11 +94,16 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
         sharedPreferences = thisContex.getSharedPreferences("user", Context.MODE_PRIVATE);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        initToolbar();
         initView();
         initRecycler();
         initCheckBox();
         initSmart();
         SocketManage.init(this);
+    }
+
+    private void initToolbar() {
+        binding.toolbar.setNavigationOnClickListener(v -> thisContex.finish());
     }
 
     private void initSmart() {
@@ -104,6 +113,7 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
 
     private void initView() {
         binding.ok.setOnClickListener(this);
+        binding.pressLog.setOnClickListener(this);
     }
 
     private void initCheckBox() {
@@ -177,6 +187,7 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
             Toast.makeText(thisContex, str, Toast.LENGTH_SHORT).show();
         } else if (w == 1) {
             binding.Smart.finishRefresh(true);
+            binding.linear.setVisibility(View.GONE);
             try {
                 JSONObject jsonObject = new JSONObject(str);
                 initData(jsonObject);
@@ -187,6 +198,7 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
             binding.Smart.finishRefresh(false);
         }
     }
+
 
     private void initData(JSONObject jsonObject) throws JSONException {
         JSONObject user = jsonObject.getJSONObject("user");
@@ -202,6 +214,7 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
         binding.stone.setText(StringUtil.toRe(stone));
         binding.pressSize.setText(press_size);
         binding.pressSize1.setText(press_size_1);
+        binding.text.setText("请选择...");
 
         initTime(time);
 
@@ -210,6 +223,41 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
 
         JSONArray game_press_stone = jsonObject.getJSONArray("game_press_stone");
         initGame_press_stone(game_press_stone);
+
+        int isPress = user.getInt("isPress");
+        if (isPress == 1) {
+            binding.text.setText("以下注");
+            String k = user.getString("k");
+            switch (k) {
+                case "1":
+                    binding.checkboxSelector1.setChecked(true);
+                    binding.checkboxSelector1.setClickable(false);
+                    binding.checkboxSelector2.setClickable(false);
+                    binding.checkboxSelector3.setClickable(false);
+                    break;
+                case "2":
+                    binding.checkboxSelector2.setChecked(true);
+                    binding.checkboxSelector2.setClickable(false);
+                    binding.checkboxSelector1.setClickable(false);
+                    binding.checkboxSelector3.setClickable(false);
+                    break;
+                case "3":
+                    binding.checkboxSelector3.setChecked(true);
+                    binding.checkboxSelector3.setClickable(false);
+                    binding.checkboxSelector2.setClickable(false);
+                    binding.checkboxSelector1.setClickable(false);
+                    break;
+            }
+            binding.linear.setVisibility(View.GONE);
+        } else {
+            binding.checkboxSelector1.setChecked(false);
+            binding.checkboxSelector2.setChecked(false);
+            binding.checkboxSelector3.setChecked(false);
+            binding.checkboxSelector1.setClickable(true);
+            binding.checkboxSelector2.setClickable(true);
+            binding.checkboxSelector3.setClickable(true);
+            binding.linear.setVisibility(View.GONE);
+        }
     }
 
     private void initTime(String time) {
@@ -218,27 +266,41 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
             Date date = sdf.parse(time);
             long now = System.currentTimeMillis();
             long di = date.getTime() + 360_000;
-            long diff = di - now;
+            //加2秒，防止获取不到数据
+            long diff = di - now + 2000;
             if (countDownTimer != null) {
                 countDownTimer.cancel();
                 countDownTimer = null;
             }
+            if (diff <= 0) {
+                return;
+            }
             countDownTimer = new CountDownTimer(diff, 1_000) {
                 @Override
-                public void onTick(long millisUntilFinished) {
-                    long time = millisUntilFinished / 1000;
+                public void onTick(long seconds) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+                    String formattedTime = formatter.format(new Date(seconds));
                     // 执行您的逻辑
-                    binding.time.setText(String.valueOf(time));
+                    binding.time.setText(formattedTime);
                 }
 
                 @Override
                 public void onFinish() {
                     binding.time.setText("0");
                     binding.text.setText("本局已经结束!刷新进入下一局");
+                    SocketManage.init(MainActivity.this);
                 }
             }.start();
         } catch (Exception e) {
             e.fillInStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
         }
     }
 
@@ -265,19 +327,19 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initPressData(JSONArray data) {
         list.clear();
         list.add(new PressEntity());
         for (int i = 0; i < data.length(); i++) {
             try {
                 PressEntity pressEntity = new Gson().fromJson(data.getString(i), PressEntity.class);
-                if (pressEntity.getBill_k().equals(pressEntity.getK())) {
-                    int stone = Integer.parseInt(pressEntity.getStone());
-                    System.out.println(stone);
-                    int max = stone * 2;
-                    pressEntity.setStone_x(String.valueOf(max));
-                } else {
-                    pressEntity.setStone_x("0");
+                if (!pressEntity.getBill_k().equals(pressEntity.getK())) {
+                    if (pressEntity.getStone().equals("0")) {
+                        pressEntity.setStone("0");
+                    } else {
+                        pressEntity.setStone_x("-" + pressEntity.getStone());
+                    }
                 }
                 list.add(pressEntity);
                 mainAdapter.notifyItemChanged(i);
@@ -339,6 +401,8 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
     public void onClick(View v) {
         if (v.getId() == R.id.ok) {
             SocketManage.init(onData);
+        } else if (v.getId() == R.id.press_log) {
+            startActivity(new Intent(thisContex, PressLogActivity.class));
         }
     }
 

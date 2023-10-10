@@ -30,7 +30,7 @@ import java.io.File;
 /**
  * 该界面只用于加载网络插件
  */
-public class PreloadActivity extends AppCompatActivity implements OnDownload, OnHandler {
+public class PreloadActivity extends AppCompatActivity implements PluginDownload.ProgressListener, OnHandler {
     private String json;
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
     private ActivityPreloadBinding binding;
@@ -63,26 +63,21 @@ public class PreloadActivity extends AppCompatActivity implements OnDownload, On
         String title = jsonObject.getString("name");
         String version = jsonObject.getString("version");
 
-        File file = new File(getDir("apk", Context.MODE_PRIVATE), String.format("%s|%s", title, version));
+        File file = new File(getDir("apk", Context.MODE_PRIVATE), String.format("%s|%s.zip", title, version));
         if (file.exists()) {
             int versionInt = Integer.parseInt(version) - 1;
-            File file1 = new File(getDir("apk", Context.MODE_PRIVATE), String.format("%s|%s", title, versionInt));
+            File file1 = new File(getDir("apk", Context.MODE_PRIVATE), String.format("%s|%s.zip", title, versionInt));
             if (file1.exists()) {
                 boolean is = file1.delete();
             }
             loadPlugin(file);
         } else {
             PluginDownload download1 = new PluginDownload(download, file, this);
-            download1.start();
+            download1.run();
         }
 
         Glide.with(this).load(download_image).into(binding.image);
         binding.name.setText(title);
-    }
-
-    @Override
-    public void onProgressChange(int current, long max) {
-        handler.sendMessage(0, String.valueOf(current));
     }
 
     @Override
@@ -124,6 +119,7 @@ public class PreloadActivity extends AppCompatActivity implements OnDownload, On
 
             finish();
         } catch (Exception e) {
+            file.delete();
             e.printStackTrace();
             handler.sendMessage(-1, "加载游戏异常:" + e.getMessage());
             finish();
@@ -131,14 +127,20 @@ public class PreloadActivity extends AppCompatActivity implements OnDownload, On
     }
 
     @Override
+    public void update(long downloadedBytes, long contentLength, boolean b) {
+        int progress = (int) (downloadedBytes * 1.0f / contentLength * 100);
+        handler.sendMessage(0, String.valueOf(progress));
+    }
+
+    @Override
     public void onSuccess(File file) {
         loadPlugin(file);
     }
 
-
     @Override
     public void error(Exception e) {
-        handler.sendMessage(1, "下载插件失败!");
+        handler.sendMessage(-1, "下载失败");
         finish();
     }
+
 }

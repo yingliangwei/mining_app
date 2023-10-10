@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
     private final List<RecyclerEntity> list;
-    private Context context;
+    private final Context context;
     private XfRecyclerView xfRecyclerView;
 
 
@@ -55,8 +55,15 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         if (!entity.text.equals("")) {
             holder.sub.setText(entity.text);
         }
-        if (xfRecyclerView.recyclerItemClickListener!=null){
-            holder.ba.setOnClickListener(v -> xfRecyclerView.recyclerItemClickListener.onItemClick(entity,position));
+        if (entity.isArray) {
+            holder.imageView.setVisibility(View.GONE);
+        }
+        if (xfRecyclerView.recyclerItemClickListener != null) {
+            holder.ba.setOnClickListener(v -> xfRecyclerView.recyclerItemClickListener.onItemClick(entity, position));
+        }
+        if (entity.icon != 0) {
+            holder.icon.setVisibility(View.VISIBLE);
+            holder.icon.setImageDrawable(context.getDrawable(entity.icon));
         }
     }
 
@@ -66,7 +73,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
+        public ImageView imageView, icon;
         public TextView name, sub;
         public LinearLayout ba;
 
@@ -76,6 +83,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
             imageView = itemView.findViewById(R.id.image);
             name = itemView.findViewById(R.id.name);
             sub = itemView.findViewById(R.id.subText);
+            icon = itemView.findViewById(R.id.icon);
         }
     }
 }

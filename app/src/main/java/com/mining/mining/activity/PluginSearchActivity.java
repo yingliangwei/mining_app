@@ -2,7 +2,6 @@ package com.mining.mining.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,13 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityPluginSearchBinding;
 import com.mining.mining.entity.PluginEntity;
 import com.mining.mining.pager.home.adapter.ItemVerticalAdapter;
-import com.mining.util.Handler;
-import com.mining.util.OnHandler;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.mining.util.StringUtil;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -28,19 +28,14 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class PluginSearchActivity extends AppCompatActivity implements OnRefreshListener, OnRefreshLoadMoreListener, OnHandler, OnData, View.OnClickListener {
+public class PluginSearchActivity extends AppCompatActivity implements OnRefreshListener, OnRefreshLoadMoreListener, OnData, View.OnClickListener {
     private ActivityPluginSearchBinding binding;
     private int start = 0, end = 20;
     private final List<PluginEntity> list = new ArrayList<>();
     private ItemVerticalAdapter adapter;
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +57,7 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
         adapter = new ItemVerticalAdapter(this, list);
         adapter.setEmptyTextView(binding.blank);
         binding.recycler.setAdapter(adapter);
-        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
     }
 
     private void initSmart() {
@@ -74,35 +69,10 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 12);
-            jsonObject.put("code", 3);
-            jsonObject.put("start", start);
-            jsonObject.put("end", end);
-            jsonObject.put("name", binding.edit.getText().toString());
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 1) {
-            binding.Smart.finishRefresh(1000, true, false);
-            binding.Smart.finishLoadMore(1000, true, false);
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                int code = jsonObject.getInt("code");
-                if (code == 200) {
-                    JSONArray data = jsonObject.getJSONArray("data");
-                    initData(data);
-                }
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
-        }
+        SharedUtil sharedUtil = new SharedUtil(this);
+        JSONObject jsonObject = sharedUtil.getLogin(12, 3, start, end);
+        jsonObject.put("name", binding.edit.getText().toString());
+        socketManage.print(jsonObject.toString());
     }
 
     @Override
@@ -111,18 +81,22 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
         binding.Smart.finishLoadMore(1000, false, false);
     }
 
-    private void initData(JSONArray data) throws JSONException {
-        for (int i = 0; i < data.length(); i++) {
-            PluginEntity pluginEntity = new Gson().fromJson(data.getString(i), PluginEntity.class);
-            pluginEntity.setJson(data.getString(i));
-            list.add(pluginEntity);
-            adapter.notifyItemChanged(i);
-        }
-    }
 
     @Override
     public void handle(String ds) {
-        handler.sendMessage(1, ds);
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONArray data = jsonObject.getJSONArray("data");
+            for (int i = 0; i < data.size(); i++) {
+                PluginEntity pluginEntity = new Gson().fromJson(data.getString(i), PluginEntity.class);
+                pluginEntity.setJson(data.getString(i));
+                list.add(pluginEntity);
+                adapter.notifyItemChanged(i);
+            }
+        }
+        binding.Smart.finishRefresh(1000, true, false);
+        binding.Smart.finishLoadMore(1000, true, false);
     }
 
 
