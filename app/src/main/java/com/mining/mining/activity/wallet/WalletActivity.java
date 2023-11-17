@@ -1,6 +1,5 @@
 package com.mining.mining.activity.wallet;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityWalletBinding;
 import com.mining.mining.util.SharedUtil;
-import com.mining.util.OnHandler;
 import com.mining.util.StatusBarUtil;
 import com.mining.util.StringUtil;
 import com.xframe.network.OnData;

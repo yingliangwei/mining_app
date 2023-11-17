@@ -13,10 +13,10 @@
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
-            app:menu="@menu/menu_home_c2s"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:menu="@menu/menu_home_c2s"
             app:navigationIcon="@mipmap/close"
             app:title="宝石市场" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -25,11 +25,8 @@
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        android:theme="@style/tag"
-        app:tabBackground="@null"
-        app:tabGravity="start"
+        app:tabRippleColor="@color/white"
+        app:tabBackground="@color/white"
         app:tabIndicatorHeight="0dp"
         app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/purple_500"

@@ -4,37 +4,41 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.xframe.widget.databinding.DialogUpdateBinding;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class updateDialog extends Dialog implements View.OnClickListener {
-    private final DialogUpdateBinding binding;
+    private final View binding;
     private final Map<Integer, DialogInterface.OnClickListener> onClickListenerMap = new HashMap<>();
 
     public updateDialog(@NonNull Context context) {
         super(context);
-        binding = DialogUpdateBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        binding = LayoutInflater.from(context).inflate(R.layout.dialog_update, new FrameLayout(context), false);
+        setContentView(binding);
         setCanceledOnTouchOutside(false);
         setCancelable(false);
         setDialogLocation();
     }
 
     public void setProgress(int Progress) {
-        binding.Progress.setVisibility(View.VISIBLE);
-        binding.Progress.setProgress(Progress);
+        NumberProgressBar numberProgressBar = binding.findViewById(R.id.Progress);
+        numberProgressBar.setVisibility(View.VISIBLE);
+        numberProgressBar.setProgress(Progress);
     }
 
     public NumberProgressBar getProgress() {
-        return binding.Progress;
+        return binding.findViewById(R.id.Progress);
     }
 
     private void setDialogLocation() {
@@ -52,32 +56,37 @@ public class updateDialog extends Dialog implements View.OnClickListener {
     }
 
     public void setTitle(String titleId) {
-        binding.title.setText(titleId);
+        TextView title = binding.findViewById(R.id.title);
+        title.setText(titleId);
     }
 
     public void setMessage(String message) {
-        binding.message.setText(message);
+        TextView textView = binding.findViewById(R.id.message);
+        textView.setText(message);
     }
 
     public void setOnNo(String text, DialogInterface.OnClickListener clickListener) {
-        onClickListenerMap.put(binding.no.getId(), clickListener);
-        binding.no.setVisibility(View.VISIBLE);
-        binding.no.setText(text);
-        binding.no.setOnClickListener(this);
+        Button button = binding.findViewById(R.id.no);
+        onClickListenerMap.put(button.getId(), clickListener);
+        button.setVisibility(View.VISIBLE);
+        button.setText(text);
+        button.setOnClickListener(this);
     }
 
     public void setOnOk(String text, DialogInterface.OnClickListener clickListener) {
-        onClickListenerMap.put(binding.ok.getId(), clickListener);
-        binding.ok.setVisibility(View.VISIBLE);
-        binding.ok.setText(text);
-        binding.ok.setOnClickListener(this);
+        Button button = binding.findViewById(R.id.ok);
+        onClickListenerMap.put(button.getId(), clickListener);
+        button.setVisibility(View.VISIBLE);
+        button.setText(text);
+        button.setOnClickListener(this);
     }
 
     public void setOnClose(String text, DialogInterface.OnClickListener clickListener) {
-        onClickListenerMap.put(binding.close.getId(), clickListener);
-        binding.close.setVisibility(View.VISIBLE);
-        binding.close.setText(text);
-        binding.close.setOnClickListener(this);
+        Button button = binding.findViewById(R.id.close);
+        onClickListenerMap.put(button.getId(), clickListener);
+        button.setVisibility(View.VISIBLE);
+        button.setText(text);
+        button.setOnClickListener(this);
     }
 
 

@@ -26,13 +26,6 @@ public class PagerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        for (RecyclerAdapter adapter : adapterList) {
-            adapter.onDetachedFromRecyclerView(recyclerView);
-        }
-    }
-
-    @Override
     public int getItemViewType(int position) {
         return position;
     }

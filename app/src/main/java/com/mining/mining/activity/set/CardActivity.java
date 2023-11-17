@@ -11,11 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityCardBinding;
+import com.mining.mining.entity.MessageEvent;
+import com.mining.mining.pager.mining.MiningPager;
 import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
+import org.greenrobot.eventbus.EventBus;
 
 public class CardActivity extends AppCompatActivity implements OnData, View.OnClickListener {
     private ActivityCardBinding binding;
@@ -55,8 +58,12 @@ public class CardActivity extends AppCompatActivity implements OnData, View.OnCl
     @Override
     public void handle(String ds) {
         try {
-            JSONObject jsonObject =  JSONObject.parseObject(ds);
+            JSONObject jsonObject = JSONObject.parseObject(ds);
             int code = jsonObject.getInteger("code");
+            if (code == 200) {
+                EventBus.getDefault().post(new MessageEvent(MiningPager.class));
+                finish();
+            }
             String msg = jsonObject.getString("msg");
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {

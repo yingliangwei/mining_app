@@ -11,10 +11,10 @@ public class ApkClassLoader extends DexClassLoader {
     private Method mFindLibraryMethod;
     private final ClassLoader classLoader;
 
-    public ApkClassLoader(ClassLoader classLoader, String dexPath, String optimizedDirectory, String librarySearchPath, ClassLoader parent) {
+    public ApkClassLoader(String dexPath, String optimizedDirectory, String librarySearchPath, ClassLoader parent) {
         super(dexPath, optimizedDirectory, librarySearchPath, parent);
         mGrandParent = parent;
-        this.classLoader = classLoader;
+        this.classLoader = parent;
     }
 
     @Override

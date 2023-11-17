@@ -4,28 +4,44 @@ plugins {
 
 android {
     namespace 'com.mining.mining'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.mining.mining"
         minSdk 30
-        //noinspection OldTargetApi
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file('/Qu.jks')
+            storePassword 'zxcvbnm123'
+            keyAlias 'Qu'
+            keyPassword 'zxcvbnm123'
+        }
+    }
+
+
     buildTypes {
         release {
+            shrinkResources false  //移出无用资源
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            shrinkResources false  //移出无用资源
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding true
@@ -37,8 +53,10 @@ dependencies {
     implementation project(path: ':widget')
     implementation project(path: ':network')
     implementation project(path: ':PluginLib') // 插件化库
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.google.zxing:core:3.5.2'
     implementation 'com.google.code.gson:gson:2.10.1'
@@ -46,13 +64,13 @@ dependencies {
     implementation 'com.daimajia.numberprogressbar:library:1.4'// 核心必须依赖
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'com.github.arcadefire:nice-spinner:1.4.4'
-    implementation 'com.airbnb.android:lottie:3.7.0'
+    implementation 'com.airbnb.android:lottie:6.1.0'
+    implementation 'com.alibaba:fastjson:2.0.41'
     implementation 'io.github.scwang90:refresh-footer-classics:2.0.6' // 经典加载
     implementation 'io.github.scwang90:refresh-header-classics:2.0.6' // 经典刷新头
     implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'
     implementation 'io.github.youth5201314:banner:2.2.2' // 轮播图库
     implementation 'org.greenrobot:eventbus:3.3.1'
-    implementation 'com.alibaba:fastjson:2.0.41'// 事件总线库
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

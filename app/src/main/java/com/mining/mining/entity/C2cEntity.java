@@ -13,8 +13,17 @@ public class C2cEntity {
     private String article;
     private String id;
     private String usdt;
+    private String time;
     private String user_id;
     private int is_authentication;
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getTime() {
+        return time;
+    }
 
     public int getIs_authentication() {
         return is_authentication;

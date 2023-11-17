@@ -2,16 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:icon="@mipmap/home"
+        android:icon="@mipmap/game"
         android:orderInCategory="0"
-        android:title="@string/app_home" />
+        android:title="@string/app_game" />
 
     <item
-        android:icon="@mipmap/ic_ape_new_gemstone"
+        android:icon="@mipmap/mining"
         android:orderInCategory="1"
-        android:title="@string/app_mining" />
+        android:title="矿山" />
+
+    <item
+        android:icon="@mipmap/task"
+        android:orderInCategory="2"
+        android:title="任务" />
     <item
         android:icon="@mipmap/user"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/app_my" />
 </menu>

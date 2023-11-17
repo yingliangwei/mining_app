@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mining.mining.R;
 import com.mining.mining.activity.NewsDetailActivity;
 import com.mining.mining.databinding.ItemNewsBinding;
 import com.mining.mining.entity.NewsEntity;

@@ -45,7 +45,7 @@
                 <com.xframe.widget.CircleImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon" />
 
                 <TextView
                     android:id="@+id/Color_A"
@@ -95,13 +95,13 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:textColor="@color/black"
                             android:id="@+id/phone"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
-                            android:padding="10dp" />
+                            android:padding="10dp"
+                            android:textColor="@color/black" />
 
                         <ImageView
                             android:layout_width="20dp"
@@ -127,14 +127,14 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:textColor="@color/black"
                             android:id="@+id/verify"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="#11000000"
                             android:inputType="number"
-                            android:padding="10dp" />
+                            android:padding="10dp"
+                            android:textColor="@color/black" />
 
                         <TextView
                             android:id="@+id/getVerify"
@@ -165,14 +165,14 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:textColor="@color/black"
                             android:id="@+id/pass"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
                             android:inputType="textPassword"
-                            android:padding="10dp" />
+                            android:padding="10dp"
+                            android:textColor="@color/black" />
 
                         <ToggleButton
                             android:id="@+id/togglePwd"
@@ -200,14 +200,14 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:textColor="@color/black"
                             android:id="@+id/pass1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
                             android:inputType="textPassword"
-                            android:padding="10dp" />
+                            android:padding="10dp"
+                            android:textColor="@color/black" />
 
                         <ToggleButton
                             android:id="@+id/togglePwd1"
@@ -220,9 +220,9 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -239,7 +239,7 @@
                     android:id="@+id/register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/bg_button_back"
                     android:text="@string/register"
                     android:textColor="@color/white" />

@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
@@ -19,25 +18,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.bumptech.glide.Glide;
 import com.mining.mining.R;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivityLaunchBinding;
-import com.mining.util.Handler;
-import com.mining.util.OnHandler;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 @SuppressLint("CustomSplashScreen")
-public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, OnData, OnHandler {
+public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, OnData {
     private ActivityLaunchBinding binding;
     private CountDownTimer countDownTimer;
     private SharedPreferences sharedPreferences;
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,15 +104,10 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 9);
-            jsonObject.put("code", 1);
-            jsonObject.put("data", getJson());
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(this);
+        JSONObject jsonObject = sharedUtil.getLogin(9, 1);
+        jsonObject.put("data", getJson());
+        socketManage.print(jsonObject.toString());
     }
 
     private String getJson() {
@@ -126,21 +116,15 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         String model = Build.MODEL;
         String androidVersion = Build.VERSION.RELEASE;
         String sdkVersion = String.valueOf(Build.VERSION.SDK_INT);
-
         // 获取设备的唯一标识
         String deviceId = getDeviceId(this);
-
         // 将详细信息和唯一标识转换为JSON格式
         JSONObject json = new JSONObject();
-        try {
-            json.put("manufacturer", manufacturer);
-            json.put("model", model);
-            json.put("androidVersion", androidVersion);
-            json.put("sdkVersion", sdkVersion);
-            json.put("deviceId", deviceId);
-        } catch (JSONException e) {
-            Log.e("", "Failed to convert device information to JSON", e);
-        }
+        json.put("manufacturer", manufacturer);
+        json.put("model", model);
+        json.put("androidVersion", androidVersion);
+        json.put("sdkVersion", sdkVersion);
+        json.put("deviceId", deviceId);
         return json.toString();
     }
 
@@ -160,24 +144,12 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         return deviceId;
     }
 
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 1) {
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                initData(jsonObject);
-            } catch (JSONException e) {
-                e.fillInStackTrace();
-            }
-        }
-    }
-
-    private void initData(JSONObject data) throws JSONException {
+    private void initData(JSONObject data) {
         String image = data.getString("image");
         String name = data.getString("name");
         try {
             Glide.with(this).load(image).into(binding.preloadDiagram);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.fillInStackTrace();
         }
         binding.ColorB.setText(name);
@@ -193,13 +165,9 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            JSONObject data = jsonObject.getJSONObject("data");
-            handler.sendMessage(1, data.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        JSONObject data = jsonObject.getJSONObject("data");
+        initData(data);
     }
 
     @Override

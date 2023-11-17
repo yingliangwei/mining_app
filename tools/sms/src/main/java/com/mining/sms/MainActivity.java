@@ -1,23 +1,17 @@
 package com.mining.sms;
 
-import static android.os.Build.VERSION.SDK_INT;
-
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
-import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
@@ -25,7 +19,6 @@ import androidx.annotation.Nullable;
 import com.mining.sms.LongLink.OnData;
 import com.mining.sms.LongLink.SocketManage;
 import com.mining.sms.databinding.ActivityMainBinding;
-import com.mining.sms.service.FirstService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -74,7 +67,7 @@ public class MainActivity extends Activity implements OnData {
     }
 
 
-    public class SMSVerification extends BroadcastReceiver {
+    public static class SMSVerification extends BroadcastReceiver {
         /*
                public static final int RESULT_ERROR_GENERIC_FAILURE   表示普通错误，值为1(0x00000001)
                public static final int RESULT_ERROR_NO_SERVICE    表示服务当前不可用，值为4 (0x00000004)
@@ -127,6 +120,7 @@ public class MainActivity extends Activity implements OnData {
 
     @Override
     public void handle(String ds) {
+        System.out.println(ds);
         if (ds.equals("pong")) {
             EventBus.getDefault().post("pong");
             return;

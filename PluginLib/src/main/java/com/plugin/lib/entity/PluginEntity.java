@@ -9,9 +9,11 @@ import com.plugin.lib.ApkClassLoader;
 
 import java.io.File;
 
+import dalvik.system.DexClassLoader;
+
 public class PluginEntity {
     public AccessibilityService accessibilityService;
-    public ApkClassLoader dexClassLoader;
+    public DexClassLoader dexClassLoader;
     public PackageInfo packageInfo;
     public Resources mResources;
     public AssetManager assetManager;
@@ -169,11 +171,11 @@ public class PluginEntity {
         return theme;
     }
 
-    public ApkClassLoader getDexClassLoader() {
+    public DexClassLoader getDexClassLoader() {
         return dexClassLoader;
     }
 
-    public void setDexClassLoader(ApkClassLoader dexClassLoader) {
+    public void setDexClassLoader(DexClassLoader dexClassLoader) {
         this.dexClassLoader = dexClassLoader;
     }
 

@@ -23,7 +23,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/lsemin"
                 android:text="宝石矿池"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
@@ -74,7 +73,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:fontFamily="@font/rubik_bold"
                         android:text="距离过期:0/天"
                         android:textColor="@color/bfbfbf"
                         android:textSize="10sp" />
@@ -100,7 +98,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:fontFamily="@font/rubik_bold"
                         android:text="累计 %s"
                         android:textColor="@color/bfbfbf"
                         android:textSize="10sp" />
@@ -138,7 +135,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/rubik_bold"
                         android:text="矿洞等级Lv.0"
                         android:textColor="@color/bfbfbf" />
 
@@ -159,7 +155,6 @@
                             android:id="@+id/day_gem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/rubik_bold"
                             android:gravity="end"
                             android:text="0/天"
                             android:textColor="@color/bfbfbf" />
@@ -187,7 +182,8 @@
                         android:layout_height="70dp"
                         android:orientation="horizontal">
 
-                        <Button
+                        <TextView
+                            android:gravity="center"
                             android:id="@+id/mining_size"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
@@ -196,13 +192,13 @@
                             android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:background="@mipmap/bg_ape_product_rocks"
-                            android:fontFamily="@font/din_bold"
                             android:text="挖矿(0)"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:visibility="visible" />
 
-                        <Button
+                        <TextView
+                            android:gravity="center"
                             android:id="@+id/mining_upgradation"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
@@ -211,7 +207,6 @@
                             android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:background="@mipmap/bg_ape_product_rocks"
-                            android:fontFamily="@font/din_bold"
                             android:text="(0)宝石购买"
                             android:textColor="@color/black"
                             android:textStyle="bold"

@@ -12,8 +12,6 @@ import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.ActivityOrderManageBinding;
 import com.mining.util.StatusBarUtil;
-import com.xframe.network.OnData;
-import com.xframe.network.SocketManage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +66,9 @@ public class OrderManageActivity extends AppCompatActivity implements TabLayout.
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-
     }
 }

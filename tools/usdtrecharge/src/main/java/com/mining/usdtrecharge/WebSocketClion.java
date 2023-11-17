@@ -49,7 +49,6 @@ public class WebSocketClion extends WebSocketClient implements OnData {
         if (message.equals("pong")) {
             return;
         }
-
         JSONObject jsonObject = JSONObject.parseObject(message);
         if (jsonObject == null) {
             return;

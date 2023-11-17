@@ -1,7 +1,6 @@
 package com.mining.mining.activity.c2s.orderManage.adapter;
 
 import android.content.Context;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +13,23 @@ import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ItemOrderManageBinding;
 import com.mining.mining.entity.C2cEntity;
+import com.mining.mining.entity.MessageEvent;
+import com.mining.mining.pager.home.HomePager;
+import com.mining.mining.pager.mining.MiningPager;
+import com.mining.mining.pager.my.MyPager;
 import com.mining.mining.util.SharedUtil;
-import com.mining.util.Handler;
-import com.mining.util.MessageEvent;
-import com.mining.util.OnHandler;
 import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
-public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.ViewHolder> implements View.OnClickListener, OnData, OnHandler {
+public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.ViewHolder> implements View.OnClickListener, OnData {
     public final List<C2cEntity> list;
     private final Context context;
     private String c2c_id = "0";
-    private final Handler handler = new Handler(Looper.myLooper(), this);
     private final int code;
     private View mEmptyTextView;
     private int position;
@@ -93,30 +93,17 @@ public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.
 
     @Override
     public void handle(String ds) {
-        System.out.println(ds);
-        try {
-            JSONObject jsonObject = JSONObject.parseObject(ds);
-            String msg = jsonObject.getString("msg");
-            int code = jsonObject.getInteger("code");
-            if (code == 200) {
-                list.remove(position);
-                notifyItemRemoved(position);
-                EventBus.getDefault().post(new MessageEvent(4, ""));
-                EventBus.getDefault().post(new MessageEvent(5, ""));
-                EventBus.getDefault().post(new MessageEvent(1, ""));
-                EventBus.getDefault().post(new MessageEvent(3, ""));
-            }
-            handler.sendMessage(0, msg);
-        } catch (Exception e) {
-            e.fillInStackTrace();
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        String msg = jsonObject.getString("msg");
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            list.remove(position);
+            notifyItemRemoved(position);
+            EventBus.getDefault().post(new MessageEvent(HomePager.class));
+            EventBus.getDefault().post(new MessageEvent(1, MiningPager.class));
+            EventBus.getDefault().post(new MessageEvent(MyPager.class));
         }
-    }
-
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

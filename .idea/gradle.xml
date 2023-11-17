@@ -18,9 +18,12 @@
             <option value="$PROJECT_DIR$/game" />
             <option value="$PROJECT_DIR$/game/battleroyale" />
             <option value="$PROJECT_DIR$/game/press" />
+            <option value="$PROJECT_DIR$/game/superbull" />
+            <option value="$PROJECT_DIR$/game/unity" />
             <option value="$PROJECT_DIR$/network" />
             <option value="$PROJECT_DIR$/pluginwidget" />
             <option value="$PROJECT_DIR$/tools" />
+            <option value="$PROJECT_DIR$/tools/listen" />
             <option value="$PROJECT_DIR$/tools/sms" />
             <option value="$PROJECT_DIR$/tools/usdtrecharge" />
             <option value="$PROJECT_DIR$/util" />

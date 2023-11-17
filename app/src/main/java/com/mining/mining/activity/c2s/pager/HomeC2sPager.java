@@ -13,17 +13,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.mining.mining.R;
-import com.mining.mining.activity.PledgeActivity;
+import com.mining.mining.activity.c2s.PledgeActivity;
 import com.mining.mining.activity.c2s.C2cGemPager;
 import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerHomeC2sBinding;
 import com.mining.mining.pager.holder.ViewHolder;
-import com.mining.util.MessageEvent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +58,6 @@ public class HomeC2sPager extends RecyclerAdapter implements TabLayout.OnTabSele
         recyclerAdapters.add(new C2cGemPager(getContext(), 4));
         PagerAdapter pagerAdapter = new PagerAdapter(recyclerAdapters);
         binding.pager.setAdapter(pagerAdapter);
-        binding.pager.setOffscreenPageLimit(recyclerAdapters.size());
         binding.pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {

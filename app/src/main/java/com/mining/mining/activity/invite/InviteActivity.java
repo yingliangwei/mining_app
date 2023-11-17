@@ -1,11 +1,12 @@
 package com.mining.mining.activity.invite;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,21 +19,26 @@ import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityInviteBinding;
 import com.mining.mining.entity.InviteEntity;
 import com.mining.mining.util.SharedUtil;
-import com.mining.util.Handler;
+import com.mining.util.MessageEvent;
 import com.mining.util.OnHandler;
 import com.mining.util.StatusBarUtil;
 import com.mining.util.StringUtil;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InviteActivity extends AppCompatActivity implements OnData, OnHandler, Toolbar.OnMenuItemClickListener {
+public class InviteActivity extends AppCompatActivity implements OnData, OnHandler, Toolbar.OnMenuItemClickListener, OnRefreshListener, OnRefreshLoadMoreListener {
     private ActivityInviteBinding binding;
     private InviteAdapter adapter;
     private final List<InviteEntity> list = new ArrayList<>();
-    private final Handler handle = new Handler(Looper.getMainLooper(), this);
+    private int start = 20, end = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +48,13 @@ public class InviteActivity extends AppCompatActivity implements OnData, OnHandl
         setContentView(binding.getRoot());
         initToolbar();
         initRecycle();
+        initSmart();
         SocketManage.init(this);
+    }
+
+    private void initSmart() {
+        binding.Smart.setRefreshFooter(new ClassicsFooter(this));
+        binding.Smart.setRefreshHeader(new ClassicsHeader(this));
     }
 
     private void initRecycle() {
@@ -62,54 +74,51 @@ public class InviteActivity extends AppCompatActivity implements OnData, OnHandl
     @Override
     public void connect(SocketManage socketManage) {
         SharedUtil sharedUtil = new SharedUtil(this);
-        JSONObject jsonObject = sharedUtil.getLogin(11, 1);
+        JSONObject jsonObject = sharedUtil.getLogin(11, 1, start, end);
         socketManage.print(jsonObject.toString());
     }
 
     @Override
-    public void handle(String ds) {
-        System.out.println(ds);
-        try {
-            JSONObject jsonObject =  JSONObject.parseObject(ds);
-            int code = jsonObject.getInteger("code");
-            if (code == 200) {
-                handle.sendMessage(1, jsonObject.toString());
-            }
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+    public void error(String error) {
+        binding.Smart.finishLoadMore();
+        binding.Smart.finishRefresh();
+        binding.spinKit.setVisibility(View.GONE);
     }
-
 
     @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-        } else if (w == 1) {
-            try {
-                JSONObject jsonObject =  JSONObject.parseObject(str);
-                int is_invite = jsonObject.getInteger("is_invite");
-                if (is_invite == 1) {
-                    binding.toolbar.getMenu().findItem(R.id.set_invite).setVisible(false);
-                }
-                String sum = jsonObject.getString("sum");
-                int invite_sum = jsonObject.getInteger("invite_sum");
-                binding.sum.setText(StringUtil.toRe(sum));
-                binding.inviteSum.setText(String.valueOf(invite_sum));
-                JSONArray data = jsonObject.getJSONArray("data");
-                initData(data);
-            } catch (Exception e) {
-                e.fillInStackTrace();
+    public void handle(String ds) {
+        binding.Smart.finishLoadMore();
+        binding.Smart.finishRefresh();
+        binding.spinKit.setVisibility(View.GONE);
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            int is_invite = jsonObject.getInteger("is_invite");
+            if (is_invite == 1) {
+                binding.toolbar.getMenu().findItem(R.id.set_invite).setVisible(false);
             }
+            String sum = jsonObject.getString("sum");
+            int invite_sum = jsonObject.getInteger("invite_sum");
+            binding.sum.setText(StringUtil.toRe(sum));
+            binding.inviteSum.setText(String.valueOf(invite_sum));
+            JSONArray data = jsonObject.getJSONArray("data");
+            if (data == null) {
+                return;
+            }
+            initData(data);
         }
     }
 
-    private void initData(JSONArray data)  {
+
+    private void initData(JSONArray data) {
+        if (data == null) {
+            return;
+        }
         for (int i = 0; i < data.size(); i++) {
             JSONObject jsonObject = data.getJSONObject(i);
             InviteEntity entity = new Gson().fromJson(jsonObject.toString(), InviteEntity.class);
             list.add(entity);
-            adapter.notifyItemChanged(i);
+            adapter.notifyItemChanged(list.size() - 1);
         }
     }
 
@@ -119,5 +128,24 @@ public class InviteActivity extends AppCompatActivity implements OnData, OnHandl
             startActivity(new Intent(this, SetInviteActivity.class));
         }
         return false;
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        if (StringUtil.isPowerOf20(list.size())) {
+            end = end + start;
+            SocketManage.init(this);
+        } else {
+            refreshLayout.finishLoadMoreWithNoMoreData();
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        end = 0;
+        list.clear();
+        adapter.notifyDataSetChanged();
+        SocketManage.init(this);
     }
 }

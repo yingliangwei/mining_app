@@ -1,25 +1,23 @@
 package com.mining.mining.activity.c2s;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerItemC2cBinding;
 import com.mining.mining.entity.C2cEntity;
 import com.mining.mining.pager.holder.ViewHolder;
-import com.mining.util.Handler;
-import com.mining.util.MessageEvent;
-import com.mining.util.OnHandler;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.StringUtil;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
@@ -29,29 +27,21 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler, OnRefreshListener, OnRefreshLoadMoreListener {
+public class C2cGemPager extends RecyclerAdapter implements OnData, OnRefreshListener, OnRefreshLoadMoreListener {
     private PagerItemC2cBinding binding;
     private final Context activity;
     private C2cAdapter c2cAdapter;
     private final List<C2cEntity> list = new ArrayList<>();
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
     private final int type;
-    private int start = 0, end = 20;
+    private int start = 20, end = 0;
 
     public C2cGemPager(Context activity, int type) {
         super(activity);
         this.activity = activity;
         this.type = type;
-        EventBus.getDefault().register(this);
     }
 
     @NonNull
@@ -68,22 +58,6 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler, O
         SocketManage.init(this);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OnMessage(MessageEvent event) {
-        if (event.getW() == 4) {
-            list.clear();
-            c2cAdapter.notifyDataSetChanged();
-            SocketManage.init(this);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
     private void initSmart() {
         binding.Smart.setRefreshFooter(new ClassicsFooter(activity));
         binding.Smart.setRefreshHeader(new ClassicsHeader(activity));
@@ -94,47 +68,21 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler, O
     private void initRecycler() {
         c2cAdapter = new C2cAdapter(list, activity, type);
         c2cAdapter.setEmptyTextView(binding.blank);
-        binding.recycle.setLayoutManager(new LinearLayoutManager(activity));
-        binding.recycle.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+        binding.recycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         binding.recycle.setAdapter(c2cAdapter);
     }
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 4);
-            jsonObject.put("code", type);
-            jsonObject.put("start", start);
-            jsonObject.put("end", end);
-            System.out.println(jsonObject);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(getContext());
+        JSONObject jsonObject = sharedUtil.getLogin(4, type, start, end);
+        socketManage.print(jsonObject.toString());
     }
 
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 1) {
-            try {
-                JSONArray array = new JSONArray(str);
-                initRecyclerData(array);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else if (w == 2) {
-            binding.Smart.finishLoadMore(1000, false, false);
-            binding.Smart.finishRefresh(1000, false, false);
-        } else if (w == 3) {
-            binding.Smart.finishRefresh(1000, true, false);
-            binding.Smart.finishLoadMore(1000, true, false);
-        }
-    }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void initRecyclerData(JSONArray data) throws Exception {
-        for (int i = 0; i < data.length(); i++) {
+    private void initRecyclerData(JSONArray data) {
+        for (int i = 0; i < data.size(); i++) {
             String text = data.getString(i);
             C2cEntity entity = new Gson().fromJson(text, C2cEntity.class);
             list.add(entity);
@@ -144,29 +92,31 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler, O
 
     @Override
     public void error(String error) {
-        handler.sendMessage(2, "");
+        binding.spinKit.setVisibility(View.GONE);
+        binding.Smart.finishLoadMore(1000, false, false);
+        binding.Smart.finishRefresh(1000, false, false);
     }
 
     @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                JSONArray data = jsonObject.getJSONArray("data");
-                handler.sendMessage(1, data.toString());
+        binding.spinKit.setVisibility(View.GONE);
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONArray data = jsonObject.getJSONArray("data");
+            if (data == null) {
+                return;
             }
-            handler.sendMessage(3, "");
-        } catch (Exception e) {
-            e.fillInStackTrace();
+            initRecyclerData(data);
         }
+        binding.Smart.finishRefresh(1000, true, false);
+        binding.Smart.finishLoadMore(1000, true, false);
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (StringUtil.isPowerOf20(list.size())) {
-            start = end;
-            end = end + 20;
+            end = end + start;
             SocketManage.init(this);
         } else {
             refreshLayout.finishLoadMoreWithNoMoreData();
@@ -176,8 +126,7 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnHandler, O
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        start = 0;
-        end = 20;
+        end = 0;
         list.clear();
         c2cAdapter.notifyDataSetChanged();
         SocketManage.init(this);

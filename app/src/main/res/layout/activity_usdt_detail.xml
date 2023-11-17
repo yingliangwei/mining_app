@@ -51,7 +51,6 @@
                 android:text="当前余额" />
 
             <TextView
-                android:fontFamily="@font/rubik_bold"
                 android:id="@+id/usdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

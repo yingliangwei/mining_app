@@ -33,7 +33,7 @@ import java.util.List;
 
 public class PluginSearchActivity extends AppCompatActivity implements OnRefreshListener, OnRefreshLoadMoreListener, OnData, View.OnClickListener {
     private ActivityPluginSearchBinding binding;
-    private int start = 0, end = 20;
+    private int start = 20, end = 0;
     private final List<PluginEntity> list = new ArrayList<>();
     private ItemVerticalAdapter adapter;
 
@@ -57,7 +57,7 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
         adapter = new ItemVerticalAdapter(this, list);
         adapter.setEmptyTextView(binding.blank);
         binding.recycler.setAdapter(adapter);
-        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
+        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
     }
 
     private void initSmart() {
@@ -79,20 +79,25 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
     public void error(String error) {
         binding.Smart.finishRefresh(1000, false, false);
         binding.Smart.finishLoadMore(1000, false, false);
+        binding.spinKit.setVisibility(View.GONE);
     }
 
 
     @Override
     public void handle(String ds) {
+        binding.spinKit.setVisibility(View.GONE);
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
             JSONArray data = jsonObject.getJSONArray("data");
+            if (data == null) {
+                return;
+            }
             for (int i = 0; i < data.size(); i++) {
                 PluginEntity pluginEntity = new Gson().fromJson(data.getString(i), PluginEntity.class);
                 pluginEntity.setJson(data.getString(i));
                 list.add(pluginEntity);
-                adapter.notifyItemChanged(i);
+                adapter.notifyItemChanged(list.size() - 1);
             }
         }
         binding.Smart.finishRefresh(1000, true, false);
@@ -103,8 +108,7 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (StringUtil.isPowerOf20(list.size())) {
-            start = end;
-            end = end + 20;
+            end = end + start;
             SocketManage.init(this);
         } else {
             refreshLayout.finishLoadMoreWithNoMoreData();
@@ -114,8 +118,7 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        start = 0;
-        end = 20;
+        end = 0;
         list.clear();
         adapter.notifyDataSetChanged();
         SocketManage.init(this);
@@ -138,6 +141,7 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
             }
             list.clear();
             adapter.notifyItemRemoved(0);
+            binding.spinKit.setVisibility(View.VISIBLE);
             SocketManage.init(this);
         }
     }

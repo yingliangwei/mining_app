@@ -31,6 +31,9 @@ public class StringUtil {
     }
 
     public static String getStringStart(String str) {
+        if (str == null) {
+            return "n";
+        }
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             if (!Character.isWhitespace(c)) {

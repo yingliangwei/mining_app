@@ -1,6 +1,5 @@
 package com.mining.mining.activity.invite;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -18,9 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,35 +28,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityInviteCodeBinding;
-import com.mining.util.Handler;
-import com.mining.util.OnHandler;
-import com.mining.util.PlatformUtil;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import javax.security.auth.callback.Callback;
 
 public class InviteCodeActivity extends AppCompatActivity implements Runnable, View.OnClickListener, OnData {
     private ActivityInviteCodeBinding binding;
@@ -92,6 +76,11 @@ public class InviteCodeActivity extends AppCompatActivity implements Runnable, V
         } catch (Exception e) {
             e.fillInStackTrace();
         }
+    }
+
+    @Override
+    public void error(String error) {
+        binding.spinKit.setVisibility(View.GONE);
     }
 
     @Override
@@ -139,7 +128,10 @@ public class InviteCodeActivity extends AppCompatActivity implements Runnable, V
                 }
             }
             bitmap1 = combineBitmap(drawableToBitmap(binding.image.getDrawable()), bitmap);
-            runOnUiThread(() -> binding.image.setImageBitmap(bitmap1));
+            runOnUiThread(() -> {
+                binding.image.setImageBitmap(bitmap1);
+                binding.spinKit.setVisibility(View.GONE);
+            });
         } catch (WriterException e) {
             e.printStackTrace();
         }

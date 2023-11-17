@@ -11,18 +11,26 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class SocketManage extends Thread implements Handler.Callback {
+public class SocketManage implements Handler.Callback, Runnable {
     private final Handler handler = new Handler(Looper.getMainLooper(), this);
-
     private static final String TAG = "SocketManage";
     private final StringBuilder sb = new StringBuilder();
     private OnData data;
     private SocketChannel socketChannel;
     private final int ByteMax = 65535;
-    private Selector selector;
     private boolean isRun = true;
     private int position;
+    private static final int corePoolSize = 5; // 核心线程数
+    private static final int maxPoolSize = 10; // 最大线程数
+    private static final long keepAliveTime = 60L; // 线程空闲时间
+    private static final TimeUnit unit = TimeUnit.SECONDS; // 时间单位
+    private static final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(); // 任务队列
+    private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, unit, workQueue);
 
     public int getPosition() {
         return position;
@@ -35,14 +43,14 @@ public class SocketManage extends Thread implements Handler.Callback {
     public static void init(OnData onData) {
         SocketManage socketManage = new SocketManage();
         socketManage.setData(onData);
-        socketManage.start();
+        executor.execute(socketManage);
     }
 
     public static void init(OnData onData, int position) {
         SocketManage socketManage = new SocketManage();
         socketManage.setData(onData);
         socketManage.setPosition(position);
-        socketManage.start();
+        executor.execute(socketManage);
     }
 
     @Override
@@ -56,19 +64,17 @@ public class SocketManage extends Thread implements Handler.Callback {
     }
 
     public void initSocketChannel() {
-        //开始建立连接
         try {
-            selector = Selector.open();
+            Selector selector = Selector.open();
             socketChannel = SocketChannel.open();
-            socketChannel.socket().setSoTimeout(500);
             socketChannel.configureBlocking(false);
             socketChannel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ);
-            // socketChannel.connect(new InetSocketAddress("f36i940486.wicp.vip", 17468));
-            socketChannel.connect(new InetSocketAddress("192.168.1.19", 6333));
+            socketChannel.connect(new InetSocketAddress("f36i940486.wicp.vip", 17468));
             long timeout = System.currentTimeMillis() + 5_000; // 5 seconds
             while (isRun) {
                 int readyChannels = selector.select(timeout);
                 if (readyChannels == 0) {
+                    //会在这里等待服务端反馈
                     // No channels are ready, so check if the timeout has elapsed
                     if (System.currentTimeMillis() >= timeout) {
                         sendMessage(2, "timeout error");
@@ -116,7 +122,6 @@ public class SocketManage extends Thread implements Handler.Callback {
         this.data = data;
     }
 
-
     /**
      * @param key 读取数据
      */
@@ -132,8 +137,15 @@ public class SocketManage extends Thread implements Handler.Callback {
             readBuffer.clear();
         }
         String body = sb.toString();
-        handleData(body);
-        close();
+        //防止未发送完毕,结束发送字符串
+        if (body.endsWith("\n")) {
+            String[] strings = body.split("\n");
+            for (String value : strings) {
+                System.out.println(value);
+                handleData(value);
+            }
+            close();
+        }
     }
 
     /**

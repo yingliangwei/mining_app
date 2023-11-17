@@ -2,6 +2,7 @@ package com.xframe.widget.recycler.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -9,8 +10,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xframe.widget.R;
 import com.xframe.widget.XfRecyclerView;
-import com.xframe.widget.databinding.ItemRecyclerBinding;
 import com.xframe.widget.entity.RecyclerEntity;
 import com.xframe.widget.recycler.util.DisplayUtils;
 
@@ -34,7 +35,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(context, ItemRecyclerBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        View view = LayoutInflater.from(context).inflate(R.layout.item_recycler, parent, false);
+        return new ViewHolder(context, view);
     }
 
     @Override
@@ -43,8 +45,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ItemRecyclerViewAdapter itemRecyclerViewAdapter = new ItemRecyclerViewAdapter(context, listList.get(position));
         itemRecyclerViewAdapter.setOnRecyclerItemClickListener(onRecyclerItemClickListener);
         //添加Android自带的分割线
-        holder.binding.recycler.addItemDecoration(new DisplayUtils(context, DividerItemDecoration.VERTICAL));
-        holder.binding.recycler.setAdapter(itemRecyclerViewAdapter);
+        holder.recyclerView.addItemDecoration(new DisplayUtils(context, DividerItemDecoration.VERTICAL));
+        holder.recyclerView.setAdapter(itemRecyclerViewAdapter);
     }
 
 
@@ -54,13 +56,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ItemRecyclerBinding binding;
+        private final RecyclerView recyclerView;
 
-        public ViewHolder(Context context, @NonNull ItemRecyclerBinding itemView) {
-            super(itemView.getRoot());
+        public ViewHolder(Context context, @NonNull View itemView) {
+            super(itemView);
+            recyclerView = itemView.findViewById(R.id.recycler);
             //不能写在onBindViewHolder里面，不然有问题
-            itemView.recycler.setLayoutManager(new LinearLayoutManager(context));
-            this.binding = itemView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
     }
 }

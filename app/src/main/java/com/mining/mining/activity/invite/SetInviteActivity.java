@@ -1,39 +1,40 @@
 package com.mining.mining.activity.invite;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
-import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivityInviteSetBinding;
-import com.mining.util.Handler;
-import com.mining.util.OnHandler;
+import com.mining.mining.entity.MessageEvent;
+import com.mining.mining.pager.home.HomePager;
+import com.mining.mining.pager.mining.MiningPager;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONObject;
+import org.greenrobot.eventbus.EventBus;
 
-public class SetInviteActivity extends AppCompatActivity implements OnData, OnHandler, View.OnClickListener {
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
+public class SetInviteActivity extends AppCompatActivity implements OnData, View.OnClickListener {
     private ActivityInviteSetBinding binding;
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setImmersiveStatusBar(this, true);
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         binding = ActivityInviteSetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
+        initToolbar();
+    }
+
+    private void initToolbar() {
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -42,41 +43,23 @@ public class SetInviteActivity extends AppCompatActivity implements OnData, OnHa
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            String id = sharedPreferences.getString("id", null);
-            String _key = sharedPreferences.getString("_key", null);
-            if (id == null || _key == null) {
-                LoginActivity.login(SetInviteActivity.this);
-                return;
-            }
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 11);
-            jsonObject.put("code", 2);
-            jsonObject.put("id", id);
-            jsonObject.put("_key", _key);
-            jsonObject.put("uid", binding.uid.getText().toString());
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-        }
+        SharedUtil sharedUtil = new SharedUtil(this);
+        JSONObject jsonObject = sharedUtil.getLogin(11, 2);
+        jsonObject.put("uid", binding.uid.getText().toString());
+        socketManage.print(jsonObject.toString());
     }
 
     @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            //int code = jsonObject.getInt("code");
-            String msg = jsonObject.getString("msg");
-            handler.sendMessage(0, msg);
-        } catch (Exception e) {
-            e.fillInStackTrace();
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        String msg = jsonObject.getString("msg");
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        if (code == 200) {
+            //刷新矿池全部数据和宝石
+            EventBus.getDefault().post(new MessageEvent(MiningPager.class));
+            EventBus.getDefault().post(new MessageEvent(HomePager.class));
+            finish();
         }
     }
 

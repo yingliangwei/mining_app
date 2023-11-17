@@ -1,14 +1,11 @@
 package com.mining.mining.download;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -21,7 +18,7 @@ import okio.Okio;
 import okio.Sink;
 import okio.Source;
 
-public class PluginDownload  implements Callback {
+public class PluginDownload implements Callback {
     private long max;
     private final String url;
     private final ProgressListener progressListener;
@@ -69,7 +66,7 @@ public class PluginDownload  implements Callback {
             while ((bytesRead = source.read(buffer, 8192)) != -1) {
                 sink.write(buffer, bytesRead);
                 downloadedBytes += bytesRead;
-                progressListener.update(downloadedBytes,contentLength,false);
+                progressListener.update(downloadedBytes, contentLength, false);
             }
             // 关闭Sink和Source
             sink.close();
@@ -83,10 +80,14 @@ public class PluginDownload  implements Callback {
 
     public interface ProgressListener {
 
-        void update(long downloadedBytes, long contentLength, boolean b);
+        default void update(long downloadedBytes, long contentLength, boolean b) {
+
+        }
 
         void onSuccess(File file);
 
-        void error(Exception e);
+        default void error(Exception e) {
+
+        }
     }
 }

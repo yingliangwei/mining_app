@@ -4,42 +4,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Looper;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
+import com.mining.mining.activity.LogOffActivity;
 import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivitySetUserBinding;
-import com.mining.util.Handler;
-import com.mining.util.OnHandler;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 import com.xframe.widget.entity.RecyclerEntity;
 import com.xframe.widget.recycler.OnRecyclerItemClickListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetUserActivity extends AppCompatActivity implements OnRecyclerItemClickListener, OnHandler, OnData {
+public class SetUserActivity extends AppCompatActivity implements OnRecyclerItemClickListener, OnData {
     private ActivitySetUserBinding binding;
     private final List<List<RecyclerEntity>> entity = new ArrayList<>();
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
-    private SharedPreferences sharedPreferences;
     private final List<RecyclerEntity> entities = new ArrayList<>();
     private final List<RecyclerEntity> entities3 = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         StatusBarUtil.setImmersiveStatusBar(this, true);
         binding = ActivitySetUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -94,6 +86,7 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
                 startActivity(new Intent(this, SetPayPassActivity.class));
                 break;
             case "back":
+                SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                 sharedPreferences.edit().clear().apply();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
@@ -108,66 +101,38 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
                 }
                 startActivity(new Intent(this, CardActivity.class));
                 break;
+            case "log_off":
+                startActivity(new Intent(this, LogOffActivity.class));
+                break;
         }
     }
 
     @Override
     public void connect(SocketManage socketManage) {
-        String id = sharedPreferences.getString("id", null);
-        String _key = sharedPreferences.getString("_key", null);
-        if (id == null || _key == null) {
-            LoginActivity.login(SetUserActivity.this);
-            return;
-        }
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 7);
-            jsonObject.put("code", 1);
-            jsonObject.put("id", id);
-            jsonObject.put("_key", _key);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(this);
+        JSONObject jsonObject = sharedUtil.getLogin(7, 1);
+        socketManage.print(jsonObject.toString());
     }
 
     @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                JSONObject data = jsonObject.getJSONObject("data");
-                handler.sendMessage(1, data.toString());
-            }
-        } catch (Exception e) {
-            e.fillInStackTrace();
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONObject data = jsonObject.getJSONObject("data");
+            initData(data);
         }
     }
 
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-        } else if (w == 1) {
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                initData(jsonObject);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
-    private void initData(JSONObject jsonObject) throws JSONException {
+    private void initData(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String phone = jsonObject.getString("phone");
-        String uid = jsonObject.getString("uid");
-        int card = jsonObject.getInt("card");
+        int card = jsonObject.getInteger("card");
         entities.clear();
+        entities3.clear();
         entities.add(new RecyclerEntity(R.mipmap.nick, "昵称", 0, name, "", "name"));
         entities.add(new RecyclerEntity(R.mipmap.phone, "绑定手机", 0, phone, "", "phone", true));
-        entities3.clear();
         entities3.add(new RecyclerEntity(R.mipmap.pass, "修改支付密码", 0, "", "", "pay"));
         if (card == 1) {
             entities3.add(new RecyclerEntity(R.mipmap.card, "实名制", 0, "以实名", "", "card", true));

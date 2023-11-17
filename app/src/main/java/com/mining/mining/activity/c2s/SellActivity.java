@@ -1,9 +1,6 @@
 package com.mining.mining.activity.c2s;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,13 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
-import com.mining.mining.activity.login.LoginActivity;
 import com.mining.mining.databinding.ActivitySellBinding;
+import com.mining.mining.entity.MessageEvent;
+import com.mining.mining.pager.home.HomePager;
+import com.mining.mining.pager.mining.MiningPager;
+import com.mining.mining.pager.my.MyPager;
+import com.mining.mining.util.SharedUtil;
 import com.mining.util.ArithHelper;
-import com.mining.util.Handler;
-import com.mining.util.MessageEvent;
-import com.mining.util.OnHandler;
 import com.mining.util.StatusBarUtil;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -29,93 +28,63 @@ import com.xframe.network.SocketManage;
 import com.xframe.widget.PayPass;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-public class SellActivity extends AppCompatActivity implements TextWatcher, OnData, OnHandler, View.OnClickListener, OnRefreshListener, PayPass.OnPay {
-    private final Handler handler = new Handler(Looper.myLooper(), this);
+public class SellActivity extends AppCompatActivity implements TextWatcher, OnData, View.OnClickListener, OnRefreshListener, PayPass.OnPay {
     private ActivitySellBinding binding;
-    private SharedPreferences sharedPreferences;
     private String id;
     private String pass;
 
     private final OnData onData = new OnData() {
         @Override
         public void connect(SocketManage socketManage) {
-            try {
-                String id = sharedPreferences.getString("id", null);
-                String _key = sharedPreferences.getString("_key", null);
-                if (id == null || _key == null) {
-                    LoginActivity.login(SellActivity.this);
-                    return;
-                }
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("type", 4);
-                jsonObject.put("code", 6);
-                jsonObject.put("id", id);
-                jsonObject.put("pass", pass);
-                jsonObject.put("_key", _key);
-                jsonObject.put("gem_id", SellActivity.this.id);
-                jsonObject.put("gem_size", binding.gem.getText().toString());
-                System.out.println(jsonObject);
-                socketManage.print(jsonObject.toString());
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
+            SharedUtil sharedUtil = new SharedUtil(SellActivity.this);
+            JSONObject jsonObject = sharedUtil.getLogin(4, 6);
+            jsonObject.put("pass", pass);
+            jsonObject.put("gem_id", SellActivity.this.id);
+            jsonObject.put("gem_size", binding.gem.getText().toString());
+            socketManage.print(jsonObject.toString());
         }
 
         @Override
         public void handle(String ds) {
-            try {
-                JSONObject jsonObject = new JSONObject(ds);
-                int code = jsonObject.getInt("code");
-                if (code == 200) {
-                    SocketManage.init(SellActivity.this);
-                }
-                String msg = jsonObject.getString("msg");
-                handler.sendMessage(0, msg);
-                EventBus.getDefault().post(new MessageEvent(1, ""));
-                EventBus.getDefault().post(new MessageEvent(3, ""));
-            } catch (Exception e) {
-                e.fillInStackTrace();
+            JSONObject jsonObject = JSONObject.parseObject(ds);
+            int code = jsonObject.getInteger("code");
+            if (code == 200) {
+                SocketManage.init(SellActivity.this);
+                EventBus.getDefault().post(new MessageEvent(HomePager.class));
+                EventBus.getDefault().post(new MessageEvent(1, MiningPager.class));
+                EventBus.getDefault().post(new MessageEvent(MyPager.class));
             }
+            String msg = jsonObject.getString("msg");
+            Toast.makeText(SellActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
     };
 
     private final OnData getCommission = new OnData() {
         @Override
         public void handle(String ds) {
-            try {
-                JSONObject jsonObject = new JSONObject(ds);
-                int code = jsonObject.getInt("code");
-                if (code == 200) {
-                    double commission = jsonObject.getDouble("commission");
-                    PayPass payPass = new PayPass(SellActivity.this);
-                    payPass.setPay(SellActivity.this);
-                    double xUsdt = Double.parseDouble(binding.gem.getText().toString());
-                    double commissionUsdt = ArithHelper.mul(xUsdt, commission);
-                    double result = ArithHelper.add(xUsdt, commissionUsdt);
-                    double gem = Double.parseDouble(binding.xUsdt.getText().toString());
-                    double commissionGem = ArithHelper.mul(gem, commission);
-                    double resultGem = ArithHelper.sub(gem, commissionGem);
-                    payPass.setMoney("消耗宝石:" + result + "\n" + "手续费:" + commissionUsdt + "\n" + "获得USDT:" + resultGem + "\n" + "手续费:" + commissionGem);
-                    payPass.show();
-                }
-            } catch (Exception e) {
-                e.fillInStackTrace();
+            JSONObject jsonObject = JSONObject.parseObject(ds);
+            int code = jsonObject.getInteger("code");
+            if (code == 200) {
+                double commission = jsonObject.getDouble("commission");
+                PayPass payPass = new PayPass(SellActivity.this);
+                payPass.setPay(SellActivity.this);
+                double xUsdt = Double.parseDouble(binding.gem.getText().toString());
+                double commissionUsdt = ArithHelper.mul(xUsdt, commission);
+                double result = ArithHelper.add(xUsdt, commissionUsdt);
+                double gem = Double.parseDouble(binding.xUsdt.getText().toString());
+                double commissionGem = ArithHelper.mul(gem, commission);
+                double resultGem = ArithHelper.sub(gem, commissionGem);
+                payPass.setMoney("消耗宝石:" + result + "\n" + "手续费:" + commissionUsdt + "\n" + "获得USDT:" + resultGem + "\n" + "手续费:" + commissionGem);
+                payPass.show();
             }
         }
 
         @Override
         public void connect(SocketManage socketManage) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("type", 5);
-                jsonObject.put("code", 7);
-                socketManage.print(jsonObject.toString());
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
+            SharedUtil sharedUtil = new SharedUtil(SellActivity.this);
+            JSONObject jsonObject = sharedUtil.getLogin(5, 7);
+            socketManage.print(jsonObject.toString());
         }
     };
 
@@ -123,7 +92,6 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initId();
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         StatusBarUtil.setImmersiveStatusBar(this, true);
         binding = ActivitySellBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -157,68 +125,35 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
 
     @Override
     public void connect(SocketManage socketManage) {
-        String id = sharedPreferences.getString("id", null);
-        String _key = sharedPreferences.getString("_key", null);
-        if (id == null || _key == null) {
-            LoginActivity.login(this);
-            return;
-        }
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", 4);
-            jsonObject.put("code", 5);
-            jsonObject.put("id", id);
-            jsonObject.put("_key", _key);
-            jsonObject.put("gem_id", this.id);
-            socketManage.print(jsonObject.toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(SellActivity.this);
+        JSONObject jsonObject = sharedUtil.getLogin(4, 5);
+        jsonObject.put("gem_id", this.id);
+        socketManage.print(jsonObject.toString());
     }
 
     @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                JSONObject data = jsonObject.getJSONObject("data");
-                handler.sendMessage(1, data.toString());
-                handler.sendMessage(4, "");
-            } else if (code == 402) {
-                String msg = jsonObject.getString("msg");
-                handler.sendMessage(0, msg);
-                finish();
-            }
-        } catch (Exception e) {
-            e.fillInStackTrace();
+        binding.spinKit.setVisibility(View.GONE);
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONObject data = jsonObject.getJSONObject("data");
+            initViewData(data);
+        } else if (code == 402) {
+            String msg = jsonObject.getString("msg");
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            finish();
         }
+        binding.Smart.finishRefresh(true);
     }
 
     @Override
     public void error(String error) {
-        handler.sendMessage(5, "");
+        binding.spinKit.setVisibility(View.GONE);
+        binding.Smart.finishRefresh(false);
     }
 
-    @Override
-    public void handleMessage(int w, String str) {
-        if (w == 0) {
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-        } else if (w == 1) {
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                initViewData(jsonObject);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        } else if (w == 4) {
-            binding.Smart.finishRefresh(true);
-        } else if (w == 5) {
-            binding.Smart.finishRefresh(false);
-        }
-    }
-
-    private void initViewData(JSONObject data) throws JSONException {
+    private void initViewData(JSONObject data) {
         String article = data.getString("article");
         String usdt = data.getString("usdt");
         JSONObject user = data.getJSONObject("user");

@@ -11,6 +11,7 @@ import android.os.CountDownTimer;
 import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.GridLayout;
@@ -50,47 +51,15 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
     private MainAdapter mainAdapter;
     private final List<PressEntity> list = new ArrayList<>();
     private SharedPreferences sharedPreferences;
-    private final Handler handler = new Handler(Looper.getMainLooper(), this);
-    private final OnData onData = new OnData() {
-        @Override
-        public void connect(SocketManage socketManage) {
-            try {
-                String id = sharedPreferences.getString("id", null);
-                String _key = sharedPreferences.getString("_key", null);
-                if (id == null || _key == null) {
-                    return;
-                }
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("type", 13);
-                jsonObject.put("code", 2);
-                jsonObject.put("k", getSelector());
-                jsonObject.put("stone", getChecked());
-                jsonObject.put("id", id);
-                jsonObject.put("_key", _key);
-                socketManage.print(jsonObject.toString());
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
-        }
-
-        @Override
-        public void handle(String ds) {
-            try {
-                JSONObject jsonObject = new JSONObject(ds);
-                String msg = jsonObject.getString("msg");
-                handler.sendMessage(0, msg);
-                SocketManage.init(MainActivity.this);
-                EventBus.getDefault().post(new MessageEvent(1, ""));
-            } catch (Exception e) {
-                e.fillInStackTrace();
-            }
-        }
-    };
+    private final getData onData = new getData();
     private CountDownTimer countDownTimer;
+    private final Handler handler = new Handler(Looper.myLooper(), this);
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        Window window = thisContex.getWindow();
+        window.setStatusBarColor(Color.WHITE);
         sharedPreferences = thisContex.getSharedPreferences("user", Context.MODE_PRIVATE);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -103,7 +72,7 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
     }
 
     private void initToolbar() {
-        binding.toolbar.setNavigationOnClickListener(v -> thisContex.finish());
+        binding.exit.setOnClickListener(v -> thisContex.finish());
     }
 
     private void initSmart() {
@@ -409,5 +378,40 @@ public class MainActivity extends PluginActivity implements OnData, OnHandler, C
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         SocketManage.init(this);
+    }
+
+    private class getData implements OnData {
+        @Override
+        public void connect(SocketManage socketManage) {
+            try {
+                String id = sharedPreferences.getString("id", null);
+                String _key = sharedPreferences.getString("_key", null);
+                if (id == null || _key == null) {
+                    return;
+                }
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("type", 13);
+                jsonObject.put("code", 2);
+                jsonObject.put("k", getSelector());
+                jsonObject.put("stone", getChecked());
+                jsonObject.put("id", id);
+                jsonObject.put("_key", _key);
+                socketManage.print(jsonObject.toString());
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
+
+        @Override
+        public void handle(String ds) {
+            try {
+                JSONObject jsonObject = new JSONObject(ds);
+                String msg = jsonObject.getString("msg");
+                handler.sendMessage(0, msg);
+                SocketManage.init(MainActivity.this);
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
     }
 }

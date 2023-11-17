@@ -1,6 +1,5 @@
 package com.mining.mining.activity.set;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -46,8 +45,13 @@ public class AboutActivity extends AppCompatActivity implements OnRecyclerItemCl
         StatusBarUtil.setImmersive(this, true);
         binding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        initToolbar();
         initView();
         initRecycler();
+    }
+
+    private void initToolbar() {
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initRecycler() {

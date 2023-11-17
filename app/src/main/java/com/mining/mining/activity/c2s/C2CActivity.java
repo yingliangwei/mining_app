@@ -2,6 +2,7 @@ package com.mining.mining.activity.c2s;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,6 +70,7 @@ public class C2CActivity extends AppCompatActivity implements NavigationBarView.
                 pagerAdapter.notifyItemChanged(1);
                 binding.pager.setCurrentItem(recyclerAdapters.size());
                 binding.pager.setCurrentItem(0);
+                binding.bottom.setVisibility(View.VISIBLE);
             }
         }
     }

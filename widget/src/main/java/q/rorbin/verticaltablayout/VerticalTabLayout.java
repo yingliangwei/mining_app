@@ -9,9 +9,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -36,7 +39,7 @@ import q.rorbin.verticaltablayout.widget.TabView;
 
 /**
  * @author chqiu
- *         Email:qstumn@163.com
+ * Email:qstumn@163.com
  */
 public class VerticalTabLayout extends ScrollView {
     private Context mContext;
@@ -62,6 +65,7 @@ public class VerticalTabLayout extends ScrollView {
     private DataSetObserver mPagerAdapterObserver;
 
     private TabFragmentManager mTabFragmentManager;
+    private int colorPrimary = 0;
 
     public VerticalTabLayout(Context context) {
         this(context, null);
@@ -92,6 +96,7 @@ public class VerticalTabLayout extends ScrollView {
         mTabMode = typedArray.getInteger(R.styleable.VerticalTabLayout_tab_mode, TAB_MODE_FIXED);
         int defaultTabHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
         mTabHeight = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_height, defaultTabHeight);
+
         typedArray.recycle();
     }
 

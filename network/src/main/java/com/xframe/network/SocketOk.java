@@ -1,5 +1,7 @@
 package com.xframe.network;
 
+import org.json.JSONObject;
+
 public class SocketOk implements OnData {
     private String str;
     private OnData onData;
@@ -8,6 +10,12 @@ public class SocketOk implements OnData {
         this.str = str;
         this.onData = onData;
         SocketManage.init(this);
+    }
+
+    public SocketOk(String str, OnData onData, int position) {
+        this.str = str;
+        this.onData = onData;
+        SocketManage.init(this, position);
     }
 
     @Override

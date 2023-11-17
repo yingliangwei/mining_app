@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
         android:id="@+id/news"
         android:icon="@mipmap/news"
@@ -10,14 +11,13 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/more"
         android:icon="@mipmap/more"
         android:title="更多"
         app:showAsAction="always">
         <menu>
             <item
-                android:icon="@mipmap/usdt"
-                android:title="USDT转账" />
+                android:id="@+id/plugin_log"
+                android:title="最新游戏记录" />
         </menu>
     </item>
 </menu>

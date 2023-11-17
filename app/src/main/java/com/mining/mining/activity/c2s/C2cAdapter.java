@@ -1,7 +1,6 @@
 package com.mining.mining.activity.c2s;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;

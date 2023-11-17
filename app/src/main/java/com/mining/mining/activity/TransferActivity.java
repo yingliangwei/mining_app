@@ -10,12 +10,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityTransferBinding;
+import com.mining.mining.entity.MessageEvent;
+import com.mining.mining.pager.my.MyPager;
 import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 import com.xframe.widget.PayPass;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class TransferActivity extends AppCompatActivity implements OnData, PayPass.OnPay, View.OnClickListener {
@@ -108,6 +112,10 @@ public class TransferActivity extends AppCompatActivity implements OnData, PayPa
     @Override
     public void handle(String ds) {
         JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            EventBus.getDefault().post(new MessageEvent(MyPager.class));
+        }
         String msg = jsonObject.getString("msg");
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

@@ -20,6 +20,7 @@ import com.plugin.lib.PluginLayoutInflater;
 import com.plugin.lib.R;
 import com.plugin.lib.Storage;
 import com.plugin.lib.entity.PluginEntity;
+import com.plugin.lib.util.StatusBarUtil;
 
 public class BaseActivity extends Activity {
     private PluginEntity entity;
@@ -37,10 +38,7 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //设置字体黑色
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        //设置字体白色
-        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        StatusBarUtil.setImmersiveStatusBar(this, false);
         String className = getIntent().getStringExtra("className");
         mid = getIntent().getIntExtra("mid", 0);
         if (id == -1) {

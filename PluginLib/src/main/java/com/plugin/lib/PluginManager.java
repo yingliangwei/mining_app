@@ -7,15 +7,6 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
-import android.graphics.Bitmap;
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.AdaptiveIconDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.util.Xml;
 
@@ -121,7 +112,7 @@ public class PluginManager {
         theme = mResources.newTheme();
         theme.setTo(contextTheme);
         initInnerRIdValue(theme, packageInfo.packageName + ".R$style", true);
-        //initInnerRIdValue(theme, "androidx.appcompat.R$style", false);
+        initInnerRIdValue(theme, "androidx.appcompat.R$style", false);
     }
 
     public AccessibilityService getAccessibilityServiceEntity() {
@@ -139,6 +130,113 @@ public class PluginManager {
             e.fillInStackTrace();
         }
         return null;
+    }
+
+    private String getAttributeValue(AttributeSet set, String name) {
+        for (int i = 0; i < set.getAttributeCount(); i++) {
+            String nameX = set.getAttributeName(i);
+            if (nameX.equals(name)) {
+                return set.getAttributeValue(i);
+            }
+        }
+        return "";
+    }
+
+    private void initInnerRIdValue(Resources.Theme theme, String rStrnig, boolean force) {
+        try {
+            Class<?> cls = dexClassLoader.loadClass(rStrnig);
+            Field[] field = cls.getDeclaredFields();
+            for (Field field1 : field) {
+                int value = field1.getInt(null);
+                theme.applyStyle(value, force);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void init() {
+        File nativeFile_x = new File(nativeFile, PluginFile1.getName());
+        //解压提取so到本地路径
+        if (PluginFile1.exists() && !nativeFile_x.exists()) {
+            try {
+                unzipFile(PluginFile.getAbsolutePath(), nativeFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.fillInStackTrace();
+            }
+        }
+        dexClassLoader = new ApkClassLoader(PluginFile1.getAbsolutePath(), dexFile.getAbsolutePath(), nativeFile.getAbsolutePath(), context.getClassLoader());
+        packageInfo = context.getPackageManager().getPackageArchiveInfo(PluginFile1.getAbsolutePath(), PackageManager.GET_ACTIVITIES | PackageManager.GET_SERVICES);
+        Thread.currentThread().setContextClassLoader(dexClassLoader);
+    }
+
+
+    public void unzipFile(String zipPtath, String outputDirectory) throws IOException {
+        try {
+            // 创建解压目标目录
+            File file = new File(outputDirectory);
+            // 如果目标目录不存在，则创建
+            if (!file.exists()) {
+                boolean is = file.mkdirs();
+            }
+            // 打开压缩文件
+            InputStream inputStream;
+            inputStream = Files.newInputStream(Paths.get(zipPtath));
+            ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+            // 读取一个进入点
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+            // 使用1Mbuffer
+            byte[] buffer = new byte[1024 * 1024];
+            // 解压时字节计数
+            int count = 0;
+            // 如果进入点为空说明已经遍历完所有压缩包中文件和目录
+            while (zipEntry != null) {
+                if (!zipEntry.isDirectory()) {  //如果是一个文件
+                    // 如果是文件
+                    String fileName = zipEntry.getName();
+                    fileName = fileName.substring(fileName.lastIndexOf("/") + 1);  //截取文件的名字 去掉原文件夹名字
+                    file = new File(outputDirectory + File.separator + fileName);  //放到新的解压的文件路径
+                    if (fileName.endsWith(".so") && !file.exists()) {
+                        boolean is = file.createNewFile();
+                        FileOutputStream fileOutputStream = new FileOutputStream(file);
+                        while ((count = zipInputStream.read(buffer)) > 0) {
+                            fileOutputStream.write(buffer, 0, count);
+                        }
+                        fileOutputStream.close();
+                    }
+                }
+                // 定位到下一个文件入口
+                zipEntry = zipInputStream.getNextEntry();
+            }
+            zipInputStream.close();
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+    }
+
+    public PluginEntity getPluginEntity() {
+        String title = mResources.getString(packageInfo.applicationInfo.labelRes);
+        Long versionCode = packageInfo.getLongVersionCode();
+        String pack = packageInfo.packageName;
+        PluginEntity entity = new PluginEntity();
+        entity.setContextTheme(contextTheme);
+        entity.setResources(mResources);
+        entity.setPackageInfo(packageInfo);
+        entity.setDexClassLoader(dexClassLoader);
+        entity.setAssetManager(assertManagerObj);
+        entity.setTheme(theme);
+        entity.setPluginFile(PluginFile1);
+        entity.setImage(imageFile);
+        entity.setMain(getMainActivity());
+        entity.setTitle(title);
+        entity.setVersionCode(versionCode);
+        entity.setAccessibilityService(getAccessibilityServiceEntity());
+        entity.setPackName(pack);
+        return entity;
+    }
+
+    public void setTheme(Resources.Theme theme) {
+        this.theme = theme;
     }
 
     public String getAccessibilityService() {
@@ -216,163 +314,4 @@ public class PluginManager {
         return activity;
     }
 
-    private String getAttributeValue(AttributeSet set, String name) {
-        for (int i = 0; i < set.getAttributeCount(); i++) {
-            String nameX = set.getAttributeName(i);
-            if (nameX.equals(name)) {
-                return set.getAttributeValue(i);
-            }
-        }
-        return "";
-    }
-
-    private void initInnerRIdValue(Resources.Theme theme, String rStrnig, boolean force) {
-        try {
-            Class<?> cls = dexClassLoader.loadClass(rStrnig);
-            Field[] field = cls.getDeclaredFields();
-            for (Field field1 : field) {
-                int value = field1.getInt(null);
-                theme.applyStyle(value, force);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void init() {
-        //解压提取so到本地路径
-        if (PluginFile1.exists() && !nativeFile.exists()) {
-            try {
-                unzipFile(PluginFile.getAbsolutePath(), nativeFile.getAbsolutePath());
-            } catch (IOException e) {
-                e.fillInStackTrace();
-            }
-        }
-        dexClassLoader = new ApkClassLoader(context.getClassLoader(), PluginFile1.getAbsolutePath(), dexFile.getAbsolutePath(), nativeFile.getAbsolutePath(), context.getClassLoader());
-        packageInfo = context.getPackageManager().getPackageArchiveInfo(PluginFile1.getAbsolutePath(), PackageManager.GET_ACTIVITIES | PackageManager.GET_SERVICES);
-    }
-
-
-    public void unzipFile(String zipPtath, String outputDirectory) throws IOException {
-        try {
-            // 创建解压目标目录
-            File file = new File(outputDirectory);
-            // 如果目标目录不存在，则创建
-            if (!file.exists()) {
-                boolean is = file.mkdirs();
-            }
-            // 打开压缩文件
-            InputStream inputStream;
-            inputStream = Files.newInputStream(Paths.get(zipPtath));
-            ZipInputStream zipInputStream = new ZipInputStream(inputStream);
-            // 读取一个进入点
-            ZipEntry zipEntry = zipInputStream.getNextEntry();
-            // 使用1Mbuffer
-            byte[] buffer = new byte[1024 * 1024];
-            // 解压时字节计数
-            int count = 0;
-            // 如果进入点为空说明已经遍历完所有压缩包中文件和目录
-            while (zipEntry != null) {
-                if (!zipEntry.isDirectory()) {  //如果是一个文件
-                    // 如果是文件
-                    String fileName = zipEntry.getName();
-                    fileName = fileName.substring(fileName.lastIndexOf("/") + 1);  //截取文件的名字 去掉原文件夹名字
-                    file = new File(outputDirectory + File.separator + fileName);  //放到新的解压的文件路径
-                    if (fileName.endsWith(".so") && !file.exists()) {
-                        boolean is = file.createNewFile();
-                        FileOutputStream fileOutputStream = new FileOutputStream(file);
-                        while ((count = zipInputStream.read(buffer)) > 0) {
-                            fileOutputStream.write(buffer, 0, count);
-                        }
-                        fileOutputStream.close();
-                    }
-                }
-                // 定位到下一个文件入口
-                zipEntry = zipInputStream.getNextEntry();
-            }
-            zipInputStream.close();
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    public PluginEntity getPluginEntity() {
-        String title = mResources.getString(packageInfo.applicationInfo.labelRes);
-        Long versionCode = packageInfo.getLongVersionCode();
-        String pack = packageInfo.packageName;
-        PluginEntity entity = new PluginEntity();
-        entity.setContextTheme(contextTheme);
-        entity.setResources(mResources);
-        entity.setPackageInfo(packageInfo);
-        entity.setDexClassLoader(dexClassLoader);
-        entity.setAssetManager(assertManagerObj);
-        entity.setTheme(theme);
-        entity.setPluginFile(PluginFile1);
-        entity.setImage(imageFile);
-        entity.setMain(getMainActivity());
-        entity.setTitle(title);
-        entity.setVersionCode(versionCode);
-        entity.setAccessibilityService(getAccessibilityServiceEntity());
-        entity.setPackName(pack);
-        return entity;
-    }
-
-    /**
-     * 将Drawable转化为Bitmap
-     *
-     * @param drawable
-     * @return
-     */
-    public Bitmap drawableToBitmap(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        } else {
-            if (drawable instanceof AdaptiveIconDrawable) {
-                Drawable backgroundDr = ((AdaptiveIconDrawable) drawable).getBackground();
-                Drawable foregroundDr = ((AdaptiveIconDrawable) drawable).getForeground();
-                Drawable[] drr = new Drawable[2];
-                drr[0] = backgroundDr;
-                drr[1] = foregroundDr;
-
-                LayerDrawable layerDrawable = new LayerDrawable(drr);
-                // 设置 LayerDrawable 的底色
-                layerDrawable.setColorFilter(new BlendModeColorFilter(Color.WHITE, BlendMode.SRC_ATOP));
-
-                int width = layerDrawable.getIntrinsicWidth();
-                int height = layerDrawable.getIntrinsicHeight();
-                Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-                // 在 Bitmap 上绘制一个矩形，以设置底色
-                Canvas canvas = new Canvas(bitmap);
-                layerDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                layerDrawable.draw(canvas);
-                return bitmap;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 将Bitmap以指定格式保存到指定路径
-     */
-    public void saveBitmap(Bitmap bitmap, File file) {
-        try {
-            // 创建一个 FileOutputStream 对象，用于写入文件
-            FileOutputStream outputStream = new FileOutputStream(file);
-            // 创建一个 Bitmap 对象，表示要写入的 Drawable
-            // 将 Bitmap 写入文件
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            // 关闭 FileOutputStream 对象
-            outputStream.close();
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    public void setImageFile(File imageFile) {
-        this.imageFile = imageFile;
-    }
-
-    public void setTheme(Resources.Theme theme) {
-        this.theme = theme;
-    }
 }

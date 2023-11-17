@@ -2,12 +2,11 @@ package com.mining.mining.pager.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -15,14 +14,11 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.adapter.RecyclerAdapter;
-import com.mining.mining.databinding.PagerHomeBinding;
 import com.mining.mining.databinding.PagerVerticalItemHomeBinding;
 import com.mining.mining.entity.PluginEntity;
 import com.mining.mining.pager.holder.ViewHolder;
 import com.mining.mining.pager.home.adapter.ItemVerticalAdapter;
 import com.mining.mining.util.SharedUtil;
-import com.mining.util.Handler;
-import com.mining.util.OnHandler;
 import com.mining.util.StringUtil;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
@@ -41,7 +37,7 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
     private final String tab_id;
     private final List<PluginEntity> list = new ArrayList<>();
     private ItemVerticalAdapter adapter;
-    private int start = 0, end = 20;
+    private int start = 20, end = 0;
 
     public HomeVerticalItemPager(Context context, String tab_id) {
         super(context);
@@ -74,9 +70,8 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
         adapter = new ItemVerticalAdapter(context, list);
         adapter.setEmptyTextView(binding.blank);
         binding.recycle.setAdapter(adapter);
-        binding.recycle.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
+        binding.recycle.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
     }
-
 
     @Override
     public void connect(SocketManage socketManage) {
@@ -97,16 +92,20 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
             PluginEntity pluginEntity = new Gson().fromJson(data.getString(i), PluginEntity.class);
             pluginEntity.setJson(data.getString(i));
             list.add(pluginEntity);
-            adapter.notifyItemChanged(i);
+            adapter.notifyItemChanged(list.size() - 1);
         }
     }
 
     @Override
     public void handle(String ds) {
+        binding.spinKit.setVisibility(View.GONE);
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
             JSONArray data = jsonObject.getJSONArray("data");
+            if (data == null) {
+                return;
+            }
             initData(data);
         }
         binding.Smart.finishLoadMore(1000, true, false);
@@ -116,8 +115,7 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (StringUtil.isPowerOf20(list.size())) {
-            start = end;
-            end = end + 20;
+            end = end + start;
             SocketManage.init(this);
         } else {
             refreshLayout.finishLoadMoreWithNoMoreData();
@@ -127,8 +125,7 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        start = 0;
-        end = 20;
+        end = 0;
         list.clear();
         adapter.notifyDataSetChanged();
         SocketManage.init(this);

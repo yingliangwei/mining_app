@@ -10,28 +10,36 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 
-import com.xframe.widget.databinding.DialogPayPassBinding;
+
+import org.w3c.dom.Text;
 
 public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-    private final DialogPayPassBinding binding;
+    private final View binding;
     private OnPay pay;
     private Context context;
 
     public PayPass(@NonNull Context context) {
         super(context);
-        binding = DialogPayPassBinding.inflate(LayoutInflater.from(context));
-        setContentView(binding.getRoot());
+        binding = LayoutInflater.from(context).inflate(R.layout.dialog_pay_pass, new FrameLayout(context), false);
+        setContentView(binding);
         setDialogLocation();
         initView();
     }
 
     private void initView() {
-        binding.togglePwd.setOnCheckedChangeListener(this);
-        binding.tvCancel.setOnClickListener(this);
-        binding.tvConfirm.setOnClickListener(this);
+        ToggleButton toggleButton = binding.findViewById(R.id.togglePwd);
+        TextView tvCancel = binding.findViewById(R.id.tvCancel);
+        TextView tvConfirm = binding.findViewById(R.id.tvConfirm);
+        toggleButton.setOnCheckedChangeListener(this);
+        tvCancel.setOnClickListener(this);
+        tvConfirm.setOnClickListener(this);
     }
 
     public void setDialogLocation() {
@@ -49,8 +57,9 @@ public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeLis
     }
 
     public void setMoney(String money) {
-        binding.money.setVisibility(View.VISIBLE);
-        binding.money.setText(money);
+        TextView textView = binding.findViewById(R.id.money);
+        textView.setVisibility(View.VISIBLE);
+        textView.setText(money);
     }
 
     public void setPay(OnPay pay) {
@@ -59,14 +68,16 @@ public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeLis
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        ToggleButton toggleButton = binding.findViewById(R.id.togglePwd);
+        EditText editText = binding.findViewById(R.id.etPayPwd);
         if (isChecked) {
             //如果选中，显示密码
-            binding.etPayPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            binding.etPayPwd.setSelection(0, binding.etPayPwd.getText().length());
+            toggleButton.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            editText.setSelection(0, editText.getText().length());
         } else {
             //否则隐藏密码
-            binding.etPayPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            binding.etPayPwd.setSelection(0, binding.etPayPwd.getText().length());
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            editText.setSelection(0, editText.getText().length());
         }
     }
 
@@ -75,7 +86,8 @@ public class PayPass extends Dialog implements CompoundButton.OnCheckedChangeLis
         if (v.getId() == R.id.tvCancel) {
             dismiss();
         } else if (v.getId() == R.id.tvConfirm) {
-            String payPwd = binding.etPayPwd.getText().toString();
+            EditText editText = binding.findViewById(R.id.etPayPwd);
+            String payPwd = editText.getText().toString();
             dismiss();
             if (pay != null) {
                 pay.onText(payPwd);

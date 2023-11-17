@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">矿石盛世</string>
-    <string name="slogan">挂机赚钱不是梦</string>
+    <string name="app_name">矿石盛典</string>
+    <string name="slogan">用梦想，实现梦想</string>
     <string name="app_jump">跳转</string>
     <string name="app_mining">挖矿</string>
     <string name="app_my">我的</string>
@@ -9,7 +9,7 @@
     <string name="app_search">搜索</string>
     <string name="app_home">首页</string>
     <string name="login">登录</string>
-    <string name="app_introduce">元宇宙是一个快乐的世界</string>
+    <string name="app_introduce">踏足梦想的地方</string>
     <string name="app_account">账号</string>
     <string name="app_pass">密码</string>
     <string name="app_forgot_password">忘记密码?</string>
@@ -46,4 +46,6 @@
     <string name="app_day_gem_order">%s/次</string>
     <string name="app_mining_lv">矿洞等级Lv.%s</string>
     <string name="app_s_usdt_5">%s USDT/升级(挖矿5次,可自动挖矿)</string>
+    <string name="app_game">游戏</string>
+    <string name="app_turn_off_sideslip">关闭侧滑</string>
 </resources>

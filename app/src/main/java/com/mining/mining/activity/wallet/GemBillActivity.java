@@ -2,6 +2,7 @@ package com.mining.mining.activity.wallet;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,7 @@ public class GemBillActivity extends AppCompatActivity implements OnData, OnRefr
     public ActivityUsdtBillBinding binding;
     private GemBillAdapter adapter;
     private final List<GemBillEntity> list = new ArrayList<>();
-    private int start = 0, end = 20;
+    private int start = 20, end = 0;
     private int code;
 
     @Override
@@ -83,20 +84,25 @@ public class GemBillActivity extends AppCompatActivity implements OnData, OnRefr
 
     @Override
     public void error(String error) {
+        binding.spinKit.setVisibility(View.GONE);
         binding.Smart.finishRefresh(1000, false, false);
         binding.Smart.finishLoadMore(1000, false, false);
     }
 
     @Override
     public void handle(String ds) {
+        binding.spinKit.setVisibility(View.GONE);
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
             JSONArray data = jsonObject.getJSONArray("data");
+            if (data == null) {
+                return;
+            }
             for (int i = 0; i < data.size(); i++) {
                 JSONObject jsonObject1 = data.getJSONObject(i);
                 list.add(new Gson().fromJson(jsonObject1.toString(), GemBillEntity.class));
-                adapter.notifyItemChanged(i);
+                adapter.notifyItemChanged(list.size() - 1);
             }
         } else {
             String msg = jsonObject.getString("msg");
@@ -109,8 +115,7 @@ public class GemBillActivity extends AppCompatActivity implements OnData, OnRefr
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        start = 0;
-        end = 20;
+        end = 0;
         list.clear();
         adapter.notifyDataSetChanged();
         SocketManage.init(this);
@@ -119,8 +124,7 @@ public class GemBillActivity extends AppCompatActivity implements OnData, OnRefr
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (StringUtil.isPowerOf20(list.size())) {
-            start = end;
-            end = end + 20;
+            end = end + start;
             SocketManage.init(this);
         } else {
             refreshLayout.finishLoadMoreWithNoMoreData();

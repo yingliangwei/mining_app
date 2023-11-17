@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:fontFamily="@font/din_bold"
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +43,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:fontFamily="@font/rubik_bold"
             android:id="@+id/usdt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

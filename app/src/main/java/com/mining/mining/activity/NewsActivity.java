@@ -2,12 +2,15 @@ package com.mining.mining.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.activity.adapter.NewsAdapter;
 import com.mining.mining.databinding.ActivityNewsBinding;
@@ -23,9 +26,6 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class NewsActivity extends AppCompatActivity implements OnData, OnRefresh
     private ActivityNewsBinding binding;
     private NewsAdapter adapter;
     private final List<NewsEntity> entities = new ArrayList<>();
-    private int start = 0, end = 20;
+    private int start = 20, end = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,29 +75,34 @@ public class NewsActivity extends AppCompatActivity implements OnData, OnRefresh
     }
 
     @Override
+    public void error(String error) {
+        binding.spinKit.setVisibility(View.GONE);
+    }
+
+    @Override
     public void handle(String ds) {
-        try {
-            JSONObject jsonObject = new JSONObject(ds);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                JSONArray data = jsonObject.getJSONArray("data");
-                for (int i = 0; i < data.length(); i++) {
-                    NewsEntity newsEntity = new Gson().fromJson(data.getString(i), NewsEntity.class);
-                    newsEntity.json = data.getString(i);
-                    entities.add(newsEntity);
-                    adapter.notifyItemChanged(i);
-                }
+        binding.Smart.finishRefresh();
+        binding.spinKit.setVisibility(View.GONE);
+        JSONObject jsonObject = JSONObject.parseObject(ds);
+        int code = jsonObject.getInteger("code");
+        if (code == 200) {
+            JSONArray data = jsonObject.getJSONArray("data");
+            if (data == null) {
+                return;
             }
-        } catch (Exception e) {
-            e.fillInStackTrace();
+            for (int i = 0; i < data.size(); i++) {
+                NewsEntity newsEntity = new Gson().fromJson(data.getString(i), NewsEntity.class);
+                newsEntity.json = data.getString(i);
+                entities.add(newsEntity);
+                adapter.notifyItemChanged(entities.size() - 1);
+            }
         }
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (StringUtil.isPowerOf20(entities.size())) {
-            start = end;
-            end = end + 20;
+            end = end + start;
             SocketManage.init(this);
         } else {
             refreshLayout.finishLoadMoreWithNoMoreData();
@@ -107,8 +112,7 @@ public class NewsActivity extends AppCompatActivity implements OnData, OnRefresh
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        start = 0;
-        end = 20;
+        end = 0;
         entities.clear();
         adapter.notifyDataSetChanged();
         SocketManage.init(this);

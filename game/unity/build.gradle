@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    ndkPath "D:/Unity Hub/Hub/2022.3.10f1c1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
+
+    namespace 'com.mining.unity'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.mining.unity"
+        minSdk 30
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        doNotStrip '*/armeabi-v7a/*.so'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(path: ':PluginActivity')
+}

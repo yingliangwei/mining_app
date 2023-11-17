@@ -1,9 +1,7 @@
 package com.mining.mining.pager.mining.pager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
-import com.mining.mining.R;
-import com.mining.mining.activity.MiningIntroduceActivity;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerItemMiningBinding;
 import com.mining.mining.entity.MiningEntity;
@@ -27,7 +23,7 @@ import com.xframe.network.SocketManage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MiningItemPager extends RecyclerAdapter implements View.OnClickListener, OnData {
+public class MiningItemPager extends RecyclerAdapter implements OnData {
     private PagerItemMiningBinding binding;
     private final Context context;
     private final String mining_id;
@@ -53,21 +49,16 @@ public class MiningItemPager extends RecyclerAdapter implements View.OnClickList
         SocketManage.init(this);
     }
 
+
     private void initRecycler() {
         miningAdapter = new MiningAdapter(context, list);
-        miningAdapter.setEmptyTextView(binding.blank);
-        binding.recycle.setLayoutManager(new LinearLayoutManager(context));
-        binding.recycle.setAdapter(miningAdapter);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.rule) {
-            Intent intent = new Intent(context, MiningIntroduceActivity.class);
-            intent.putExtra("tab_id", 0);
-            context.startActivity(intent);
+        if (binding != null) {
+            miningAdapter.setEmptyTextView(binding.blank);
+            binding.recycle.setLayoutManager(new LinearLayoutManager(context));
+            binding.recycle.setAdapter(miningAdapter);
         }
     }
+
 
     @Override
     public void connect(SocketManage socketManage) {
@@ -94,8 +85,9 @@ public class MiningItemPager extends RecyclerAdapter implements View.OnClickList
                     entity.set_mining(mining.toString());
                 }
                 list.add(entity);
-                miningAdapter.notifyItemChanged(i);
+                miningAdapter.notifyItemChanged(list.size() - 1);
             }
         }
     }
+
 }

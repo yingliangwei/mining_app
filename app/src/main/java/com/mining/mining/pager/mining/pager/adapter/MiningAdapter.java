@@ -1,6 +1,7 @@
 package com.mining.mining.pager.mining.pager.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,20 @@ import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ItemMiningBinding;
+import com.mining.mining.entity.MessageEvent;
 import com.mining.mining.entity.MiningDataEntity;
 import com.mining.mining.entity.MiningEntity;
+import com.mining.mining.pager.home.HomePager;
+import com.mining.mining.pager.mining.MiningPager;
+import com.mining.mining.pager.mining.rule.RuleActivity;
+import com.mining.mining.pager.my.MyPager;
 import com.mining.mining.util.SharedUtil;
 import com.mining.util.StringUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
+import com.xframe.widget.PayPass;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -49,6 +58,8 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
         holder.binding.title.setText(mining.getName());
         holder.binding.miningUpgradation.setTag(position);
         holder.binding.miningUpgradation.setOnClickListener(this);
+        holder.binding.rule.setTag(position);
+        holder.binding.rule.setOnClickListener(this);
         if (mining.getIs_permanent().equals("1")) {
             holder.binding.miningSize.setVisibility(View.VISIBLE);
             holder.binding.miningSize.setTag(position);
@@ -96,7 +107,7 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
         binding.dayGem.setText(String.format("%s/天", StringUtil.toRe(entity.getDay_gem())));
         binding.miningLv.setText(String.format("矿洞等级Lv.%s", entity.getMining_size()));
         binding.miningGem1.setText(String.format("累计 %s", StringUtil.toRe(entity.getMining_gem())));
-        if (entity.getIs_usdt().equals("0")) {
+        if (entity.getIs_usdt().equals("0") && entity.getIs_permanent().equals("0")) {
             binding.miningUpgradation.setText(String.format("(%s)宝石升级叠加", StringUtil.toRe(mining.getMining_gem())));
         } else {
             binding.miningUpgradation.setText(String.format("(%s)USDT升级叠加", StringUtil.toRe(mining.getMining_gem())));
@@ -118,7 +129,29 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
             SocketManage.init(this, position);
         } else if (v.getId() == R.id.mining_upgradation) {
             int position = (int) v.getTag();
-            SocketManage.init(new UpgradationData(), position);
+            MiningEntity entity = list.get(position);
+            PayPass payPass = new PayPass(context);
+            if (entity.getIs_usdt().equals("0")) {
+                payPass.setMoney("支付:" + StringUtil.toRe(entity.getMining_gem()) + "宝石");
+            } else {
+                payPass.setMoney("支付:" + StringUtil.toRe(entity.getMining_gem()) + "USDT");
+            }
+            if (entity.get_mining() != null) {
+                MiningDataEntity miningData = new Gson().fromJson(entity.get_mining(), MiningDataEntity.class);
+                if (miningData.getIs_permanent().equals("0")) {
+                    payPass.setMoney("支付:" + StringUtil.toRe(entity.getMining_gem()) + "宝石");
+                } else {
+                    payPass.setMoney("支付:" + StringUtil.toRe(entity.getMining_gem()) + "USDT");
+                }
+            }
+            payPass.setPay(new Pay(position));
+            payPass.show();
+        } else if (v.getId() == R.id.rule) {
+            int position = (int) v.getTag();
+            MiningEntity entity = list.get(position);
+            Intent intent = new Intent(context, RuleActivity.class);
+            intent.putExtra("id", entity.getTab_id());
+            context.startActivity(intent);
         }
     }
 
@@ -135,7 +168,6 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
     @Override
     public void handle(String ds) {
         JSONObject jsonObject = JSONObject.parseObject(ds);
-        System.out.println(jsonObject);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
             int position = jsonObject.getInteger("position");
@@ -186,13 +218,37 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
         }
     }
 
+    private class Pay implements PayPass.OnPay {
+        private final int position;
+
+        public Pay(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onText(String pass) {
+            if (pass.length() == 0) {
+                Toast.makeText(context, "密码不能为空", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            SocketManage.init(new UpgradationData(pass), position);
+        }
+    }
+
     private class UpgradationData implements OnData {
+        private final String pass;
+
+        public UpgradationData(String pass) {
+            this.pass = pass;
+        }
+
         @Override
         public void connect(SocketManage socketManage) {
             MiningEntity entity = list.get(socketManage.getPosition());
             SharedUtil sharedUtil = new SharedUtil(context);
             JSONObject jsonObject = sharedUtil.getLogin(8, 5);
             jsonObject.put("pit_id", entity.getId());
+            jsonObject.put("pass", pass);
             jsonObject.put("position", socketManage.getPosition());
             socketManage.print(jsonObject.toString());
         }
@@ -211,6 +267,10 @@ public class MiningAdapter extends RecyclerView.Adapter<MiningAdapter.ViewHolder
                 }
                 list.set(position, entity);
                 notifyItemChanged(position);
+                //更新宝石和USDT数量
+                EventBus.getDefault().post(new MessageEvent(1, MiningPager.class));
+                EventBus.getDefault().post(new MessageEvent(MyPager.class));
+                EventBus.getDefault().post(new MessageEvent(HomePager.class));
             }
             String msg = jsonObject.getString("msg");
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();

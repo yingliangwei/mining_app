@@ -15,7 +15,6 @@ import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
 
-import org.greenrobot.eventbus.EventBus;
 
 public class NewsDetailActivity extends AppCompatActivity implements OnData {
     private ActivityNewsDetailBinding binding;
@@ -57,6 +56,5 @@ public class NewsDetailActivity extends AppCompatActivity implements OnData {
 
     @Override
     public void handle(String ds) {
-        EventBus.getDefault().post(new MessageEvent(6, ""));
     }
 }

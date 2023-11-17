@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fitsSystemWindows="true"
-        app:elevation="0dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:navigationIcon="@mipmap/close"
-            app:title="@string/login"
-            app:titleTextColor="@color/black" />
-    </com.google.android.material.appbar.AppBarLayout>
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -44,7 +26,7 @@
                 <com.xframe.widget.CircleImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon" />
 
                 <TextView
                     android:id="@+id/Color_A"
@@ -94,14 +76,14 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:textColor="@color/black"
                             android:id="@+id/user_id"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
                             android:inputType="textEmailAddress"
-                            android:padding="10dp" />
+                            android:padding="10dp"
+                            android:textColor="@color/black" />
 
                         <ImageView
                             android:layout_width="20dp"
@@ -129,14 +111,14 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:textColor="@color/black"
                             android:id="@+id/pass"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
                             android:inputType="textPassword"
-                            android:padding="10dp" />
+                            android:padding="10dp"
+                            android:textColor="@color/black" />
 
                         <ToggleButton
                             android:id="@+id/togglePwd"
@@ -150,9 +132,9 @@
 
 
                     <LinearLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -171,7 +153,7 @@
                             android:layout_weight="1"
                             android:gravity="end"
                             android:padding="5dp"
-                            android:text="@string/app_join"
+                            android:text="注册账号"
                             android:textColor="?colorAccent" />
                     </LinearLayout>
                 </LinearLayout>
@@ -180,7 +162,7 @@
                     android:id="@+id/login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/bg_button_back"
                     android:gravity="center"
                     android:text="@string/login"
