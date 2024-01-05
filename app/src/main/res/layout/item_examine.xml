@@ -58,7 +58,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ID:"
+                        android:text="@string/id"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
@@ -67,7 +67,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/black"
                         android:textIsSelectable="true"
                         android:textStyle="bold" />
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="提现信息"
+                android:text="@string/Payout_information"
                 android:textColor="@color/black" />
 
             <LinearLayout
@@ -97,13 +97,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="提现USDT：" />
+                    android:text="@string/Withdraw_USDT" />
 
                 <TextView
                     android:id="@+id/usdt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text="@string/_0"
                     android:textColor="@android:color/holo_red_dark"
                     android:textIsSelectable="true" />
             </LinearLayout>
@@ -116,13 +116,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="提现地址：" />
+                    android:text="@string/Withdrawal_address" />
 
                 <TextView
                     android:id="@+id/address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0x00"
+                    android:text="@string/_0x00"
                     android:textColor="@android:color/black"
                     android:textIsSelectable="true" />
             </LinearLayout>
@@ -131,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="拒绝提现理由"
+                android:text="@string/Reasons_for_refusing_to_withdraw"
                 android:textColor="@color/black" />
 
             <EditText
@@ -154,35 +154,36 @@
                     android:id="@+id/no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="拒绝" />
+                    android:text="@string/no" />
 
                 <Button
                     android:id="@+id/ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="通过" />
+                    android:text="@string/yes" />
 
                 <Button
                     android:id="@+id/yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="通过(自动打款)" />
+                    android:text="@string/yes_1" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="温馨提示"
+                android:text="@string/Tips"
                 android:textColor="@color/black" />
 
             <TextView
+                android:textColor="@color/bfbfbf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="自动打款请确保该地址添加到USDT通讯录，并且打开右上角设置,打开地址白名单模式" />
+                android:text="@string/usdt_xxxx" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

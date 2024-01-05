@@ -30,7 +30,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:background="@drawable/search_background"
-                    android:hint="搜索游戏"
+                    android:hint="@string/search_game"
                     android:maxLines="1"
                     android:padding="10dp"
                     android:scrollbars="horizontal" />
@@ -42,7 +42,7 @@
                     android:layout_height="match_parent"
                     android:background="?selectableItemBackground"
                     android:padding="15dp"
-                    android:text="搜索" />
+                    android:text="@string/app_search" />
 
                 <TextView
                     android:id="@+id/close"
@@ -50,7 +50,7 @@
                     android:layout_height="match_parent"
                     android:background="?selectableItemBackground"
                     android:padding="15dp"
-                    android:text="取消" />
+                    android:text="@string/Cancel" />
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -95,10 +95,10 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

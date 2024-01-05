@@ -23,6 +23,9 @@ public class StringUtil {
         if (usdt == null || usdt.equals("0")) {
             return "0";
         }
+        if (!usdt.contains(".")) {
+            return usdt;
+        }
         String cleanedNumStr = usdt.replaceAll("0+$", "");
         if (cleanedNumStr.endsWith(".")) {
             cleanedNumStr = cleanedNumStr.substring(0, cleanedNumStr.length() - 1);

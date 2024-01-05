@@ -43,14 +43,13 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
     private void initRecycler() {
         entities.add(new RecyclerEntity(R.mipmap.nick, "昵称", 0, "未设置", "", "name"));
         entities.add(new RecyclerEntity(R.mipmap.phone, "绑定手机", 0, "未绑定", "", "phone", true));
-        // entities.add(new RecyclerEntity("绑定欧易UID", 0, "未绑定", "", "uid"));
 
         entities3.add(new RecyclerEntity(R.mipmap.pass, "修改支付密码", 0, "", "", "pay"));
         entities3.add(new RecyclerEntity(R.mipmap.card, "实名制", 0, "未实名", "", "card"));
+        entities3.add(new RecyclerEntity(R.mipmap.code, "收款设置", 0, "", "", "code"));
 
         List<RecyclerEntity> entities1 = new ArrayList<>();
         entities1.add(new RecyclerEntity(R.mipmap.log_off, "注销账号", 0, "", "", "log_off"));
-        // entities1.add(new RecyclerEntity(R.mipmap.complaint, "建议和反馈", 0, "", "", "j"));
         entities1.add(new RecyclerEntity(R.mipmap.complaint, "关于", 0, "", "", "g"));
 
         List<RecyclerEntity> entities2 = new ArrayList<>();
@@ -75,35 +74,28 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
             return;
         }
         switch (entity.getKey()) {
-            case "name":
-            case "uid": {
+            case "name" -> {
                 Intent intent = new Intent(this, ModifyNameActivity.class);
                 intent.putExtra("name", entity.text);
                 startActivity(intent);
-                break;
             }
-            case "pay":
-                startActivity(new Intent(this, SetPayPassActivity.class));
-                break;
-            case "back":
+            case "pay" -> startActivity(new Intent(this, SetPayPassActivity.class));
+            case "back" -> {
                 SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                 sharedPreferences.edit().clear().apply();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 finish();
-                break;
-            case "g":
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-            case "card":
+            }
+            case "g" -> startActivity(new Intent(this, AboutActivity.class));
+            case "card" -> {
                 if (entity.isArray) {
                     return;
                 }
                 startActivity(new Intent(this, CardActivity.class));
-                break;
-            case "log_off":
-                startActivity(new Intent(this, LogOffActivity.class));
-                break;
+            }
+            case "log_off" -> startActivity(new Intent(this, LogOffActivity.class));
+            case "code" -> startActivity(new Intent(this, SetPaymentActivity.class));
         }
     }
 
@@ -139,6 +131,7 @@ public class SetUserActivity extends AppCompatActivity implements OnRecyclerItem
         } else {
             entities3.add(new RecyclerEntity(R.mipmap.card, "实名制", 0, "未实名", "", "card"));
         }
+        entities3.add(new RecyclerEntity(R.mipmap.code, "收款设置", 0, "", "", "code"));
         binding.recycle.notifyDataSetChanged();
     }
 }

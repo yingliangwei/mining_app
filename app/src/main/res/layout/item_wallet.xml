@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="￥0.00"
+                android:text="@string/_0_00_money"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </LinearLayout>

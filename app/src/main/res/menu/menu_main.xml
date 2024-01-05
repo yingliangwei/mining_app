@@ -14,7 +14,7 @@
     <item
         android:icon="@mipmap/task"
         android:orderInCategory="2"
-        android:title="任务" />
+        android:title="@string/task" />
     <item
         android:icon="@mipmap/user"
         android:orderInCategory="3"

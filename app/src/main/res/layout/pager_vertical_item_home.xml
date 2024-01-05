@@ -41,7 +41,7 @@
         android:visibility="visible">
 
         <com.github.ybq.android.spinkit.SpinKitView
-            style="@style/SpinKitView.Large.Wave"
+            style="@style/SpinKitView.Large.Circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:SpinKit_Color="@color/colorPrimary" />

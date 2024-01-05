@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="充值信息" />
+            app:title="@string/Top_up_information" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -42,12 +42,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="充值信息"
-                        android:textColor="@color/black" />
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -56,13 +50,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="充币USDT：" />
+                            android:text="@string/USDT_Deposit" />
 
                         <TextView
                             android:id="@+id/usdt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/_0"
                             android:textColor="@android:color/holo_red_dark"
                             android:textIsSelectable="true"
                             android:textSize="20sp" />
@@ -77,19 +71,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="超时：" />
+                            android:text="@string/Timeout" />
 
                         <TextView
                             android:id="@+id/time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/_0"
                             android:textColor="@android:color/holo_red_dark" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="/秒" />
+                            android:text="@string/second" />
                     </LinearLayout>
 
 
@@ -102,13 +96,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="欧易UID：" />
+                            android:text="@string/uid" />
 
                         <TextView
                             android:id="@+id/uid"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/_0"
                             android:textColor="@color/black"
                             android:textIsSelectable="true" />
                     </LinearLayout>
@@ -122,13 +116,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="充币网络：" />
+                            android:text="@string/Deposit_network" />
 
                         <TextView
                             android:id="@+id/address_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="USDT-Optimism"
+                            android:text="@string/usdt_optimism"
                             android:textColor="@color/black"
                             android:textIsSelectable="true" />
                     </LinearLayout>
@@ -142,13 +136,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="充币地址：" />
+                            android:text="@string/Deposit_address" />
 
                         <TextView
                             android:id="@+id/address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0x00"
+                            android:text="@string/_0x00"
                             android:textColor="@color/black"
                             android:textIsSelectable="true" />
                     </LinearLayout>
@@ -162,13 +156,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="充币状态：" />
+                            android:text="@string/Deposit_status" />
 
                         <TextView
                             android:id="@+id/type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="等待充币到账"
+                            android:text="@string/Wait_for_the_deposit_to_arrive"
                             android:textColor="@color/black"
                             android:textIsSelectable="true" />
                     </LinearLayout>
@@ -187,10 +181,11 @@
                     </LinearLayout>
 
                     <TextView
+                        android:textColor="@color/bfbfbf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="温馨提示\n1.不管你用什么方式充币(转账),只要在规定时间内充币上面金额，即可到账\n.请在规定时间充值,充值未到账请联系客服" />
+                        android:text="@string/n1_n" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

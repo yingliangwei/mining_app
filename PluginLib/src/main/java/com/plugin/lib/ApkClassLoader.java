@@ -1,36 +1,82 @@
 package com.plugin.lib;
 
+import android.util.Log;
+
+import com.plugin.activity.Library;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Enumeration;
 
 import dalvik.system.BaseDexClassLoader;
 import dalvik.system.DexClassLoader;
 
-public class ApkClassLoader extends DexClassLoader {
+public class ApkClassLoader extends BaseDexClassLoader {
     private final ClassLoader mGrandParent;
     private Method mFindLibraryMethod;
     private final ClassLoader classLoader;
 
     public ApkClassLoader(String dexPath, String optimizedDirectory, String librarySearchPath, ClassLoader parent) {
-        super(dexPath, optimizedDirectory, librarySearchPath, parent);
+        super(dexPath, new File(optimizedDirectory), librarySearchPath, parent);
         mGrandParent = parent;
         this.classLoader = parent;
     }
 
     @Override
+    public URL getResource(String name) {
+        System.out.println(name);
+        return super.getResource(name);
+    }
+
+    @Override
+    public Enumeration<URL> getResources(String name) throws IOException {
+        System.out.println(name);
+        return super.getResources(name);
+    }
+
+
+
+    @Override
+    public InputStream getResourceAsStream(String name) {
+        System.out.println(name);
+        return super.getResourceAsStream(name);
+    }
+
+    @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        if (name.contains("Activity") || name.contains("activity")) {
-            return super.findClass(name);
-        }
+        System.out.println(name);
         try {
             Class<?> c = classLoader.loadClass(name);
             if (c != null) {
+                loadLibraries(c);
                 return c;
             }
         } catch (Exception e) {
             e.fillInStackTrace();
         }
         return super.findClass(name);
+    }
+
+
+    private void loadLibraries(Class<?> clazz) {
+        // 获取类的注解信息
+        Library libAnnotation = clazz.getAnnotation(Library.class);
+        if (libAnnotation != null) {
+            // 加载库文件
+            String[] libraries = libAnnotation.value();
+            for (String library : libraries) {
+                try {
+                    System.loadLibrary(library);
+                } catch (UnsatisfiedLinkError e) {
+                    // 忽略未找到库文件的错误
+                    Log.e("MyClassLoader", "loadLibrary failed: " + e.getMessage());
+                }
+            }
+        }
     }
 
 

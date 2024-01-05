@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="系统通知" />
+            app:title="@string/System_notifications" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -44,7 +44,7 @@
             android:gravity="center">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

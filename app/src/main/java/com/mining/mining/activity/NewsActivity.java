@@ -66,12 +66,8 @@ public class NewsActivity extends AppCompatActivity implements OnData, OnRefresh
 
     @Override
     public void connect(SocketManage socketManage) {
-        try {
-            SharedUtil sharedUtil = new SharedUtil(this);
-            socketManage.print(sharedUtil.getLogin(12, 7, start, end).toString());
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
+        SharedUtil sharedUtil = new SharedUtil(this);
+        socketManage.print(sharedUtil.getLogin(12, 7, start, end).toString());
     }
 
     @Override

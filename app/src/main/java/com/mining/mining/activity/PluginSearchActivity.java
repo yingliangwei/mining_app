@@ -77,8 +77,8 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
 
     @Override
     public void error(String error) {
-        binding.Smart.finishRefresh(1000, false, false);
-        binding.Smart.finishLoadMore(1000, false, false);
+        binding.Smart.finishRefresh( false);
+        binding.Smart.finishLoadMore(false);
         binding.spinKit.setVisibility(View.GONE);
     }
 
@@ -100,8 +100,8 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
                 adapter.notifyItemChanged(list.size() - 1);
             }
         }
-        binding.Smart.finishRefresh(1000, true, false);
-        binding.Smart.finishLoadMore(1000, true, false);
+        binding.Smart.finishRefresh( true);
+        binding.Smart.finishLoadMore(true);
     }
 
 

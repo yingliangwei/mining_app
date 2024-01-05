@@ -22,7 +22,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentInsetStart="10dp"
+                app:contentInsetStart="5dp"
                 app:menu="@menu/menu_home"
                 app:subtitle="@string/app_name"
                 app:title="hello"
@@ -37,11 +37,10 @@
 
                     <TextView
                         android:id="@+id/name_x"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/circle_background"
                         android:gravity="center"
-                        android:text="w"
                         android:textColor="@color/white"
                         android:textSize="21sp" />
 
@@ -55,7 +54,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:text="hello"
+                            android:text="@string/hello"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -68,6 +67,7 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -82,11 +82,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_margin="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/search_background"
                 android:drawablePadding="10dp"
                 android:gravity="center|start"
-                android:hint="搜索游戏"
+                android:hint="@string/search_game"
                 android:padding="10dp"
                 android:textSize="11sp"
                 app:drawableStartCompat="@mipmap/search" />
@@ -97,12 +100,13 @@
                 android:orientation="vertical">
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:orientation="vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:paddingBottom="5dp">
 
                     <com.youth.banner.Banner
@@ -113,50 +117,39 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="5dp"
                         android:gravity="center|start"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:src="@mipmap/ic_ape_new_gemstone" />
 
                         <TextView
                             android:id="@+id/gem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.00"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="15dp"
-                            android:layout_marginStart="5dp"
-                            android:background="?colorPrimary" />
+                            android:text="@string/_0_00"
+                            android:textColor="@color/white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="今日收益:"
-                            android:textSize="10sp" />
+                            android:text="@string/day_5"
+                            android:textColor="@color/bfbfbf"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/day_gem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="0.00"
+                            android:text="@string/_0_00"
                             android:textColor="@android:color/holo_green_dark" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="15dp"
-                            android:layout_marginStart="5dp"
-                            android:background="?colorPrimary" />
-
 
                         <ImageView
                             android:id="@+id/refresh"
@@ -165,9 +158,10 @@
                             android:layout_marginStart="5dp"
                             android:background="?selectableItemBackgroundBorderless"
                             android:padding="5dp"
-                            android:src="@mipmap/refresh" />
+                            android:src="@mipmap/refresh"
+                            app:tint="@color/white" />
                     </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -180,7 +174,7 @@
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:padding="8dp"
-                        app:indicator_color="@color/purple_500"
+                        app:indicator_color="?colorPrimary"
                         app:indicator_corners="50dp"
                         app:indicator_gravity="fill"
                         app:tab_height="32dp"
@@ -206,7 +200,7 @@
         android:visibility="gone">
 
         <com.github.ybq.android.spinkit.SpinKitView
-            style="@style/SpinKitView.Large.Wave"
+            style="@style/SpinKitView.Large.Circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:SpinKit_Color="@color/colorPrimary" />

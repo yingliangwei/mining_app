@@ -12,6 +12,16 @@ public class SharedUtil {
         sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
     }
 
+    public JSONObject getId() {
+        JSONObject jsonObject = new JSONObject();
+        String id = sharedPreferences.getString("id", null);
+        if (id == null) {
+            return null;
+        }
+        jsonObject.put("id", id);
+        return jsonObject;
+    }
+
     public JSONObject getLogin() {
         String id = sharedPreferences.getString("id", null);
         String _key = sharedPreferences.getString("_key", null);

@@ -38,7 +38,6 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.setImmersiveStatusBar(this, false);
         String className = getIntent().getStringExtra("className");
         mid = getIntent().getIntExtra("mid", 0);
         if (id == -1) {
@@ -53,15 +52,18 @@ public class BaseActivity extends Activity {
             if (newInstance instanceof PluginInterface) {
                 pluginInterface = (PluginInterface) newInstance;
                 pluginInterface.attachContext(this);
+                boolean ImmersiveStatusBar = pluginInterface.setImmersiveStatusBar();
+                StatusBarUtil.setImmersiveStatusBar(this, ImmersiveStatusBar);
                 Bundle bundle = new Bundle();
                 pluginInterface.onCreate(bundle);
             } else {
                 log = "PluginInterface instanceof" + newInstance.getClass().getName();
                 init();
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (Exception | Error e) {
             log = e.getMessage();
             System.out.println(e.getMessage());
+            init();
         }
     }
 
@@ -71,8 +73,7 @@ public class BaseActivity extends Activity {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         Toolbar toolbar = new Toolbar(this);
-        toolbar.setTitle("异常");
-        toolbar.setNavigationIcon(R.mipmap.close);
+        toolbar.setFitsSystemWindows(true);
         toolbar.setNavigationOnClickListener(v -> finish());
         linearLayout.addView(toolbar);
 

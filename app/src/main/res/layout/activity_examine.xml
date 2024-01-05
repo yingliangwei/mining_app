@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             app:menu="@menu/menu_examine"
             app:navigationIcon="@mipmap/close"
-            app:title="提现审核" />
+            app:title="@string/Withdrawal_review" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout

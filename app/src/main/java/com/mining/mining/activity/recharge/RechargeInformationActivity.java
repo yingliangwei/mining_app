@@ -1,9 +1,7 @@
 package com.mining.mining.activity.recharge;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
@@ -19,7 +17,9 @@ import com.mining.mining.databinding.ActivityRechargeInformationBinding;
 import com.mining.util.StatusBarUtil;
 import com.mining.util.StringUtil;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class RechargeInformationActivity extends AppCompatActivity implements Runnable {
     private ActivityRechargeInformationBinding binding;
@@ -63,26 +63,29 @@ public class RechargeInformationActivity extends AppCompatActivity implements Ru
 
 
     private void initTime(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         try {
-            Date date = sdf.parse(time);
-            long now = System.currentTimeMillis();
-            long di = date.getTime();
-            //加2秒，防止获取不到数据
-            long diff = di - now;
+            LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(now, dateTime);
+            long diff = duration.toMillis();
+
             if (countDownTimer != null) {
                 countDownTimer.cancel();
                 countDownTimer = null;
             }
+
             if (diff <= 0) {
                 return;
             }
+
             countDownTimer = new CountDownTimer(diff, 1_000) {
                 @Override
-                public void onTick(long seconds) {
-                    SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
-                    String formattedTime = formatter.format(new Date(seconds));
-                    // 执行您的逻辑
+                public void onTick(long millisUntilFinished) {
+                    long seconds = millisUntilFinished / 1000;
+                    long minutes = seconds / 60;
+                    long remainingSeconds = seconds % 60;
+                    String formattedTime = String.format("%02d:%02d", minutes, remainingSeconds);
                     binding.time.setText(formattedTime);
                 }
 
@@ -93,7 +96,7 @@ public class RechargeInformationActivity extends AppCompatActivity implements Ru
                 }
             }.start();
         } catch (Exception e) {
-            e.fillInStackTrace();
+            e.printStackTrace();
         }
     }
 

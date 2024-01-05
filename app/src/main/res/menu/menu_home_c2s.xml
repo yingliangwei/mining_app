@@ -4,13 +4,15 @@
 
     <item
         android:icon="@mipmap/more"
-        android:title="更多"
+        android:title="@string/all"
         app:showAsAction="always">
         <menu>
             <item
-                android:icon="@mipmap/v"
+                android:id="@+id/Order"
+                android:title="@string/orderManagement" />
+            <item
                 android:id="@+id/v"
-                android:title="商家入驻" />
+                android:title="@string/Merchant_settlement" />
         </menu>
     </item>
 </menu>

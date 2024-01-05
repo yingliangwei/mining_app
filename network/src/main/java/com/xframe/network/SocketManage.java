@@ -1,15 +1,24 @@
 package com.xframe.network;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.xframe.network.util.Application;
+
+import org.json.JSONObject;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -69,7 +78,7 @@ public class SocketManage implements Handler.Callback, Runnable {
             socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
             socketChannel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ);
-            socketChannel.connect(new InetSocketAddress("f36i940486.wicp.vip", 17468));
+            socketChannel.connect(new InetSocketAddress("192.168.1.19", 6333));
             long timeout = System.currentTimeMillis() + 5_000; // 5 seconds
             while (isRun) {
                 int readyChannels = selector.select(timeout);
@@ -110,9 +119,7 @@ public class SocketManage implements Handler.Callback, Runnable {
                 }
             }
         } catch (Exception e) {
-            if (data != null) {
-                data.error(e.getMessage());
-            }
+            //sendMessage(2, e.getMessage());
             return;
         }
         Log.d(TAG, "Connection close");
@@ -141,7 +148,11 @@ public class SocketManage implements Handler.Callback, Runnable {
         if (body.endsWith("\n")) {
             String[] strings = body.split("\n");
             for (String value : strings) {
-                System.out.println(value);
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                } catch (Exception e) {
+                    return;
+                }
                 handleData(value);
             }
             close();
@@ -154,6 +165,7 @@ public class SocketManage implements Handler.Callback, Runnable {
     private void handleData(String toString) {
         sendMessage(1, toString);
     }
+
 
     /**
      * @param text 发送短信 * @return

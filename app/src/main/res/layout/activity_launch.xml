@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/a"
     android:layout_width="match_parent"
@@ -8,76 +9,45 @@
     android:orientation="vertical"
     tools:ignore="RelativeOverlap">
 
-    <ImageView
-        android:id="@+id/preload_diagram"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:importantForAccessibility="no"
-        android:scaleType="centerCrop" />
+    <com.github.ybq.android.spinkit.SpinKitView
+        style="@style/SpinKitView.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:SpinKit_Color="@color/colorPrimary" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center|top"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center|start"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center|start"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <com.xframe.widget.CircleImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/icon" />
-
-                <TextView
-                    android:id="@+id/Color_A"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_name"
-                    android:textColor="@color/black"
-                    android:textSize="21sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <com.xframe.widget.CircleImageView
+                android:id="@+id/image_a"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/icon" />
 
             <TextView
-                android:id="@+id/ColorB"
+                android:id="@+id/Color_A"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:text="@string/app_introduce"
-                android:textSize="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="end|center">
-
-            <TextView
-                android:id="@+id/jump"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/bg_waring"
-                android:gravity="center"
-                android:text="@string/app_jump"
-                android:textColor="@color/white"
-                android:visibility="visible" />
+                android:layout_marginStart="10dp"
+                android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:textSize="31sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

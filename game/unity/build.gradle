@@ -3,8 +3,6 @@ plugins {
 }
 
 android {
-    ndkPath "D:/Unity Hub/Hub/2022.3.10f1c1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
-
     namespace 'com.mining.unity'
     compileSdk 33
 

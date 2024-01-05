@@ -100,8 +100,8 @@ public class PluginLogActivity extends AppCompatActivity implements OnData, OnRe
                 adapter.notifyItemChanged(list.size() - 1);
             }
         }
-        binding.Smart.finishRefresh(1000, true, false);
-        binding.Smart.finishLoadMore(1000, true, false);
+        binding.Smart.finishRefresh(true);
+        binding.Smart.finishLoadMore( true);
     }
 
     @Override

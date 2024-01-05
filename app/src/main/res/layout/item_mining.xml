@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -20,25 +21,25 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="宝石矿池"
+                android:text="@string/Gem_Pool"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/rule"
-                android:layout_width="65dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_b"
-                android:drawableEnd="@mipmap/arr"
-                android:drawableTint="#85BFBFBF"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="规则详解"
+                android:text="@string/Detailed_explanation_of_the_rules"
                 android:textColor="#85BFBFBF"
-                android:textSize="10sp" />
+                android:textSize="11sp"
+                app:drawableEndCompat="@mipmap/arr"
+                app:drawableTint="#85BFBFBF" />
         </LinearLayout>
 
         <LinearLayout
@@ -73,9 +74,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="距离过期:0/天"
+                        android:text="@string/_0_day"
                         android:textColor="@color/bfbfbf"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
 
@@ -98,9 +99,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="累计 %s"
+                        android:text="@string/Cumulative"
                         android:textColor="@color/bfbfbf"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <TextView
@@ -108,9 +109,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="矿池有效期: %s"
+                    android:text="@string/Validity_period_of_the_mining_pool"
                     android:textColor="@color/bfbfbf"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -135,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="矿洞等级Lv.0"
+                        android:text="@string/lv_0"
                         android:textColor="@color/bfbfbf" />
 
                     <LinearLayout
@@ -156,7 +157,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="0/天"
+                            android:text="@string/_0_day_1"
                             android:textColor="@color/bfbfbf" />
                     </LinearLayout>
                 </LinearLayout>
@@ -172,7 +173,7 @@
                         android:layout_height="50dp"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="挖矿中..."
+                        android:text="@string/Mining"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:visibility="gone" />
@@ -192,7 +193,7 @@
                             android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:background="@mipmap/bg_ape_product_rocks"
-                            android:text="挖矿(0)"
+                            android:text="@string/Mining_0"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:visibility="visible" />
@@ -207,7 +208,7 @@
                             android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:background="@mipmap/bg_ape_product_rocks"
-                            android:text="(0)宝石购买"
+                            android:text="@string/_0_game_buy"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:visibility="visible" />

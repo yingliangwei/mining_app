@@ -57,8 +57,13 @@ public class InviteCodeActivity extends AppCompatActivity implements Runnable, V
         binding = ActivityInviteCodeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         StatusBarUtil.setImmersiveStatusBar(this, false);
+        initToolbar();
         initView();
         SocketManage.init(this);
+    }
+
+    private void initToolbar() {
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {

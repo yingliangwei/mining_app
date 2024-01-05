@@ -15,10 +15,11 @@
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close_w"
-            app:title="分享至"
+            app:title="@string/Share_to"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -33,7 +34,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="@color/black"
                 app:cardCornerRadius="10dp">
@@ -72,7 +73,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="微信好友"
+                        android:text="@string/WeChat_friends"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -96,7 +97,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="微信朋友圈"
+                        android:text="@string/WeChat_Moments"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -119,7 +120,7 @@
                         android:id="@+id/wx_d"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="储存图片"
+                        android:text="@string/Save_the_image"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </LinearLayout>
@@ -133,7 +134,7 @@
             android:gravity="center">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

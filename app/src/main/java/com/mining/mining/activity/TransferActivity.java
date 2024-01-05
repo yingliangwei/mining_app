@@ -68,11 +68,25 @@ public class TransferActivity extends AppCompatActivity implements OnData, PayPa
         StatusBarUtil.setImmersive(this, true);
         binding = ActivityTransferBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        initData();
         initToolbar();
         initView();
         SocketManage.init(getUsdt);
     }
 
+    private void initData() {
+        String id = getIntent().getStringExtra("id");
+        if (id == null) {
+            return;
+        }
+        binding.uid.setText(id);
+        SocketManage.init(onData);
+        String money = getIntent().getStringExtra("money");
+        if (money == null) {
+            return;
+        }
+        binding.money.setText(money);
+    }
 
     private void initView() {
         binding.userInformation.setOnClickListener(this);

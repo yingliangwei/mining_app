@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             app:menu="@menu/menu_recharge"
             app:navigationIcon="@mipmap/close"
-            app:title="充值" />
+            app:title="@string/recharge" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="充值金额(USDT)"
+                    android:text="@string/recharge_usdt"
                     android:textColor="@color/black" />
 
                 <LinearLayout
@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="0.00000000"
+                        android:hint="@string/_0_00000000"
                         android:inputType="numberDecimal"
                         android:padding="10dp"
                         android:textColor="@color/black" />
@@ -78,16 +78,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_button_back"
+                    android:background="@drawable/bg_button"
                     android:gravity="center"
-                    android:text="充值"
+                    android:text="@string/recharge"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="温馨提示:\n1.建议使用欧易内部转账(免手续费)\n2.如果充值未到账请联系客服进行处理\n3.如果线路以满，更换金额金额即可如：1USDT+0.00000001=1.00000001USDT以此类推\n4.欧易下载地址:www.okx.com"
+                    android:text="@string/n1_n2_n3_1usdt_0_00000001_1_00000001usdt_n4_www_okx_com"
                     android:textColor="@color/bfbfbf"
                     android:textIsSelectable="true" />
             </LinearLayout>

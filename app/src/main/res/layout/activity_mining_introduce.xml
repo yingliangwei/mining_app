@@ -17,12 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close_w"
-            app:title="矿池规则介绍"
+            app:title="@string/mining_pool"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabSelectedTextColor="@color/white"

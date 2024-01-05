@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="设置密码" />
+            app:title="@string/set_pass" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.cardview.widget.CardView
@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="原支付密码"
+                    android:text="@string/pay_pass"
                     android:textColor="@color/black" />
 
                 <LinearLayout
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="新支付密码"
+                android:text="@string/new_pay_pass"
                 android:textColor="@color/black" />
 
             <LinearLayout
@@ -97,8 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_button_back"
-                android:text="修改密码"
+                android:background="@drawable/bg_button"
+                android:text="@string/Change_your_password"
                 android:textColor="@color/white" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

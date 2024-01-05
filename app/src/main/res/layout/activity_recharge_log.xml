@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="充值记录" />
+            app:title="@string/Recharge_history" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
         <LinearLayout
             android:id="@+id/spin_kit"
             android:layout_width="match_parent"
@@ -52,10 +53,10 @@
             android:gravity="center">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
-                app:SpinKit_Color="@color/colorPrimary"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:SpinKit_Color="@color/colorPrimary" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

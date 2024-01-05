@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="最近游戏记录" />
+            app:title="@string/Recent_game_records" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -61,7 +61,7 @@
             android:gravity="center">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

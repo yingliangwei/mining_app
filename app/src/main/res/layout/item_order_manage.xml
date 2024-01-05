@@ -31,9 +31,8 @@
                 android:layout_height="20dp"
                 android:background="@drawable/circle_background"
                 android:gravity="center"
-                android:text="w"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
 
 
             <LinearLayout
@@ -70,8 +69,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="数量"
-                android:textSize="10sp" />
+                android:text="@string/size"
+                android:textSize="11sp" />
 
 
             <LinearLayout
@@ -86,16 +85,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="0"
+                    android:text="@string/_0"
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
                 <TextView
+                    android:id="@+id/gem_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="宝石"
-                    android:textSize="10sp" />
+                    android:text="@string/game"
+                    android:textSize="11sp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -109,24 +109,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="单价"
-                android:textSize="10sp" />
+                android:text="@string/unit_price"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/usdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="0"
+                android:text="@string/_0"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
 
             <TextView
+                android:id="@+id/usdt_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="USDT"
-                android:textSize="10sp" />
+                android:text="@string/usdt"
+                android:textSize="11sp" />
 
         </LinearLayout>
 
@@ -149,18 +150,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="USDT"
-                android:textSize="10sp" />
+                android:text="@string/usdt"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/exit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_back"
+                android:background="@drawable/bg_button"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="下架"
+                android:text="@string/Taken_off_the_shelves"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

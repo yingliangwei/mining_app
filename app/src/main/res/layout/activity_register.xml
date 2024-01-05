@@ -42,7 +42,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.xframe.widget.CircleImageView
+                <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@mipmap/icon" />
@@ -71,8 +71,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:theme="@style/button">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -142,7 +141,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
-                            android:background="@drawable/bg_button_back"
+                            android:background="@drawable/bg_button"
                             android:padding="10dp"
                             android:text="@string/app_get_verify"
                             android:textColor="@color/white" />
@@ -240,7 +239,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_button_back"
+                    android:background="@drawable/bg_button"
                     android:text="@string/register"
                     android:textColor="@color/white" />
             </LinearLayout>

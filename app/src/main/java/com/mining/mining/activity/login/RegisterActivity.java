@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityRegisterBinding;
-import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;

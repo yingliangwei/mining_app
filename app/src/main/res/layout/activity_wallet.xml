@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="我的钱包" />
+            app:title="@string/my_wallet" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="我的USDT余额"
+                        android:text="@string/My_USDT_balance"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -60,7 +60,7 @@
                         android:layout_marginTop="10dp"
                         android:drawablePadding="5dp"
                         android:gravity="center|start"
-                        android:text="0.00"
+                        android:text="@string/_0_00"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -102,7 +102,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="我的宝石余额"
+                        android:text="@string/Gem_balance"
                         android:textColor="@color/black" />
 
                     <LinearLayout

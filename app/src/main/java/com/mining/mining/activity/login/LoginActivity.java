@@ -21,7 +21,6 @@ import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.activity.MainActivity;
 import com.mining.mining.databinding.ActivityLoginBinding;
-import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
@@ -66,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements OnData, View.OnC
         jsonObject.put("user_id", user_id);
         jsonObject.put("pass", pass);
         socketManage.print(jsonObject.toString());
+        System.out.println(jsonObject);
     }
 
     @Override

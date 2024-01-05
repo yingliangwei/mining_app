@@ -5,15 +5,16 @@
     android:orientation="vertical">
 
     <View
-        android:background="@color/white"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"/>
+        android:layout_height="20dp"
+        android:background="@color/white" />
+
     <Toolbar
-        android:background="@color/white"
-        android:titleTextColor="@color/black"
-        android:title="@string/app_name"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:background="@color/white"
+        android:title="@string/app_name"
+        android:titleTextColor="@color/black">
 
         <LinearLayout
             android:layout_width="wrap_content"

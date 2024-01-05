@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="转账"
+            app:title="@string/Transfer"
             app:titleTextColor="@color/black" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -47,7 +47,6 @@
                     android:layout_height="60dp"
                     android:background="@drawable/circle_background"
                     android:gravity="center"
-                    android:text="w"
                     android:textColor="@color/white"
                     android:textSize="21sp" />
 
@@ -76,7 +75,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ID:"
+                            android:text="@string/id"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
@@ -85,7 +84,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:text="0"
+                            android:text="@string/_0"
                             android:textColor="@color/black"
                             android:textIsSelectable="true"
                             android:textStyle="bold" />
@@ -107,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/user_money"
@@ -130,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="输入转账账号"
+                        android:hint="@string/Account"
                         android:inputType="phone"
                         android:padding="10dp" />
 
@@ -150,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="输入转账数量"
+                        android:hint="@string/Enter_the_amount_to_be_transferred"
                         android:inputType="numberDecimal"
                         android:padding="10dp" />
 
@@ -161,37 +160,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:theme="@style/button">
+                    android:orientation="horizontal">
 
-                    <TextView
+                    <Button
+                        android:textColor="@color/white"
                         android:id="@+id/user_information"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_button_back"
+                        android:background="@drawable/bg_button"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="查询信息" />
+                        android:text="@string/Query_information" />
 
-                    <TextView
+                    <Button
+                        android:textColor="@color/white"
                         android:id="@+id/transfer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_button_back"
+                        android:background="@drawable/bg_button"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="转账" />
+                        android:text="@string/Transfer" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="温馨提示\n1.请先确认信息在进行转账,否则造成没必要的损失" />
+                    android:text="@string/n1"
+                    android:textColor="@color/bfbfbf" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

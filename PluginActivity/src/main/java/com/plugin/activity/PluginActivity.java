@@ -30,6 +30,7 @@ public class PluginActivity extends Activity implements PluginInterface {
         }
     }
 
+
     @Override
     public SharedPreferences getSharedPreferences(String name, int mode) {
         if (thisContex != null) {
@@ -65,6 +66,11 @@ public class PluginActivity extends Activity implements PluginInterface {
         if (thisContex == null) {
             super.onCreate(bundle);
         }
+    }
+
+    @Override
+    public boolean setImmersiveStatusBar() {
+        return true;
     }
 
     @Override

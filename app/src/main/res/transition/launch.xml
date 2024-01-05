@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="jump"
+    android:duration="1000"
+    android:fillAfter="false"
+    android:fillBefore="true">
+    <translate
+        android:fromXDelta="0dp"
+        android:fromYDelta="0dp"
+        android:toXDelta="0dp"
+        android:toYDelta="100dp" />
+    <translate
+        android:fromXDelta="0dp"
+        android:fromYDelta="100dp"
+        android:toXDelta="0dp"
+        android:toYDelta="0dp" />
+</animation>

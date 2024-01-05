@@ -34,7 +34,8 @@ public class USDTBillActivity extends AppCompatActivity implements OnData, OnRef
     public ActivityUsdtBillBinding binding;
     private UsdtBillAdapter adapter;
     private final List<UsdtBillEntity> list = new ArrayList<>();
-    private int start = 20, end = 0;
+    private final int start = 20;
+    private int end = 0;
     private String bill_id;
 
     @Override
@@ -85,8 +86,8 @@ public class USDTBillActivity extends AppCompatActivity implements OnData, OnRef
 
     @Override
     public void error(String error) {
-        binding.Smart.finishRefresh(1000, false, false);
-        binding.Smart.finishLoadMore(1000, false, false);
+        binding.Smart.finishRefresh(false);
+        binding.Smart.finishLoadMore(false);
     }
 
     @Override
@@ -107,8 +108,8 @@ public class USDTBillActivity extends AppCompatActivity implements OnData, OnRef
             String msg = jsonObject.getString("msg");
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }
-        binding.Smart.finishRefresh(1000, true, false);
-        binding.Smart.finishLoadMore(1000, true, false);
+        binding.Smart.finishRefresh(true);
+        binding.Smart.finishLoadMore(true);
     }
 
     @SuppressLint("NotifyDataSetChanged")

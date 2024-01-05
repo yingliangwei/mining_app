@@ -1,0 +1,34 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.scwang.smart.drawable.path'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 30
+        targetSdk 34
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    api project(':SmartRefreshLayout:refresh-drawable-paint')
+}

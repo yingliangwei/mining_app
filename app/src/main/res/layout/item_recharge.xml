@@ -16,7 +16,7 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="充值过期"
+            android:text="@string/The_top_up_expires"
             android:textColor="@color/black" />
 
         <LinearLayout
@@ -29,8 +29,8 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2023/09/11 17:02:06"
-                android:textSize="10sp" />
+                android:text="@string/app_search"
+                android:textSize="11sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -45,7 +45,7 @@
             android:id="@+id/usdt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+1"
+            android:text="@string/_1"
             android:textColor="@android:color/holo_red_dark" />
     </LinearLayout>
 </LinearLayout>

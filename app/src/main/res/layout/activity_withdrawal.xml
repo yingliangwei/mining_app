@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             app:menu="@menu/menu_withdrawal"
             app:navigationIcon="@mipmap/close"
-            app:title="提现" />
+            app:title="@string/Payouts" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -30,8 +30,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="欧易邮箱、手机"
+                    android:text="@string/OKX_email_mobile_phone"
                     android:textColor="@color/black" />
 
                 <LinearLayout
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="提现金额(USDT)"
+                    android:text="@string/Withdrawal_Amount_USDT"
                     android:textColor="@color/black" />
 
                 <LinearLayout
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="0.00000000"
+                        android:hint="@string/_0_00000000"
                         android:inputType="numberDecimal"
                         android:padding="10dp"
                         android:textColor="@color/black" />
@@ -119,14 +119,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="可用USDT: " />
+                        android:text="@string/Available_in_USDT" />
 
                     <TextView
                         android:id="@+id/user_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="0" />
+                        android:text="@string/_0" />
                 </LinearLayout>
 
                 <Button
@@ -134,16 +134,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_button_back"
+                    android:background="@drawable/bg_button"
                     android:gravity="center"
-                    android:text="提现"
+                    android:text="@string/Payouts"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="温馨提示:\n1.本提现只支持欧易内部转账\n2.如果提现失败请联系客服进行处理\n3.请输入欧易邮箱或者手机号码\n4.欧易下载地址:www.okx.com"
+                    android:text="@string/n1_n2_n3_n4_www_okx_com"
                     android:textColor="@color/bfbfbf"
                     android:textIsSelectable="true" />
             </LinearLayout>

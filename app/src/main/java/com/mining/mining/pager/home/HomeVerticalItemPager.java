@@ -37,7 +37,8 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
     private final String tab_id;
     private final List<PluginEntity> list = new ArrayList<>();
     private ItemVerticalAdapter adapter;
-    private int start = 20, end = 0;
+    private final int start = 20;
+    private int end = 0;
 
     public HomeVerticalItemPager(Context context, String tab_id) {
         super(context);
@@ -83,8 +84,8 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
 
     @Override
     public void error(String error) {
-        binding.Smart.finishLoadMore(1000, false, false);
-        binding.Smart.finishRefresh(1000, false, false);
+        binding.Smart.finishLoadMore(false);
+        binding.Smart.finishRefresh(false);
     }
 
     private void initData(JSONArray data) {
@@ -108,8 +109,8 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
             }
             initData(data);
         }
-        binding.Smart.finishLoadMore(1000, true, false);
-        binding.Smart.finishRefresh(1000, true, false);
+        binding.Smart.finishLoadMore(true);
+        binding.Smart.finishRefresh(true);
     }
 
     @Override

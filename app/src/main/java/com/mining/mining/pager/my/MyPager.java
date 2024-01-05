@@ -1,6 +1,5 @@
 package com.mining.mining.pager.my;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
 import com.mining.mining.activity.HelpActivity;
 import com.mining.mining.activity.TransferActivity;
-import com.mining.mining.activity.c2s.C2CActivity;
+import com.mining.mining.activity.c2s.gem.activity.C2CActivity;
+import com.mining.mining.activity.c2s.usdt.activity.UsdtC2cActivity;
 import com.mining.mining.activity.invite.InviteActivity;
 import com.mining.mining.activity.invite.InviteCodeActivity;
 import com.mining.mining.activity.set.SetUserActivity;
@@ -58,6 +59,8 @@ public class MyPager extends RecyclerAdapter implements OnData, View.OnClickList
         public void onItemClick(View view, int position) {
             if (position == 0) {
                 context.startActivity(new Intent(context, C2CActivity.class));
+            } else if (position == 1) {
+                context.startActivity(new Intent(context, UsdtC2cActivity.class));
             }
         }
     };
@@ -128,18 +131,17 @@ public class MyPager extends RecyclerAdapter implements OnData, View.OnClickList
         binding.login.setOnClickListener(this);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private void initRecycler() {
         List<TextDrawableEntity> entities = new ArrayList<>();
-        entities.add(new TextDrawableEntity("宝石市场", context.getDrawable(R.mipmap.ic_ape_new_gemstone)));
+        entities.add(new TextDrawableEntity("宝石市场", ContextCompat.getDrawable(getContext(), R.mipmap.ic_ape_new_gemstone), 1));
+        entities.add(new TextDrawableEntity("USDT市场", ContextCompat.getDrawable(getContext(), R.mipmap.usdt), 1));
         ItemAdapter itemAdapter = new ItemAdapter(context, entities);
         binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         binding.recycler.setAdapter(itemAdapter);
         binding.recycler.addOnItemTouchListener(new RecyclerItemClickListener(context, normal));
-        entities1.add(new TextDrawableEntity("我的钱包", context.getDrawable(R.mipmap.ic_wallet_black)));
-        entities1.add(new TextDrawableEntity("USDT转账", context.getDrawable(R.mipmap.transfer)));
-        entities1.add(new TextDrawableEntity("帮助", context.getDrawable(R.mipmap.help)));
-
+        entities1.add(new TextDrawableEntity("我的钱包", ContextCompat.getDrawable(getContext(), R.mipmap.ic_wallet_black)));
+        entities1.add(new TextDrawableEntity("USDT转账", ContextCompat.getDrawable(getContext(), R.mipmap.transfer)));
+        entities1.add(new TextDrawableEntity("帮助", ContextCompat.getDrawable(getContext(), R.mipmap.help)));
         itemAdapter1 = new ItemAdapter(context, entities1);
         binding.common.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         binding.common.setAdapter(itemAdapter1);
@@ -159,19 +161,23 @@ public class MyPager extends RecyclerAdapter implements OnData, View.OnClickList
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
+            JSONArray curve = jsonObject.getJSONArray("curve");
+            if (curve != null) {
+                float[] yValues = new float[curve.size()];
+                for (int i = 0; i < curve.size(); i++) {
+                    JSONObject jsonObject1 = curve.getJSONObject(i);
+                    String balance = jsonObject1.getString("balance");
+                    yValues[i] = Float.parseFloat(balance);
+                }
+                binding.lineChart.setValues(yValues);
+                binding.lineChart.requestLayout();
+            }
             JSONObject data = jsonObject.getJSONObject("data");
             initViewData(data);
             String gem = jsonObject.getString("sum");
             binding.gem.setText(StringUtil.toRe(gem));
             String invite_sum = jsonObject.getString("invite_sum");
             binding.inviteSum.setText(invite_sum);
-            String root = data.getString("root");
-            if (root.equals("1")) {
-                if (entities1.size() != 4) {
-                    entities1.add(new TextDrawableEntity("提现审核", ContextCompat.getDrawable(getContext(), R.mipmap.examine)));
-                }
-                itemAdapter1.notifyItemChanged(entities1.size() - 1);
-            }
             return;
         }
         String msg = jsonObject.getString("msg");
@@ -190,7 +196,6 @@ public class MyPager extends RecyclerAdapter implements OnData, View.OnClickList
         binding.name.setText(name);
         binding.nameX.setText(StringUtil.getStringStart(name));
     }
-
 
     @Override
     public void StatusBar(Activity activity) {

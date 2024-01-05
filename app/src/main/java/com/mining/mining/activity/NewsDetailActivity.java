@@ -8,12 +8,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.gson.Gson;
 import com.mining.mining.databinding.ActivityNewsDetailBinding;
+import com.mining.mining.entity.MessageEvent;
 import com.mining.mining.entity.NewsEntity;
+import com.mining.mining.pager.home.HomePager;
 import com.mining.mining.util.SharedUtil;
-import com.mining.util.MessageEvent;
 import com.mining.util.StatusBarUtil;
 import com.xframe.network.OnData;
 import com.xframe.network.SocketManage;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class NewsDetailActivity extends AppCompatActivity implements OnData {
@@ -56,5 +59,6 @@ public class NewsDetailActivity extends AppCompatActivity implements OnData {
 
     @Override
     public void handle(String ds) {
+        EventBus.getDefault().post(new MessageEvent(1, HomePager.class));
     }
 }

@@ -24,8 +24,8 @@
                 android:orientation="vertical">
 
                 <com.xframe.widget.CircleImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@mipmap/icon" />
 
                 <TextView
@@ -52,8 +52,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:theme="@style/button">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -153,7 +152,7 @@
                             android:layout_weight="1"
                             android:gravity="end"
                             android:padding="5dp"
-                            android:text="注册账号"
+                            android:text="@string/Sign_up_for_an_account"
                             android:textColor="?colorAccent" />
                     </LinearLayout>
                 </LinearLayout>
@@ -163,7 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_button_back"
+                    android:background="@drawable/bg_button"
                     android:gravity="center"
                     android:text="@string/login"
                     android:textColor="@color/white" />

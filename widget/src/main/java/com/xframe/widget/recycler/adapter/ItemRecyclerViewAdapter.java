@@ -56,7 +56,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
             holder.sub.setText(entity.text);
         }
         if (entity.isArray) {
-            holder.imageView.setVisibility(View.GONE);
+            holder.imageView.setVisibility(View.INVISIBLE);
         }
         if (xfRecyclerView.recyclerItemClickListener != null) {
             holder.ba.setOnClickListener(v -> xfRecyclerView.recyclerItemClickListener.onItemClick(entity, position));

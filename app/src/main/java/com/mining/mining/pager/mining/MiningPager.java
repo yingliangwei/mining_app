@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
@@ -16,8 +15,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.android.material.tabs.TabLayout;
 import com.mining.mining.R;
-import com.mining.mining.activity.MainActivity;
-import com.mining.mining.activity.c2s.C2CActivity;
+import com.mining.mining.activity.c2s.gem.activity.C2CActivity;
 import com.mining.mining.activity.task.ActivityTask;
 import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
@@ -116,7 +114,7 @@ public class MiningPager extends RecyclerAdapter implements TabLayout.OnTabSelec
                 tab.select();
             }
         });
-        binding.pager.setUserInputEnabled(false);
+        //binding.pager.setUserInputEnabled(false);
     }
 
     private void initTab() {

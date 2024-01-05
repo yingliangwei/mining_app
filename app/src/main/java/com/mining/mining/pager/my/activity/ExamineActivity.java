@@ -2,12 +2,10 @@ package com.mining.mining.pager.my.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.fastjson2.JSONArray;

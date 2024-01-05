@@ -1,6 +1,5 @@
 package com.mining.mining.pager.home;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -16,27 +15,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
-import com.github.ybq.android.spinkit.style.WanderingCubes;
-import com.github.ybq.android.spinkit.style.Wave;
 import com.google.gson.Gson;
 import com.mining.mining.R;
+import com.mining.mining.activity.CollectionActivity;
 import com.mining.mining.activity.MainActivity;
 import com.mining.mining.activity.NewsActivity;
 import com.mining.mining.activity.PluginLogActivity;
 import com.mining.mining.activity.PluginSearchActivity;
+import com.mining.mining.activity.scan.ScanActivity;
 import com.mining.mining.adapter.PagerAdapter;
 import com.mining.mining.adapter.RecyclerAdapter;
 import com.mining.mining.databinding.PagerHomeBinding;
@@ -211,6 +204,10 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
             context.startActivity(intent);
         } else if (item.getItemId() == R.id.plugin_log) {
             context.startActivity(new Intent(context, PluginLogActivity.class));
+        } else if (item.getItemId() == R.id.Sweep) {
+            context.startActivity(new Intent(context, ScanActivity.class));
+        } else if (item.getItemId() == R.id.PaymentCode) {
+            context.startActivity(new Intent(context, CollectionActivity.class));
         }
         return false;
     }

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             app:menu="@menu/menu_usdt_detail"
             app:navigationIcon="@mipmap/close"
-            app:title="我的USDT" />
+            app:title="@string/my_usdt" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -37,48 +37,50 @@
             android:orientation="vertical">
 
             <ImageView
-                android:padding="10dp"
                 android:id="@+id/image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:padding="10dp"
                 android:src="@mipmap/usdt_u" />
 
             <TextView
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="当前余额" />
+                android:text="@string/Current_balance"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/usdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="0.00"
+                android:text="@string/_0_00"
                 android:textColor="@color/black"
                 android:textSize="40sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
 
-        <TextView
+        <Button
+            android:visibility="gone"
             android:id="@+id/recharge"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:background="@drawable/bg_button_back"
+            android:background="@drawable/bg_button"
             android:gravity="center"
-            android:text="充值"
+            android:text="@string/recharge"
             android:textColor="@color/white" />
 
-        <TextView
+        <Button
+            android:visibility="visible"
             android:id="@+id/Withdrawal"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_button_back"
+            android:background="@drawable/bg_button"
             android:gravity="center"
-            android:text="提现"
+            android:text="@string/Payouts"
             android:textColor="@color/white" />
 
     </LinearLayout>

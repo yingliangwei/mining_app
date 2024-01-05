@@ -19,7 +19,6 @@ import com.mining.mining.R;
 import com.mining.mining.databinding.ActivityInviteBinding;
 import com.mining.mining.entity.InviteEntity;
 import com.mining.mining.util.SharedUtil;
-import com.mining.util.MessageEvent;
 import com.mining.util.OnHandler;
 import com.mining.util.StatusBarUtil;
 import com.mining.util.StringUtil;

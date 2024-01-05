@@ -2,8 +2,6 @@ package com.mining.mining.activity.task;
 
 import com.mining.mining.databinding.ActivityMainBinding;
 
-import java.util.List;
-
 public class ActivityTask {
     private ActivityMainBinding binding;
 

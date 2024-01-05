@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
-import com.mining.mining.activity.c2s.C2CActivity;
+import com.mining.mining.activity.c2s.gem.activity.C2CActivity;
 import com.mining.mining.databinding.ActivityUsdtDetailBinding;
 import com.mining.mining.util.SharedUtil;
 import com.mining.util.StatusBarUtil;

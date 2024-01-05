@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.mining.mining.R;
+import com.mining.mining.activity.c2s.usdt.activity.UsdtC2cActivity;
 import com.mining.mining.activity.recharge.RechargeActivity;
 import com.mining.mining.activity.recharge.WithdrawalActivity;
 import com.mining.mining.databinding.ActivityUsdtDetailBinding;
@@ -37,6 +38,7 @@ public class UsdtDetailActivity extends AppCompatActivity implements OnData, Too
     }
 
     private void initView() {
+        binding.Withdrawal.setText("交易");
         binding.Withdrawal.setOnClickListener(this);
         binding.recharge.setOnClickListener(this);
     }
@@ -77,7 +79,7 @@ public class UsdtDetailActivity extends AppCompatActivity implements OnData, Too
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.Withdrawal) {
-            startActivity(new Intent(this, WithdrawalActivity.class));
+            startActivity(new Intent(this, UsdtC2cActivity.class));
         } else if (v.getId() == R.id.recharge) {
             startActivity(new Intent(this, RechargeActivity.class));
         }

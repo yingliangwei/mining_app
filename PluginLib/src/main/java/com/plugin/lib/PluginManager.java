@@ -165,9 +165,8 @@ public class PluginManager {
                 e.fillInStackTrace();
             }
         }
-        dexClassLoader = new ApkClassLoader(PluginFile1.getAbsolutePath(), dexFile.getAbsolutePath(), nativeFile.getAbsolutePath(), context.getClassLoader());
+        dexClassLoader = new ApkClassLoader(PluginFile1.getAbsolutePath(), dexFile.getAbsolutePath(), nativeFile.getAbsolutePath(), context.getApplicationContext().getClassLoader());
         packageInfo = context.getPackageManager().getPackageArchiveInfo(PluginFile1.getAbsolutePath(), PackageManager.GET_ACTIVITIES | PackageManager.GET_SERVICES);
-        Thread.currentThread().setContextClassLoader(dexClassLoader);
     }
 
 

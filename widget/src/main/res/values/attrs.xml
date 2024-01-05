@@ -48,6 +48,10 @@
     <declare-styleable name="Themes">
         <attr name="numberProgressBarStyle" format="reference" />
     </declare-styleable>
+    <declare-styleable name="LineChart">
+        <attr name="yValues" format="reference" />
+        <attr name="xValues" format="reference" />
+    </declare-styleable>
 
 
 </resources>

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="全部提现记录" />
+            app:title="@string/All_withdrawal_records" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout

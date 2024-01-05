@@ -85,8 +85,8 @@ public class GemBillActivity extends AppCompatActivity implements OnData, OnRefr
     @Override
     public void error(String error) {
         binding.spinKit.setVisibility(View.GONE);
-        binding.Smart.finishRefresh(1000, false, false);
-        binding.Smart.finishLoadMore(1000, false, false);
+        binding.Smart.finishRefresh(false);
+        binding.Smart.finishLoadMore(false);
     }
 
     @Override
@@ -108,8 +108,8 @@ public class GemBillActivity extends AppCompatActivity implements OnData, OnRefr
             String msg = jsonObject.getString("msg");
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }
-        binding.Smart.finishRefresh(1000, true, false);
-        binding.Smart.finishLoadMore(1000, true, false);
+        binding.Smart.finishRefresh(true);
+        binding.Smart.finishLoadMore( true);
     }
 
     @SuppressLint("NotifyDataSetChanged")

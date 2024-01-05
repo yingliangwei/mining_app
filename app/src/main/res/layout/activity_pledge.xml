@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close"
-            app:title="商家入驻" />
+            app:title="@string/Merchant_settled" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        android:text="入驻规则介绍："
+                        android:text="@string/Introduction_to_the_entry_rules"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -55,14 +55,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="1.入驻需要质押100U\n2.入驻以后会获得挂单权限，即可挂回收和出售的订单\n3.在没有挂单情况下，即可退出入驻，返回质押金到账号" />
+                        android:text="@string/_1_100u_n2_n3" />
 
                     <TextView
                         android:id="@+id/usdt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="质押金额：0" />
+                        android:text="@string/The_amount_staked" />
 
 
                     <Button
@@ -70,8 +70,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:background="@drawable/bg_button_back"
-                        android:text="入驻"
+                        android:background="@drawable/bg_button"
+                        android:text="@string/Settled"
                         android:textColor="@color/white" />
 
                     <Button
@@ -79,8 +79,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:background="@drawable/bg_button_back"
-                        android:text="退出入驻"
+                        android:background="@drawable/bg_button"
+                        android:text="@string/Exit_the_occupancy"
                         android:textColor="@color/white"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
             android:gravity="center">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

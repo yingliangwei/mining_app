@@ -64,7 +64,7 @@
                                 android:orientation="horizontal">
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="vertical"
@@ -73,13 +73,13 @@
                                     <TextView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="邀请用户"
+                                        android:text="@string/Invite_users"
                                         android:textColor="@color/black" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="升级永久矿池才可获得宝石分红\n1级永久矿池可获得3代分红\n5级永久矿池可获得5代分红\n分红规则介绍:\n分红百分率则是:1代25%,2代7%,3代5%,4代3%,5代1%"
+                                        android:text="@string/n1_3_n5_5_n_n_1_25_2_7_3_5_4_3_5_1"
                                         android:textSize="11sp" />
                                 </LinearLayout>
 
@@ -113,21 +113,21 @@
                                                 android:id="@+id/sum"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:text="0"
+                                                android:text="@string/_0"
                                                 android:textColor="@color/black"
                                                 android:textSize="21sp" />
 
                                             <TextView
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:text="个" />
+                                                android:text="@string/piece" />
                                         </LinearLayout>
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="共获取宝石"
-                                            android:textSize="10sp" />
+                                            android:text="@string/Earn_gems_together"
+                                            android:textSize="11sp" />
                                     </LinearLayout>
 
                                     <LinearLayout
@@ -146,20 +146,20 @@
                                                 android:id="@+id/invite_sum"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:text="0"
+                                                android:text="@string/_0"
                                                 android:textColor="@color/black"
                                                 android:textSize="21sp" />
 
                                             <TextView
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:text="个" />
+                                                android:text="@string/piece" />
                                         </LinearLayout>
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="邀请用户"
+                                            android:text="@string/Invite_users"
                                             android:textSize="10sp" />
                                     </LinearLayout>
                                 </LinearLayout>
@@ -198,7 +198,7 @@
             android:gravity="center">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@mipmap/close_w"
-            app:title="规则介绍"
+            app:title="@string/Introduction_to_the_rules"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -58,7 +58,7 @@
             android:visibility="visible">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

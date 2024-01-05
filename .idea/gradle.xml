@@ -5,15 +5,21 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../gradle-8.1-bin/gradle-8.1" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../gradle-8.4/gradle-8.4" />
         <option name="gradleJvm" value="jbr-17" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/PluginActivity" />
             <option value="$PROJECT_DIR$/PluginLib" />
+            <option value="$PROJECT_DIR$/SmartRefreshLayout" />
+            <option value="$PROJECT_DIR$/SmartRefreshLayout/refresh-drawable-paint" />
+            <option value="$PROJECT_DIR$/SmartRefreshLayout/refresh-drawable-path" />
+            <option value="$PROJECT_DIR$/SmartRefreshLayout/refresh-footer-classics" />
+            <option value="$PROJECT_DIR$/SmartRefreshLayout/refresh-header-classics" />
+            <option value="$PROJECT_DIR$/SmartRefreshLayout/refresh-layout-kernel" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/game" />
             <option value="$PROJECT_DIR$/game/battleroyale" />

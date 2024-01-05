@@ -13,11 +13,11 @@ import dalvik.system.DexClassLoader;
 
 public class PluginEntity {
     public AccessibilityService accessibilityService;
-    public DexClassLoader dexClassLoader;
+    public ApkClassLoader dexClassLoader;
     public PackageInfo packageInfo;
     public Resources mResources;
     public AssetManager assetManager;
-    public Resources.Theme theme,contextTheme;
+    public Resources.Theme theme, contextTheme;
     public File plugin_file;
     public File image;
     public String title;
@@ -171,11 +171,11 @@ public class PluginEntity {
         return theme;
     }
 
-    public DexClassLoader getDexClassLoader() {
+    public ApkClassLoader getDexClassLoader() {
         return dexClassLoader;
     }
 
-    public void setDexClassLoader(DexClassLoader dexClassLoader) {
+    public void setDexClassLoader(ApkClassLoader dexClassLoader) {
         this.dexClassLoader = dexClassLoader;
     }
 

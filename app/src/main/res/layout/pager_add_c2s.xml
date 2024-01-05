@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             app:menu="@menu/menu_add_c2s"
             app:navigationIcon="@mipmap/close"
-            app:title="挂单" />
+            app:title="@string/Pending_orders" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -59,7 +59,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="回收宝石"
+                                android:text="@string/Recycle_gems"
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
 
@@ -72,21 +72,21 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="推荐单价:" />
+                                    android:text="@string/Recommended_unit_price" />
 
                                 <TextView
                                     android:id="@+id/sell_usdt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
-                                    android:text="0.00"
+                                    android:text="@string/_0_00"
                                     android:textColor="@color/black" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
-                                    android:text="USDT" />
+                                    android:text="@string/usdt" />
                             </LinearLayout>
 
 
@@ -103,7 +103,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:background="@null"
-                                    android:hint="0.00"
+                                    android:hint="@string/_0_00"
                                     android:inputType="numberDecimal"
                                     android:minHeight="40dp"
                                     android:textSize="20sp" />
@@ -111,7 +111,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="单价"
+                                    android:text="@string/unit_price"
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -135,7 +135,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:background="@null"
-                                    android:hint="0"
+                                    android:hint="@string/_0"
                                     android:inputType="number"
                                     android:minHeight="40dp"
                                     android:textSize="20sp" />
@@ -143,7 +143,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="数量"
+                                    android:text="@string/size"
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
 
@@ -163,7 +163,7 @@
                                 android:orientation="horizontal">
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
@@ -171,25 +171,25 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="可用:"
-                                        android:textSize="10sp" />
+                                        android:text="@string/available_balance"
+                                        android:textSize="11sp" />
 
                                     <TextView
                                         android:id="@+id/usdt"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
-                                        android:text="0.00"
+                                        android:text="@string/_0_00"
                                         android:textColor="@color/black"
-                                        android:textSize="10sp" />
+                                        android:textSize="11sp" />
 
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
-                                        android:text="USDT"
-                                        android:textSize="10sp" />
+                                        android:text="@string/usdt"
+                                        android:textSize="11sp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -204,8 +204,8 @@
                                     android:id="@+id/registration_buy"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@drawable/bg_button_back"
-                                    android:text="挂单"
+                                    android:background="@drawable/bg_button"
+                                    android:text="@string/Pending_orders"
                                     android:textColor="@color/white" />
                             </LinearLayout>
                         </LinearLayout>
@@ -258,7 +258,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
-                                    android:text="USDT" />
+                                    android:text="@string/usdt" />
                             </LinearLayout>
 
 
@@ -391,7 +391,7 @@
                                     android:id="@+id/registration_sell"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@drawable/bg_button_back"
+                                    android:background="@drawable/bg_button"
                                     android:text="挂单"
                                     android:textColor="@color/white" />
                             </LinearLayout>
@@ -410,7 +410,7 @@
             android:gravity="center">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

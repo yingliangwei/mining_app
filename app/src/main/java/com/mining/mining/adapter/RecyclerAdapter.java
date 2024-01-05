@@ -3,10 +3,12 @@ package com.mining.mining.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mining.mining.pager.holder.ViewHolder;
 import com.mining.util.StatusBarUtil;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -19,7 +21,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        return new ViewHolder(new LinearLayout(getContext()));
     }
 
     @Override
@@ -41,7 +43,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void StatusBar(Activity activity) {
-        StatusBarUtil.setImmersiveStatusBar(activity, true);
+        StatusBarUtil.setImmersive(activity, true);
     }
 
     public Context getContext() {

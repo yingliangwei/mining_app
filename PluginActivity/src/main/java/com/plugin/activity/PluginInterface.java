@@ -7,6 +7,8 @@ import android.os.Bundle;
 public interface PluginInterface {
     void onCreate(Bundle saveInstance);
 
+    boolean setImmersiveStatusBar();
+
     void attachInstance(Object o);
 
     void attachContext(Activity context);

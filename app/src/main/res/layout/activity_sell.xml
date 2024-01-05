@@ -60,23 +60,23 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="单价:"
+                            android:text="@string/unit_price"
                             android:textColor="@color/black"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/usdt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="0.00"
+                            android:text="@string/_0_00"
                             android:textColor="@color/black" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="USDT"
+                            android:text="@string/usdt"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </LinearLayout>
@@ -130,14 +130,14 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="剩余可回收宝石数量:" />
+                                        android:text="@string/The_number_of_recoverable_gems_remaining" />
 
                                     <TextView
                                         android:id="@+id/article"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
-                                        android:text="0"
+                                        android:text="@string/_0"
                                         android:textColor="@color/black" />
 
                                 </LinearLayout>
@@ -156,7 +156,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:background="@null"
-                                        android:hint="0"
+                                        android:hint="@string/_0"
                                         android:inputType="number"
                                         android:minHeight="40dp"
                                         android:textSize="20sp" />
@@ -164,7 +164,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="宝石"
+                                        android:text="@string/game"
                                         android:textColor="@color/black"
                                         android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                                         android:id="@+id/all"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="全部"
+                                        android:text="@string/all"
                                         android:textColor="?colorPrimary" />
 
                                 </LinearLayout>
@@ -197,7 +197,7 @@
                                     android:orientation="horizontal">
 
                                     <LinearLayout
-                                        android:layout_width="match_parent"
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:orientation="horizontal">
@@ -205,7 +205,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="可用宝石:"
+                                            android:text="@string/Gems_available"
                                             android:textSize="10sp" />
 
                                         <TextView
@@ -213,7 +213,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="5dp"
-                                            android:text="0.00"
+                                            android:text="@string/_0_00"
                                             android:textColor="@color/black"
                                             android:textSize="10sp" />
                                     </LinearLayout>
@@ -230,7 +230,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="预计获得:"
+                                        android:text="@string/Expected_to_obtain"
                                         android:textColor="@color/black"
                                         android:textStyle="bold" />
 
@@ -239,13 +239,13 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
-                                        android:text="0" />
+                                        android:text="@string/_0" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="5dp"
-                                        android:text="USDT" />
+                                        android:text="@string/usdt" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -267,7 +267,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="收款方式"
+                                    android:text="@string/Payout_Methods"
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
 
@@ -287,7 +287,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
-                                        android:text="USDT支付" />
+                                        android:text="@string/usdt_pay" />
                                 </LinearLayout>
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
@@ -303,7 +303,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="商家信息"
+                                android:text="@string/Business_information"
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
 
@@ -314,10 +314,10 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="商家昵称"
+                                    android:text="@string/Merchant_nickname"
                                     android:textColor="@color/b31" />
 
                                 <TextView
@@ -336,8 +336,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="20dp"
-                            android:background="@drawable/bg_button_back"
-                            android:text="卖出宝石"
+                            android:background="@drawable/bg_button"
+                            android:text="@string/sell_game"
                             android:textColor="@color/white" />
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -349,10 +349,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Wave"
+                style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:SpinKit_Color="@color/colorPrimary" />

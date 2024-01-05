@@ -15,12 +15,12 @@
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
-            app:titleTextColor="@color/black"
-            app:title="@string/app_my"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/menu_my" />
+            app:menu="@menu/menu_my"
+            app:title="@string/app_my"
+            app:titleTextColor="@color/black" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -55,7 +55,6 @@
                         android:layout_height="60dp"
                         android:background="@drawable/circle_background"
                         android:gravity="center"
-                        android:text="w"
                         android:textColor="@color/white"
                         android:textSize="21sp" />
 
@@ -86,7 +85,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ID:"
+                                android:text="@string/id"
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
 
@@ -95,7 +94,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="0"
+                                android:text="@string/_0"
                                 android:textColor="@color/black"
                                 android:textIsSelectable="true"
                                 android:textStyle="bold" />
@@ -109,16 +108,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="10dp"
                     app:cardElevation="0dp">
 
                     <LinearLayout
                         android:id="@+id/usdt_l"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?colorPrimary"
+                        android:background="@drawable/ic_launcher_background"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="5dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -130,7 +129,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:padding="10dp"
-                                android:text="USDT总资产"
+                                android:text="@string/Total_USDT_assets"
                                 android:textColor="@color/white" />
 
                         </LinearLayout>
@@ -152,15 +151,21 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="0.00"
+                                android:text="@string/_0_00"
                                 android:textColor="@color/white"
                                 android:textSize="21sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
+
+                        <com.xframe.widget.LineChart
+                            android:layout_marginBottom="10dp"
+                            android:id="@+id/line_chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -181,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
-                            android:text="交易"
+                            android:text="@string/trade"
                             android:textColor="@color/black" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -216,7 +221,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
@@ -226,13 +231,13 @@
 
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="邀请用户"
+                                    android:text="@string/Invite_users"
                                     android:textColor="@color/black" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="邀请好友可以获得分红"
+                                    android:text="@string/apdpdkdd"
                                     android:textSize="11sp" />
                             </LinearLayout>
 
@@ -240,10 +245,10 @@
                                 android:id="@+id/detail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:drawableEnd="@mipmap/arr"
                                 android:padding="10dp"
-                                android:text="详细"
-                                android:textSize="10sp" />
+                                android:text="@string/detailed"
+                                android:textSize="11sp"
+                                app:drawableEndCompat="@mipmap/arr" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -274,21 +279,21 @@
                                             android:id="@id/gem"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="0"
+                                            android:text="@string/_0"
                                             android:textColor="@color/black"
                                             android:textSize="21sp" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="个" />
+                                            android:text="@string/piece" />
                                     </LinearLayout>
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="共获取宝石"
-                                        android:textSize="10sp" />
+                                        android:text="@string/earn_gems_together"
+                                        android:textSize="11sp" />
                                 </LinearLayout>
 
 
@@ -315,14 +320,14 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="个" />
+                                            android:text="@string/piece" />
                                     </LinearLayout>
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="邀请总用户"
-                                        android:textSize="10sp" />
+                                        android:text="@string/Invite_total_users"
+                                        android:textSize="11sp" />
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -331,7 +336,7 @@
                                 android:id="@+id/buy"
                                 android:layout_width="100dp"
                                 android:layout_height="40dp"
-                                android:background="@drawable/bg_button_back"
+                                android:background="@drawable/bg_button"
                                 android:gravity="center"
                                 android:text="@string/app_invite"
                                 android:textColor="@color/white" />
@@ -360,7 +365,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
-                            android:text="常用功能"
+                            android:text="@string/Commonly_used_functions"
                             android:textColor="@color/black" />
 
                         <androidx.recyclerview.widget.RecyclerView
