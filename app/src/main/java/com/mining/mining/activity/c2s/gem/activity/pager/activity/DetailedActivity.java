@@ -20,7 +20,8 @@ import com.xframe.network.SocketManage;
 
 public class DetailedActivity extends AppCompatActivity implements OnData {
     private ActivityC2cGemDetailedBinding binding;
-    private String data_id, data_type;
+    private String data_id;
+    private int data_type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class DetailedActivity extends AppCompatActivity implements OnData {
 
     private void initIntent() {
         data_id = getIntent().getStringExtra("data_id");
-        data_type = getIntent().getStringExtra("data_type");
+        data_type = getIntent().getIntExtra("data_type",1);
         if (data_id == null) {
             finish();
         }

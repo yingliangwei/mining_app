@@ -64,7 +64,7 @@ public class UsdtC2cActivity extends AppCompatActivity implements NavigationBarV
     public void connect(SocketManage socketManage) {
         SharedUtil sharedUtil = new SharedUtil(this);
         JSONObject jsonObject = sharedUtil.getLogin(4, 14);
-        jsonObject.put("data_type", "2");
+        jsonObject.put("data_type", 2);
         socketManage.print(jsonObject.toString());
     }
 

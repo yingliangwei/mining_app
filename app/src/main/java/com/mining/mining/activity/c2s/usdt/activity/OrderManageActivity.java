@@ -32,8 +32,8 @@ public class OrderManageActivity extends AppCompatActivity implements TabLayout.
     }
 
     private void initPager() {
-        recyclerAdapters.add(new OrderManagePager(this, "1"));
-        recyclerAdapters.add(new OrderManagePager(this, "2"));
+        recyclerAdapters.add(new OrderManagePager(this, 1));
+        recyclerAdapters.add(new OrderManagePager(this, 2));
         PagerAdapter pagerAdapter = new PagerAdapter(recyclerAdapters);
         binding.pager.setAdapter(pagerAdapter);
         binding.pager.setOffscreenPageLimit(recyclerAdapters.size());

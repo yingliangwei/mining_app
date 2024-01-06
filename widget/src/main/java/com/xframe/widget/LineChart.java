@@ -59,8 +59,8 @@ public class LineChart extends View {
         for (int i = 0; i < yValues.length - 1; i++) {
             float startX = padding + i * xScale;
             float startY = height - ((yValues[i] - minValue) / (maxValue - minValue)) * (height - 2 * padding);
-            float endX = padding + (i + 1) * xScale;
             float endY = height - ((yValues[i + 1] - minValue) / (maxValue - minValue)) * (height - 2 * padding);
+            float endX = padding + (i + 1) * xScale;
             canvas.drawLine(startX, startY, endX, endY, paint);
         }
     }

@@ -34,11 +34,11 @@ public class OrderManagePager extends RecyclerAdapter implements OnData, OnRefre
     private PagerOrderManagementBinding binding;
     private final int start = 20;
     private int end = 0;
-    private final String data_type;
+    private final int  data_type;
     private final List<UsdtOrderEntity> strings = new ArrayList<>();
     private UsdtOrderAdapter adapter;
 
-    public OrderManagePager(Context context, String id) {
+    public OrderManagePager(Context context, int id) {
         super(context);
         this.data_type = id;
     }

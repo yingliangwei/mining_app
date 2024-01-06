@@ -94,7 +94,7 @@ public class AddUsdtC2cPager extends RecyclerAdapter implements OnData, Toolbar.
     public boolean onMenuItemClick(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.manage) {
             Intent intent = new Intent(getContext(), OrderManagementActivity.class);
-            intent.putExtra("data_type", "1");
+            intent.putExtra("data_type", 1);
             getContext().startActivity(intent);
         } else if (item.getItemId() == R.id.order) {
             getContext().startActivity(new Intent(getContext(), RootManageActivity.class));

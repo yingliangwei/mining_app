@@ -32,8 +32,8 @@ public class OrderManagementActivity extends AppCompatActivity implements TabLay
     }
 
     private void initPager() {
-        orderManagePagers.add(new OrderManagePager(this, "1"));
-        orderManagePagers.add(new OrderManagePager(this, "2"));
+        orderManagePagers.add(new OrderManagePager(this, 1));
+        orderManagePagers.add(new OrderManagePager(this, 2));
         PagerAdapter pagerAdapter = new PagerAdapter(orderManagePagers);
         binding.viewPager.setAdapter(pagerAdapter);
         binding.viewPager.setOffscreenPageLimit(orderManagePagers.size());

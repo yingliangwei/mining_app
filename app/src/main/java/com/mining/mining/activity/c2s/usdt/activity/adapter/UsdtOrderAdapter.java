@@ -20,17 +20,17 @@ import java.util.List;
 public class UsdtOrderAdapter extends RecyclerView.Adapter<UsdtOrderAdapter.ViewHolder> implements View.OnClickListener {
     private final Context context;
     private final List<UsdtOrderEntity> strings;
-    private final String data_type;
+    private final int data_type;
     private final boolean usdt_type;
 
-    public UsdtOrderAdapter(Context context, List<UsdtOrderEntity> strings, String data_type, boolean usdt_type) {
+    public UsdtOrderAdapter(Context context, List<UsdtOrderEntity> strings, int data_type, boolean usdt_type) {
         this.context = context;
         this.strings = strings;
         this.data_type = data_type;
         this.usdt_type = usdt_type;
     }
 
-    public UsdtOrderAdapter(Context context, List<UsdtOrderEntity> strings, String data_type) {
+    public UsdtOrderAdapter(Context context, List<UsdtOrderEntity> strings, int data_type) {
         this.context = context;
         this.strings = strings;
         this.data_type = data_type;
@@ -47,7 +47,7 @@ public class UsdtOrderAdapter extends RecyclerView.Adapter<UsdtOrderAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UsdtOrderEntity orderEntity = strings.get(position);
-        if (data_type.equals("1")) {
+        if (data_type == 1) {
             holder.binding.name.setText(R.string.app_buy_usdt);
         } else {
             holder.binding.name.setText(R.string.app_sell_usdt);

@@ -26,7 +26,7 @@ public class PledgeActivity extends AppCompatActivity implements OnData, View.On
     private ActivityPledgeBinding binding;
     private String usdt = "0";
     private String pass;
-    private String data_type;
+    private int data_type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,10 +41,7 @@ public class PledgeActivity extends AppCompatActivity implements OnData, View.On
     }
 
     private void initIntent() {
-        data_type = getIntent().getStringExtra("data_type");
-        if (data_type == null) {
-            finish();
-        }
+        data_type = getIntent().getIntExtra("data_type", 1);
     }
 
     private void initView() {

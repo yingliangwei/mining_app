@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class DetailedActivity extends AppCompatActivity implements OnData {
     private ActivityUsdtOrdeDetaileBinding binding;
-    private String data_type;
+    private int data_type;
     private String data_id;
     private CountDownTimer countDownTimer;
 
@@ -34,15 +34,20 @@ public class DetailedActivity extends AppCompatActivity implements OnData {
         StatusBarUtil.setImmersive(this, true);
         binding = ActivityUsdtOrdeDetaileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        initView();
         initToolbar();
         initIntent();
         SocketManage.init(this);
     }
 
+    private void initView() {
+        binding.nickText.setText("买家昵称");
+    }
+
     private void initIntent() {
         data_id = getIntent().getStringExtra("data_id");
-        data_type = getIntent().getStringExtra("data_type");
-        if (data_type == null || data_id == null) {
+        data_type = getIntent().getIntExtra("data_type", 1);
+        if (data_id == null) {
             finish();
         }
     }
@@ -118,7 +123,7 @@ public class DetailedActivity extends AppCompatActivity implements OnData {
             binding.view.setOnClickListener(v -> {
                 Intent intent = new Intent(DetailedActivity.this, BuyDetailActivity.class);
                 intent.putExtra("id", entity.id);
-                intent.putExtra("type", data_type);
+                intent.putExtra("type",data_type);
                 startActivity(intent);
             });
         }

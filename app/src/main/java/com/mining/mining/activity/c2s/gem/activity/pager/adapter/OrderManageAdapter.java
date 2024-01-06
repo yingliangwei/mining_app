@@ -20,9 +20,9 @@ import java.util.List;
 public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.ViewHolder> implements View.OnClickListener {
     private final Context context;
     private final List<OrderManageEntity> entities;
-    private final String data_type;
+    private final int data_type;
 
-    public OrderManageAdapter(Context context, List<OrderManageEntity> entities, String data_type) {
+    public OrderManageAdapter(Context context, List<OrderManageEntity> entities, int  data_type) {
         this.context = context;
         this.entities = entities;
         this.data_type = data_type;
@@ -37,7 +37,7 @@ public class OrderManageAdapter extends RecyclerView.Adapter<OrderManageAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderManageEntity entity = entities.get(position);
-        if (data_type.equals("1")) {
+        if (data_type==1) {
             holder.binding.name.setText(context.getText(R.string.bug_gem));
         } else {
             holder.binding.name.setText(context.getText(R.string.sell_buy));

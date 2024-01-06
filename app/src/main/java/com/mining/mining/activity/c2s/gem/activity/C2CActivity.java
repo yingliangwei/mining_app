@@ -51,7 +51,7 @@ public class C2CActivity extends AppCompatActivity implements NavigationBarView.
     public void connect(SocketManage socketManage) {
         SharedUtil sharedUtil = new SharedUtil(this);
         JSONObject jsonObject = sharedUtil.getLogin(4, 14);
-        jsonObject.put("data_type", "1");
+        jsonObject.put("data_type", 1);
         socketManage.print(jsonObject.toString());
     }
 

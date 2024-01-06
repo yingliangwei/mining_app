@@ -47,9 +47,6 @@ public class BuyDetailActivity extends AppCompatActivity implements OnData, View
     }
 
     private void initView() {
-        binding.PaymentSuccessful.setText("确认收款");
-        binding.clionPay.setText("点击“确认收款“放币");
-        binding.toolbar.setTitle("确认是否已经收款");
         binding.copy1.setOnClickListener(this);
         binding.copy2.setOnClickListener(this);
         binding.copy3.setOnClickListener(this);
@@ -76,6 +73,9 @@ public class BuyDetailActivity extends AppCompatActivity implements OnData, View
     public void connect(SocketManage socketManage) {
         SharedUtil sharedUtil = new SharedUtil(this);
         JSONObject jsonObject = sharedUtil.getLogin(24, 14);
+        if (type == 2) {
+            jsonObject = sharedUtil.getLogin(24, 4);
+        }
         jsonObject.put("data_type", type);
         jsonObject.put("data_id", id);
         socketManage.print(jsonObject.toString());
@@ -132,6 +132,16 @@ public class BuyDetailActivity extends AppCompatActivity implements OnData, View
             case "2" -> "银行卡账号";
             default -> "支付宝账号";
         };
+        binding.toolbar.setTitle(String.format("打开 %s 转账", pay_text));
+        if (this.type == 1) {
+            binding.pay.setVisibility(View.GONE);
+            binding.bank.setVisibility(View.GONE);
+            binding.toolbar.setTitle("确认是否已经收款");
+            binding.clionPay.setText("点击“确认收款“放币");
+            binding.toolbar.setTitle("确认是否已经收款");
+        } else {
+            binding.PaymentSuccessful.setVisibility(View.VISIBLE);
+        }
         binding.ids.setText(id);
         binding.copy5.setTag(id);
         binding.cardName.setText(name);
@@ -222,6 +232,9 @@ public class BuyDetailActivity extends AppCompatActivity implements OnData, View
         public void connect(SocketManage socketManage) {
             SharedUtil sharedUtil = new SharedUtil(context);
             JSONObject jsonObject = sharedUtil.getLogin(24, 15);
+            if (type == 2) {
+                jsonObject = sharedUtil.getLogin(24, 5);
+            }
             jsonObject.put("data_type", type);
             jsonObject.put("data_id", id);
             socketManage.print(jsonObject.toString());

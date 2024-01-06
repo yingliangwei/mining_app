@@ -99,7 +99,7 @@ public class HomeUsdtC2cPager extends RecyclerAdapter implements TabLayout.OnTab
             getContext().startActivity(intent);
         } else if (item.getItemId() == R.id.v) {
             Intent intent = new Intent(getContext(), PledgeActivity.class);
-            intent.putExtra("data_type", "2");
+            intent.putExtra("data_type", 2);
             getContext().startActivity(intent);
             return true;
         }

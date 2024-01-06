@@ -33,12 +33,12 @@ import java.util.List;
 
 public class OrderManagePager extends RecyclerAdapter implements OnData, OnRefreshListener, OnRefreshLoadMoreListener {
     private PagerOrderManagementBinding binding;
-    private final String data_type;
+    private final int  data_type;
     private OrderManageAdapter orderManageAdapter;
     private final List<OrderManageEntity> entities = new ArrayList<>();
     private int start = 20, end = 0;
 
-    public OrderManagePager(Context context, String s) {
+    public OrderManagePager(Context context, int s) {
         super(context);
         this.data_type = s;
     }
