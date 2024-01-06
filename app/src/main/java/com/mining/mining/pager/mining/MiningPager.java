@@ -1,5 +1,6 @@
 package com.mining.mining.pager.mining;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -61,7 +62,6 @@ public class MiningPager extends RecyclerAdapter implements TabLayout.OnTabSelec
         initSmart();
         SocketManage.init(this);
     }
-
 
     @Override
     public void onDestroy() {
@@ -130,7 +130,7 @@ public class MiningPager extends RecyclerAdapter implements TabLayout.OnTabSelec
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
@@ -161,7 +161,7 @@ public class MiningPager extends RecyclerAdapter implements TabLayout.OnTabSelec
     @Override
     public void error(String error) {
         binding.Swipe.setRefreshing(false);
-        binding.spinKit.setVisibility(View.GONE);
+        
     }
 
     @Override

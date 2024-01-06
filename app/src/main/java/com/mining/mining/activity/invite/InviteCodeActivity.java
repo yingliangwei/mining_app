@@ -85,7 +85,7 @@ public class InviteCodeActivity extends AppCompatActivity implements Runnable, V
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
     }
 
     @Override
@@ -135,7 +135,7 @@ public class InviteCodeActivity extends AppCompatActivity implements Runnable, V
             bitmap1 = combineBitmap(drawableToBitmap(binding.image.getDrawable()), bitmap);
             runOnUiThread(() -> {
                 binding.image.setImageBitmap(bitmap1);
-                binding.spinKit.setVisibility(View.GONE);
+                
             });
         } catch (WriterException e) {
             e.printStackTrace();

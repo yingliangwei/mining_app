@@ -60,14 +60,19 @@ public class BuyDetailActivity extends AppCompatActivity implements OnData, View
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         type = intent.getIntExtra("type", 1);
-        if (id == null) {
-            return;
-        }
         SocketManage.init(this);
     }
 
     private void initToolbar() {
         binding.toolbar.setNavigationOnClickListener(v -> finish());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     @Override
@@ -80,7 +85,6 @@ public class BuyDetailActivity extends AppCompatActivity implements OnData, View
         jsonObject.put("data_type", type);
         jsonObject.put("data_id", id);
         socketManage.print(jsonObject.toString());
-        System.out.println(jsonObject);
     }
 
     @Override
@@ -99,20 +103,23 @@ public class BuyDetailActivity extends AppCompatActivity implements OnData, View
     private void initJson(JSONObject jsonObject) {
         //{"code":200,"data":{"Payment":{"code":"2958474980@qq.com","id":"2","image":"https://tingdao.cc/FuYLDRZMFnRhRYcTVpDR5ym6o9ai","time":"2023-11-29 21:41:16","user_id":"13"},"buy_user_id":"12","c2c_usdt_id":"1","card_name":"\u5c39\u6447\u52a8","id":"10","pay_type":"0","price":"6.00","rmb":"12.00","time":"2023-12-02 11:23:03","type":"0","usdt":"2","user_id":"13","user_name":"012345"},"msg":""}
         JSONObject Payment = jsonObject.getJSONObject("Payment");
+        if (Payment == null) {
+            Toast.makeText(this, "未设置收款信息", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         String pay_type = jsonObject.getString("pay_type");
-        if (Payment != null) {
-            String code = Payment.getString("code");
-            String image = Payment.getString("image");
-            binding.QRCode.setTag(image);
-            binding.payName.setText(code);
-            binding.copy3.setTag(code);
-            if (pay_type.equals("2")) {
-                String text = Payment.getString("text");
-                binding.bankName.setText("银行卡类型");
-                binding.QRCode.setText(text);
-                binding.QRCode.setTag(text);
-                binding.QRCode.setTextColor(Color.BLACK);
-            }
+        String code = Payment.getString("code");
+        String image = Payment.getString("image");
+        binding.QRCode.setTag(image);
+        binding.payName.setText(code);
+        binding.copy3.setTag(code);
+        if (pay_type.equals("2")) {
+            String text = Payment.getString("text");
+            binding.bankName.setText("银行卡类型");
+            binding.QRCode.setText(text);
+            binding.QRCode.setTag(text);
+            binding.QRCode.setTextColor(Color.BLACK);
         }
         String id = jsonObject.getString("id");
         String type = jsonObject.getString("type");

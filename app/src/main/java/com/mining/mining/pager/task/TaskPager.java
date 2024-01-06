@@ -106,12 +106,12 @@ public class TaskPager extends RecyclerAdapter implements OnData, View.OnClickLi
     @Override
     public void error(String error) {
         binding.Swipe.setRefreshing(false);
-        binding.spinKit.setVisibility(View.GONE);
+        
     }
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Swipe.setRefreshing(false);
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");

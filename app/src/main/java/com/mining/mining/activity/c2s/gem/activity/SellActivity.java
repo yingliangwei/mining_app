@@ -134,7 +134,7 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
@@ -150,7 +150,7 @@ public class SellActivity extends AppCompatActivity implements TextWatcher, OnDa
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishRefresh(false);
     }
 

@@ -13,29 +13,28 @@ import androidx.annotation.Nullable;
 import java.util.Arrays;
 
 public class LineChart extends View {
-
-    private int width;
-    private int height;
-    private float[] yValues = {0, 0};
+    private float[] yValues = {0};
     private final Paint paint = new Paint();
 
     public LineChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        // 计算图表的宽度和高度
-        width = getMeasuredWidth();
-        height = getMeasuredHeight();
     }
 
-
     public void setValues(float[] values) {
-        this.yValues = values;
+        if (values.length == 1) {
+            // 如果传入的values数组只有一条数据，则复制一份
+            this.yValues = new float[]{0, values[0]};
+        } else {
+            this.yValues = values;
+        }
+        invalidate(); // 数据更新后刷新视图
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        width = getMeasuredWidth();
-        height = getMeasuredHeight();
+        int width = getWidth();
+        int height = getHeight();
         int padding = 10;
         // 计算每个数据点的宽度
         float xScale = (float) (width - 2 * padding) / (yValues.length - 1);
@@ -51,20 +50,18 @@ public class LineChart extends View {
                 maxValue = value;
             }
         }
-
         // 绘制折线
         paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(4);
+        paint.setStrokeWidth(5);
         paint.setStyle(Paint.Style.STROKE);
         for (int i = 0; i < yValues.length - 1; i++) {
             float startX = padding + i * xScale;
-            float startY = height - ((yValues[i] - minValue) / (maxValue - minValue)) * (height - 2 * padding);
-            float endY = height - ((yValues[i + 1] - minValue) / (maxValue - minValue)) * (height - 2 * padding);
+            float startY = height - padding - ((yValues[i] - minValue) / (maxValue - minValue)) * (height - 2 * padding);
+            float endY = height - padding - ((yValues[i + 1] - minValue) / (maxValue - minValue)) * (height - 2 * padding);
             float endX = padding + (i + 1) * xScale;
             canvas.drawLine(startX, startY, endX, endY, paint);
         }
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -74,3 +71,4 @@ public class LineChart extends View {
         setMeasuredDimension(width, 150);
     }
 }
+

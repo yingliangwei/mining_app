@@ -67,7 +67,7 @@ public class HelpActivity extends AppCompatActivity implements OnData, OnRefresh
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
@@ -92,7 +92,7 @@ public class HelpActivity extends AppCompatActivity implements OnData, OnRefresh
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishRefresh(true);
         binding.Smart.finishLoadMore(true);
     }

@@ -36,7 +36,7 @@ public class GemDetailActivity extends AppCompatActivity implements OnData, Tool
     }
 
     private void initView() {
-        binding.image.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.ic_ape_new_gemstone));
+        binding.image.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.visit));
         binding.recharge.setVisibility(View.GONE);
         binding.Withdrawal.setText("交易");
         binding.Withdrawal.setOnClickListener(this);

@@ -81,14 +81,14 @@ public class InviteActivity extends AppCompatActivity implements OnData, OnHandl
     public void error(String error) {
         binding.Smart.finishLoadMore();
         binding.Smart.finishRefresh();
-        binding.spinKit.setVisibility(View.GONE);
+        
     }
 
     @Override
     public void handle(String ds) {
         binding.Smart.finishLoadMore();
         binding.Smart.finishRefresh();
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {

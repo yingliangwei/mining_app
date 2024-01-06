@@ -49,19 +49,5 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/spin_kit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/b31"
-            android:gravity="center"
-            android:visibility="visible">
-
-            <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:SpinKit_Color="@color/colorPrimary" />
-        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

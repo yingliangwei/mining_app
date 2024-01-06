@@ -99,7 +99,7 @@ public class HomeVerticalItemPager extends RecyclerAdapter implements OnData, On
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {

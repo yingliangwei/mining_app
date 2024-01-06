@@ -260,6 +260,9 @@ public class ScanActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 long delay = 0;
                 long period = 2000;
                 timer.scheduleAtFixedRate(task, delay, period);
+                Intent intent = new Intent(this, ScanActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 // 用户拒绝了相机权限
                 Toast.makeText(this, "请授权相机权限", Toast.LENGTH_SHORT).show();

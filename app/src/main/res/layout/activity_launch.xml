@@ -9,14 +9,6 @@
     android:orientation="vertical"
     tools:ignore="RelativeOverlap">
 
-    <com.github.ybq.android.spinkit.SpinKitView
-        style="@style/SpinKitView.Circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        app:SpinKit_Color="@color/colorPrimary" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"

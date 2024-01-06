@@ -72,13 +72,13 @@ public class NewsActivity extends AppCompatActivity implements OnData, OnRefresh
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
     }
 
     @Override
     public void handle(String ds) {
         binding.Smart.finishRefresh();
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {

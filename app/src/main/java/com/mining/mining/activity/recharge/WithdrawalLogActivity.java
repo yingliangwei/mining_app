@@ -69,7 +69,7 @@ public class WithdrawalLogActivity extends AppCompatActivity implements OnRefres
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
@@ -93,7 +93,7 @@ public class WithdrawalLogActivity extends AppCompatActivity implements OnRefres
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishLoadMore(true);
         binding.Smart.finishRefresh(true);
     }

@@ -92,14 +92,13 @@
 
                                             <ImageView
                                                 android:layout_width="20dp"
-                                                android:layout_height="30dp"
-                                                android:src="@mipmap/ic_ape_new_gemstone" />
+                                                android:layout_height="20dp"
+                                                android:src="@mipmap/visit" />
 
                                             <TextView
                                                 android:id="@+id/gem"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:layout_marginStart="10dp"
                                                 android:text="@string/_0_00"
                                                 android:textColor="@color/white"
                                                 android:textSize="21sp"
@@ -126,14 +125,13 @@
 
                                         <ImageView
                                             android:layout_width="20dp"
-                                            android:layout_height="30dp"
-                                            android:src="@mipmap/ic_ape_new_gemstone" />
+                                            android:layout_height="20dp"
+                                            android:src="@mipmap/visit" />
 
                                         <TextView
                                             android:id="@+id/day_gem"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginStart="10dp"
                                             android:text="@string/_0_00"
                                             android:textColor="@color/white"
                                             android:textSize="21sp"
@@ -178,7 +176,6 @@
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
                         </RelativeLayout>
-
 
                         <com.airbnb.lottie.LottieAnimationView
                             android:id="@+id/lottie"
@@ -225,19 +222,5 @@
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <LinearLayout
-            android:id="@+id/spin_kit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/b31"
-            android:gravity="center"
-            android:visibility="visible">
-
-            <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.Large.Circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:SpinKit_Color="@color/colorPrimary" />
-        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -53,8 +53,8 @@ public class BuyUsdtActivity extends AppCompatActivity implements OnData, TextWa
     private void initIntent() {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        type = intent.getIntExtra("type", 0);
-        if (id == null || type == 0) {
+        type = intent.getIntExtra("type", 1);
+        if (id == null) {
             finish();
             return;
         }

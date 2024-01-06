@@ -22,52 +22,25 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentInsetStart="5dp"
-                app:menu="@menu/menu_home"
-                app:subtitle="@string/app_name"
-                app:title="hello"
-                app:titleTextColor="@color/black">
+                app:menu="@menu/menu_home">
 
                 <LinearLayout
-                    android:id="@+id/user"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:gravity="center|start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/visit" />
+
                     <TextView
-                        android:id="@+id/name_x"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/circle_background"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="21sp" />
-
-                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:text="@string/hello"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/app_name"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/app_name"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -99,69 +72,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-                <RelativeLayout
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:orientation="vertical"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:paddingBottom="5dp">
-
-                    <com.youth.banner.Banner
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="5dp"
-                        android:gravity="center|start"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/ic_ape_new_gemstone" />
-
-                        <TextView
-                            android:id="@+id/gem"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/_0_00"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:text="@string/day_5"
-                            android:textColor="@color/bfbfbf"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/day_gem"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:text="@string/_0_00"
-                            android:textColor="@android:color/holo_green_dark" />
-
-                        <ImageView
-                            android:id="@+id/refresh"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginStart="5dp"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:padding="5dp"
-                            android:src="@mipmap/refresh"
-                            app:tint="@color/white" />
-                    </LinearLayout>
-                </RelativeLayout>
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -191,18 +109,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/spin_kit"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <com.github.ybq.android.spinkit.SpinKitView
-            style="@style/SpinKitView.Large.Circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:SpinKit_Color="@color/colorPrimary" />
-    </LinearLayout>
 </RelativeLayout>

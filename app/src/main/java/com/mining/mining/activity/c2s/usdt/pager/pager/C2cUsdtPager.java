@@ -93,14 +93,14 @@ public class C2cUsdtPager extends RecyclerAdapter implements OnData, OnRefreshLi
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
     }
 
     @Override
     public void handle(String ds) {
         binding.Smart.finishRefresh( true);
         binding.Smart.finishLoadMore( true);
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code != 200) {

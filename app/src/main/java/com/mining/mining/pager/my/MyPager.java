@@ -133,7 +133,7 @@ public class MyPager extends RecyclerAdapter implements OnData, View.OnClickList
 
     private void initRecycler() {
         List<TextDrawableEntity> entities = new ArrayList<>();
-        entities.add(new TextDrawableEntity("宝石市场", ContextCompat.getDrawable(getContext(), R.mipmap.ic_ape_new_gemstone), 1));
+        entities.add(new TextDrawableEntity("宝石市场", ContextCompat.getDrawable(getContext(), R.mipmap.visit), 1));
         entities.add(new TextDrawableEntity("USDT市场", ContextCompat.getDrawable(getContext(), R.mipmap.usdt), 1));
         ItemAdapter itemAdapter = new ItemAdapter(context, entities);
         binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));

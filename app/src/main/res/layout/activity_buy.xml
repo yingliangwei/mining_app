@@ -36,7 +36,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@mipmap/ic_ape_new_gemstone" />
+                    android:src="@mipmap/visit" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

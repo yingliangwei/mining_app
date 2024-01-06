@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//实现状态栏图标和文字颜色为暗色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//实现状态栏图标和文字颜色为暗色
         sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         ActivityTask.getInstance().setBinding(binding);
@@ -109,6 +109,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void handle(String ds) {
         JSONObject jsonObject = JSONObject.parseObject(ds);
         String version_code = jsonObject.getString("version_code");
+        if (version_code == null) {
+            return;
+        }
         String force = jsonObject.getString("force");
         int update = sharedPreferences.getInt("update", 0);
         String _version_code = sharedPreferences.getString("version_code", "");

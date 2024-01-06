@@ -65,15 +65,14 @@
                     android:visibility="gone">
 
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:src="@mipmap/ic_ape_new_gemstone" />
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/visit" />
 
                     <TextView
                         android:id="@+id/miner_day"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
                         android:text="@string/_0_day"
                         android:textColor="@color/bfbfbf"
                         android:textSize="11sp" />
@@ -90,15 +89,14 @@
 
                     <ImageView
                         android:id="@+id/gem_1"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:src="@mipmap/ic_ape_new_gemstone" />
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/visit" />
 
                     <TextView
                         android:id="@+id/mining_gem_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
                         android:text="@string/Cumulative"
                         android:textColor="@color/bfbfbf"
                         android:textSize="11sp" />
@@ -123,13 +121,13 @@
                 android:padding="10dp">
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/lv_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/mining_lv"
@@ -150,7 +148,7 @@
                             android:id="@+id/gem_2"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/ic_ape_new_gemstone" />
+                            android:src="@mipmap/visit" />
 
                         <TextView
                             android:id="@+id/day_gem"
@@ -184,7 +182,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:gravity="center"
                             android:id="@+id/mining_size"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
@@ -193,13 +190,13 @@
                             android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:background="@mipmap/bg_ape_product_rocks"
+                            android:gravity="center"
                             android:text="@string/Mining_0"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:visibility="visible" />
 
                         <TextView
-                            android:gravity="center"
                             android:id="@+id/mining_upgradation"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
@@ -208,6 +205,7 @@
                             android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:background="@mipmap/bg_ape_product_rocks"
+                            android:gravity="center"
                             android:text="@string/_0_game_buy"
                             android:textColor="@color/black"
                             android:textStyle="bold"

@@ -56,7 +56,7 @@ import java.util.List;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.widget.TabView;
 
-public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTabSelectedListener, OnData, Toolbar.OnMenuItemClickListener, View.OnClickListener {
+public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTabSelectedListener, OnData, Toolbar.OnMenuItemClickListener {
     private final Activity context;
     private PagerHomeBinding binding;
     private final List<BannerEntity> bannerEntities = new ArrayList<>();
@@ -77,7 +77,6 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
         initNews();
 
         SocketManage.init(this);
-        SocketManage.init(new getGam());
         SocketManage.init(new getBannerData());
         SocketManage.init(new getNewsSize());
     }
@@ -92,18 +91,9 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(MessageEvent event) {
         if (event.isClass(HomePager.class)) {
-            if (event.w == 0) {
-                SocketManage.init(new getGam());
-            } else if (event.w == 1) {
+            if (event.w == 1) {
                 SocketManage.init(new getNewsSize());
             }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessage(String message) {
-        if (message.equals("gem")) {
-            SocketManage.init(new getGam());
         }
     }
 
@@ -127,8 +117,6 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
     }
 
     private void initView() {
-        binding.user.setOnClickListener(this);
-        binding.refresh.setOnClickListener(v -> SocketManage.init(new getGam()));
         binding.search.setOnClickListener(v -> {
             Intent intent = new Intent(context, PluginSearchActivity.class);
             context.startActivity(intent);
@@ -148,7 +136,6 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
@@ -159,7 +146,7 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+
     }
 
     private void initTabData(JSONArray data) {
@@ -212,51 +199,6 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
         return false;
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.user) {
-            EventBus.getDefault().post(new MessageEvent(MainActivity.class));
-        }
-    }
-
-
-    private class getGam implements OnData, RequestListener<Drawable> {
-        @Override
-        public void handle(String ds) {
-            JSONObject jsonObject = JSONObject.parseObject(ds);
-            String gem = jsonObject.getString("gem");
-            String day_gem = jsonObject.getString("day_gem");
-            String name = jsonObject.getString("name");
-            binding.name.setText(name);
-            binding.nameX.setText(StringUtil.getStringStart(name));
-            binding.gem.setText(StringUtil.toRe(gem));
-            if (day_gem.startsWith("-")) {
-                binding.dayGem.setTextColor(context.getColor(android.R.color.holo_green_dark));
-            } else {
-                binding.dayGem.setTextColor(context.getColor(android.R.color.holo_red_dark));
-            }
-            binding.dayGem.setText(StringUtil.toRe(day_gem));
-        }
-
-        @Override
-        public void connect(SocketManage socketManage) {
-            SharedUtil sharedUtil = new SharedUtil(context);
-            JSONObject jsonObject = sharedUtil.getLogin(12, 4);
-            socketManage.print(jsonObject.toString());
-        }
-
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-            binding.toolbar.setNavigationIcon(resource);
-            return true;
-        }
-    }
-
     private class getNewsSize implements OnData {
         @Override
         public void handle(String ds) {
@@ -288,8 +230,8 @@ public class HomePager extends RecyclerAdapter implements VerticalTabLayout.OnTa
                 BannerEntity entity = new Gson().fromJson(banner.toString(), BannerEntity.class);
                 entity.json = banner.toString();
                 bannerEntities.add(entity);
+                bannerAdapter.notifyItemChanged(bannerEntities.size() - 1);
             }
-            bannerAdapter.notifyDataSetChanged();
         }
 
         @Override

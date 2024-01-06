@@ -81,14 +81,14 @@ public class UsdtBillActivity extends AppCompatActivity implements OnData, OnRef
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishRefresh( false);
         binding.Smart.finishLoadMore(false);
     }
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {

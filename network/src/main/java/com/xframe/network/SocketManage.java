@@ -78,7 +78,7 @@ public class SocketManage implements Handler.Callback, Runnable {
             socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
             socketChannel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ);
-            socketChannel.connect(new InetSocketAddress("192.168.1.19", 6333));
+            socketChannel.connect(new InetSocketAddress("192.168.1.4", 6333));
             long timeout = System.currentTimeMillis() + 5_000; // 5 seconds
             while (isRun) {
                 int readyChannels = selector.select(timeout);

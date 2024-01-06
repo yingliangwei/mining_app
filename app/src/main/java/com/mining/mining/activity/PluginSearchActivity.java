@@ -33,7 +33,8 @@ import java.util.List;
 
 public class PluginSearchActivity extends AppCompatActivity implements OnRefreshListener, OnRefreshLoadMoreListener, OnData, View.OnClickListener {
     private ActivityPluginSearchBinding binding;
-    private int start = 20, end = 0;
+    private final int start = 20;
+    private int end = 0;
     private final List<PluginEntity> list = new ArrayList<>();
     private ItemVerticalAdapter adapter;
 
@@ -77,15 +78,15 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
 
     @Override
     public void error(String error) {
-        binding.Smart.finishRefresh( false);
+        binding.Smart.finishRefresh(false);
         binding.Smart.finishLoadMore(false);
-        binding.spinKit.setVisibility(View.GONE);
+
     }
 
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {
@@ -100,7 +101,7 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
                 adapter.notifyItemChanged(list.size() - 1);
             }
         }
-        binding.Smart.finishRefresh( true);
+        binding.Smart.finishRefresh(true);
         binding.Smart.finishLoadMore(true);
     }
 
@@ -141,7 +142,6 @@ public class PluginSearchActivity extends AppCompatActivity implements OnRefresh
             }
             list.clear();
             adapter.notifyItemRemoved(0);
-            binding.spinKit.setVisibility(View.VISIBLE);
             SocketManage.init(this);
         }
     }

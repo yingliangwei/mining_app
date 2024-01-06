@@ -94,7 +94,7 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnRefreshLis
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishLoadMore(false);
         binding.Smart.finishRefresh(false);
     }
@@ -103,7 +103,7 @@ public class C2cGemPager extends RecyclerAdapter implements OnData, OnRefreshLis
     public void handle(String ds) {
         binding.Smart.finishRefresh( true);
         binding.Smart.finishLoadMore( true);
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {

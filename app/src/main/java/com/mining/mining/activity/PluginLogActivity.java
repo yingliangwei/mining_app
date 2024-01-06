@@ -74,14 +74,14 @@ public class PluginLogActivity extends AppCompatActivity implements OnData, OnRe
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishRefresh();
         binding.Smart.finishLoadMore();
     }
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         JSONObject jsonObject = JSONObject.parseObject(ds);
         int code = jsonObject.getInteger("code");
         if (code == 200) {

@@ -81,7 +81,7 @@ public class OrderManagePager extends RecyclerAdapter implements OnData, OnRefre
 
     @Override
     public void handle(String ds) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishRefresh(true);
         binding.Smart.finishLoadMore(true);
         JSONObject jsonObject = JSONObject.parseObject(ds);
@@ -103,7 +103,7 @@ public class OrderManagePager extends RecyclerAdapter implements OnData, OnRefre
 
     @Override
     public void error(String error) {
-        binding.spinKit.setVisibility(View.GONE);
+        
         binding.Smart.finishLoadMore(false);
         binding.Smart.finishRefresh(false);
     }
